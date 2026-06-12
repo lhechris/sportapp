@@ -14,23 +14,13 @@
             </p>
         </div>
 
-    </div>
+        <a href="{{ route('team.show', ['team' => $game->team->id ]) }}" 
+           class="bg-black text-white px-4 py-2 rounded-xl font-semibold hover:bg-gray-800">
+            Retour à l'équipe
+        </a>
 
-    @foreach ($members as $member)
-        
-    <div class="flex flex-wrap gap-2">
-        <span>{{ $member->prenom }}
-        <button wire:click="setAvailability({{ $member->id }}, {{ $game->id }}, 'yes')"
-            class="px-3 py-1 rounded-lg {{ $member->pivot->availability === 'yes' ? 'bg-green-500' : 'bg-gray-600' }} text-white text-sm hover:bg-green-600">
-            Présente
-        </button>
 
-        <button wire:click="setAvailability({{ $member->id }}, {{ $game->id }}, 'no')"
-            class="px-3 py-1 rounded-lg {{ $member->pivot->availability === 'no' ? 'bg-red-500' : 'bg-gray-600' }} text-white text-sm hover:bg-red-600">
-            Absente
-        </button>
     </div>
-    @endforeach
 
     <!-- STATS -->
     <div class="flex gap-4">

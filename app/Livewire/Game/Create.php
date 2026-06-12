@@ -11,8 +11,8 @@ class Create extends Component
     public Team $team;
 
     public $date;
+    public $titre;
     public $location;
-    public $horaire;
     public $rendezvous;
 
     public function save()
@@ -21,7 +21,7 @@ class Create extends Component
             'team_id' => $this->team->id,
             'date' => $this->date,
             'location' => $this->location,
-            'horaire' => $this->horaire,
+            'titre' => $this->titre,
             'rendezvous' => $this->rendezvous
         ]);
 

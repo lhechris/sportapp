@@ -6,21 +6,9 @@ use Livewire\Component;
 
 use App\Models\Game;
 
-class Show extends Component
+class ShowAdmin extends Component
 {
     public Game $game;
-    public $members;
-
-    public function mount()
-    {
-        $this->loadMembers();
-    }
-
-    public function loadMembers()
-    {
-        $this->members = auth()->user()->members()->with('games')->get();
-    }
-
 
     public function setAvailability($memberId, $value)
     {
@@ -40,8 +28,8 @@ class Show extends Component
 
     public function render()
     {
-        return view('livewire.game.show', [
-            'members' => $this->members
+        return view('livewire.game.show-admin', [
+            'members' => $this->game->members
         ])->layout('layouts.app');
     }
 }

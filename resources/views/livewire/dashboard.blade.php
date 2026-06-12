@@ -11,7 +11,7 @@
                     Dashboard
                 </h1>
                 <p class="text-gray-400 text-sm">
-                    AS Labarthe Basket
+                    AS Labarthaise Basket
                 </p>
             </div>
         </div>
@@ -59,12 +59,12 @@
 
         <div class="flex flex-wrap gap-3">
 
-            <a href="/teams/create"
+            <a href="{{ route('teams.create') }}"
                class="bg-yellow-400 text-black px-4 py-2 rounded-lg font-semibold hover:bg-yellow-300">
                 ➕ Nouvelle équipe
             </a>
 
-            <a href="/members"
+            <a href="{{ route('members') }}"
                class="bg-white text-black px-4 py-2 rounded-lg font-semibold hover:bg-gray-200">
                 👥 Effectif
             </a>
@@ -80,28 +80,29 @@
             🏀 Mes équipes
         </h2>
 
-        <div class="space-y-3">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
 
             @forelse($teams as $team)
 
-                <div class="flex justify-between items-center bg-black p-4 rounded-xl border border-gray-800 hover:scale-[1.02] transition">
+                <a href="{{ route('team.show', ['team' => $team->id]) }}" >
+                    <div class="flex justify-between items-center bg-black p-4 rounded-xl border border-yellow-300 hover:scale-[1.02] transition">
 
-                    <div>
-                        <p class="text-white font-semibold">
-                            {{ $team->name }}
-                        </p>
+                        <div>
+                            <p class="text-white font-semibold">
+                                {{ $team->name }}
+                            </p>
 
-                        <p class="text-gray-400 text-sm">
-                            {{ $team->members()->count() }} membres
-                        </p>
+                            <p class="text-gray-400 text-sm">
+                                {{ $team->members()->count() }} membres
+                            </p>
+                        </div>
+
+                        <span class="bg-yellow-400 text-black px-4 py-2 rounded-lg font-semibold hover:bg-yellow-300">
+                            Gérer
+                        </span>
+
                     </div>
-
-                    <a href="/team/{{ $team->id }}"
-                       class="bg-yellow-400 text-black px-4 py-2 rounded-lg font-semibold hover:bg-yellow-300">
-                        Gérer
-                    </a>
-
-                </div>
+                </a>
 
             @empty
                 <p class="text-gray-500">Aucune équipe</p>

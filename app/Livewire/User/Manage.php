@@ -15,6 +15,7 @@ class Manage extends Component
     public $name;
     public $email;
     public $password;
+    public $role;
 
     public $selectedMembers = [];
     public $editingId = null;
@@ -54,6 +55,7 @@ class Manage extends Component
             $user->update([
                 'name' => $this->name,
                 'email' => $this->email,
+                'role' => $this->role,
             ]);
 
         } else {
@@ -66,6 +68,7 @@ class Manage extends Component
                 'name' => $this->name,
                 'email' => $this->email,
                 'password' => Hash::make($this->password),
+                'role' => $this->role,
             ]);
         }
 
@@ -94,6 +97,7 @@ class Manage extends Component
         $this->editingId = $user->id;
         $this->name = $user->name;
         $this->email = $user->email;
+        $this->role = $user->role;
 
 
         $this->selectedMembers = $user->members
@@ -113,7 +117,7 @@ class Manage extends Component
 
     public function resetForm()
     {
-        $this->reset(['name', 'email', 'password', 'selectedMembers', 'editingId']);
+        $this->reset(['name', 'email', 'password', 'role', 'selectedMembers', 'editingId']);
     }
 
     public function render()

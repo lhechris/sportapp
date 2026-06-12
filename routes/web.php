@@ -16,15 +16,14 @@ Route::view('/', 'welcome');
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');    
 
-    Route::get('/team/{team}', Team\Show::class);
-    Route::get('/team/{team}/members', Team\ManageMembers::class);
-    Route::get('/team/{team}/games/create', Game\Create::class);
+    Route::get('/team/{team}', Team\Show::class)->name('team.show');
+    Route::get('/team/{team}/members', Team\ManageMembers::class)->name('team.members');
+    Route::get('/team/{team}/games/create', Game\Create::class)->name('team.games.create');
 
     Route::get('/members', Member\Manage::class)->name("members");
     Route::get('/users', User\Manage::class)->name("users");
 
-    Route::get('/games/{game}', Game\Show::class);
-    Route::get('/games/{game}/selection', Game\Selection::class);
+    Route::get('/games/{game}', Game\Show::class)->name('game.show');
 
 });
 
@@ -34,7 +33,9 @@ Route::view('profile', 'profile')
     ->name('profile');
 
 Route::middleware(['auth', 'isCoach'])->group(function () {
-    Route::get('/teams/create', Team\Create::class);
+    Route::get('/teams/create', Team\Create::class)->name('teams.create');
+    Route::get('/gamesadmin/{game}', Game\ShowAdmin::class)->name('game-admin.show');
+    Route::get('/games/{game}/selection', Game\Selection::class)->name('game.selection');
 });
 
 

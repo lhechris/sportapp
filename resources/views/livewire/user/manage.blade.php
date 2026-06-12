@@ -19,9 +19,18 @@
                    class="w-full border p-2 rounded">
         @endif
 
+        <div>
+            <p class="font-semibold mb-2">Role</p>
+            <select wire:model="role" placeholder="Email"
+                class="w-full border p-2 rounded">
+                <option value="{{ \App\Models\User::ROLE_PLAYER }}" >Joueur</option>
+                <option value="{{ \App\Models\User::ROLE_PARENT }}" >Parent</option>
+                <option value="{{ \App\Models\User::ROLE_COACH }}" >Coach</option>
+            </select>
+        </div>
         <!-- MEMBERS -->
         <div>
-            <p class="font-semibold mb-2">Lier des membres</p>
+            <p class="font-semibold mb-2">Associé aux membres</p>
 
             <div class="space-y-2 max-h-60 overflow-y-auto border p-2 rounded">
 

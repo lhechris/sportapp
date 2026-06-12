@@ -29,4 +29,11 @@ class Team extends Model
     {
         return $this->members()->wherePivot('role', 'coach');
     }
+
+    
+    public function games()
+    {
+        return $this->hasMany(\App\Models\Game::class);
+    }
+
 }

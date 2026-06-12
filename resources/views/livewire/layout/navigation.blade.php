@@ -34,9 +34,9 @@ new class extends Component
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    <x-nav-link href="/teams/create" class="block">Créer équipe</x-nav-link>
-                    <x-nav-link href="/members" class="block">Membres</x-nav-link>
-                    <x-nav-link href="/users" class="block">Utilisateurs</x-nav-link>
+                    <x-nav-link href="{{route('teams.create')}}" class="block">Créer équipe</x-nav-link>
+                    <x-nav-link href="{{route('members')}}" class="block">Membres</x-nav-link>
+                    <x-nav-link href="{{route('users')}}" class="block">Utilisateurs</x-nav-link>
 
                 </div>
             </div>
