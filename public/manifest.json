@@ -1,7 +1,7 @@
 {
-  "name": "Sport App",
-  "short_name": "Sport",
-  "description": "Votre application de gestion sportive",
+  "name": "ASLB Sport App",
+  "short_name": "ASLB",
+  "description": "Application de gestion sportive pour l'ASLB",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

@@ -20,14 +20,14 @@ class ManageMembers extends Component
             ->get();
     }
 
-    public function addMember($memberId, $role = 'player')
+    public function addMember($memberId)
     {
         if ($this->team->owner_id !== auth()->id()) {
             abort(403);
         }
 
         $this->team->members()->syncWithoutDetaching([
-            $memberId => ['role' => $role]
+            $memberId
         ]);
     }
 

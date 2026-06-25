@@ -37,8 +37,13 @@ class Member extends Model
     public function teams()
     {
         return $this->belongsToMany(Team::class)
-            ->withPivot('role')
             ->withTimestamps();
+    }
+
+
+    public function trainings()
+    {
+        return $this->belongsToMany(Training::class);
     }
 
 
@@ -46,7 +51,32 @@ class Member extends Model
     {
         return $this->belongsToMany(Game::class)
             ->withPivot('availability', 'selected')
+            ->withTimestamps()
+            ->orderBy('date');
+    }
+
+    public function gameOptions()
+    {
+        return $this->hasMany(GameMemberOption::class);
+    }
+
+    public function options()
+    {
+        return $this->belongsToMany(GameOption::class, 'game_member_option')
+            ->withPivot('game_id', 'value')
             ->withTimestamps();
     }
 
+    public function isplayer() 
+    {
+        return $this->type === self::TYPE_PLAYER;
+    }
+    public function isstaff() 
+    {
+        return $this->type === self::TYPE_STAFF;
+    }
+    public function iscoach() 
+    {
+        return $this->type === self::TYPE_COACH;
+    }
 }

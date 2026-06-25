@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Game extends Model
 {
 
-    protected $fillable = ['team_id', 'date', 'location','rendezvous'];
+    protected $fillable = ['team_id', 'date', 'location','rendezvous','titre'];
 
     public function team()
     {
@@ -20,4 +20,21 @@ class Game extends Model
             ->withPivot('availability', 'selected')
             ->withTimestamps();
     }
+
+    public function memberOptions()
+    {
+        return $this->hasMany(GameMemberOption::class);
+    }
+
+    public function options()
+    {
+        return $this->belongsToMany(GameOption::class, 'game_member_option')
+            ->withPivot('member_id', 'value')
+            ->withTimestamps();
+    }
+
+    public function formatdate() {
+        return  \Carbon\Carbon::parse($this->date)->translatedFormat('d F Y à H:i');
+    }
+
 }

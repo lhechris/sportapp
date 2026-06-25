@@ -18,7 +18,11 @@ class Show extends Component
 
     public function loadMembers()
     {
-        $this->members = auth()->user()->members()->with('games')->get();
+        $memberIds = auth()->user()->members()->pluck('members.id');
+
+        $this->members = $this->game->members()
+            ->whereIn('members.id', $memberIds)
+            ->get();
     }
 
 

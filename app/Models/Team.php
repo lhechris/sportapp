@@ -15,25 +15,34 @@ class Team extends Model
     public function members()
     {
         return $this->belongsToMany(Member::class)
-            ->withPivot('role')
             ->withTimestamps();
+    }
+
+    public function games()
+    {
+        return $this->hasMany(\App\Models\Game::class)
+                ->orderBy('date');
+    }
+
+    public function trainings()
+    {
+        return $this->hasMany(\App\Models\Training::class)
+                ->orderBy('date');
     }
 
     // helpers utiles
     public function players()
     {
-        return $this->members()->wherePivot('role', 'player');
+        return $this->members()->where('type', Member::TYPE_PLAYER);
     }
 
     public function coaches()
     {
-        return $this->members()->wherePivot('role', 'coach');
+        return $this->members()->where('type',Member::TYPE_COACH);
     }
 
-    
-    public function games()
+    public function staffs()
     {
-        return $this->hasMany(\App\Models\Game::class);
+        return $this->members()->where('type', Member::TYPE_STAFF);
     }
-
 }

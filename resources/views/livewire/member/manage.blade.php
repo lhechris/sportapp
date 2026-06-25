@@ -1,33 +1,33 @@
 <div class="p-6 rounded shadow">
 
     <h1 class="text-xl font-bold mb-4">
-        Gestion des membres
+        {{ __('Manage members') }}
     </h1>
 
     <!-- FORM -->
     <div class="mb-6 space-y-2">
 
-        <input wire:model="name" placeholder="Nom" class="border p-2 w-full">
+        <input wire:model="name" placeholder="{{ __('Name') }}" class="border p-2 w-full">
 
         <select wire:model="type" class="border p-2 w-full">
-            <option value="player">Joueur</option>
-            <option value="coach">Coach</option>
-            <option value="staff">Staff</option>
+            <option value="player">{{ __('Player') }}</option>
+            <option value="coach">{{ __('Coach') }}</option>
+            <option value="staff">{{ __('Staff') }}</option>
         </select>
 
-        <input wire:model="prenom" placeholder="Prénom" class="border p-2 w-full">
+        <input wire:model="prenom" placeholder="{{ __('First name') }}" class="border p-2 w-full">
 
         <input type="date" wire:model="birthdate" class="border p-2 w-full">
 
-        <input wire:model="licence" placeholder="Licence" class="border p-2 w-full">
+        <input wire:model="licence" placeholder="{{ __('License') }}" class="border p-2 w-full">
 
         <div>
             <button wire:click="save" class="bg-blue-500 text-white px-4 py-2">
-                {{ $editingId ? 'Mettre à jour' : 'Créer' }}
+                {{ $editingId ? __('Update') : __('Create') }}
             </button>
 
             <button wire:click="resetForm" class="ml-2 text-gray-600">
-                Reset
+                {{ __('Reset') }}
             </button>
         </div>
 
@@ -37,12 +37,12 @@
     <table class="w-full border">
         <thead>
             <tr class="bg-gray-100">
-                <th class="p-2">Nom</th>
-                <th class="p-2">Prénom</th>
-                <th class="p-2">Type</th>
-                <th class="p-2">Naissance</th>
-                <th class="p-2">Licence</th>
-                <th class="p-2">Actions</th>
+                <th class="p-2">{{ __('Name') }}</th>
+                <th class="p-2">{{ __('First name') }}</th>
+                <th class="p-2">{{ __('Type') }}</th>
+                <th class="p-2">{{ __('Birthdate') }}</th>
+                <th class="p-2">{{ __('License') }}</th>
+                <th class="p-2">{{ __('Actions') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -55,11 +55,11 @@
                     <td class="p-2">{{ $member->licence }}</td>
                     <td class="p-2">
                         <button wire:click="edit({{ $member->id }})" class="text-blue-600">
-                            Modifier
+                            {{ __('Edit') }}
                         </button>
 
                         <button wire:click="delete({{ $member->id }})" class="text-red-600 ml-2">
-                            Supprimer
+                            {{ __('Delete') }}
                         </button>
                     </td>
                 </tr>

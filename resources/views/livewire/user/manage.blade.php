@@ -1,36 +1,36 @@
 <div class="space-y-6">
 
     <h1 class="text-2xl font-bold text-gray-900">
-        👤 Gestion des utilisateurs
+        👤 {{ __('User management') }}
     </h1>
 
     <!-- FORM -->
     <div class="bg-white p-4 rounded-xl shadow space-y-3">
 
-        <input wire:model="name" placeholder="Nom"
+        <input wire:model="name" placeholder="{{ __('Name') }}"
                class="w-full border p-2 rounded">
 
-        <input wire:model="email" placeholder="Email"
+        <input wire:model="email" placeholder="{{ __('Email') }}"
                class="w-full border p-2 rounded">
 
         @if(!$editingId)
             <input wire:model="password" type="password"
-                   placeholder="Mot de passe"
+                   placeholder="{{ __('Password') }}"
                    class="w-full border p-2 rounded">
         @endif
 
         <div>
-            <p class="font-semibold mb-2">Role</p>
-            <select wire:model="role" placeholder="Email"
+            <p class="font-semibold mb-2">{{ __('Role') }}</p>
+            <select wire:model="role" placeholder="{{ __('Email') }}"
                 class="w-full border p-2 rounded">
-                <option value="{{ \App\Models\User::ROLE_PLAYER }}" >Joueur</option>
-                <option value="{{ \App\Models\User::ROLE_PARENT }}" >Parent</option>
-                <option value="{{ \App\Models\User::ROLE_COACH }}" >Coach</option>
+                <option value="{{ \App\Models\User::ROLE_PLAYER }}" >{{ __('Player') }}</option>
+                <option value="{{ \App\Models\User::ROLE_PARENT }}" >{{ __('Parent') }}</option>
+                <option value="{{ \App\Models\User::ROLE_COACH }}" >{{ __('Coach') }}</option>
             </select>
         </div>
         <!-- MEMBERS -->
         <div>
-            <p class="font-semibold mb-2">Associé aux membres</p>
+            <p class="font-semibold mb-2">{{ __('Associated members') }}</p>
 
             <div class="space-y-2 max-h-60 overflow-y-auto border p-2 rounded">
 
@@ -52,9 +52,9 @@
                                 class="border rounded p-1 min-w-32"
                             >
                                 <option value="">--</option>
-                                <option value="{{ \App\Enums\MemberRelation::PARENT }}">Parent</option>
-                                <option value="{{ \App\Enums\MemberRelation::SELF }}">Moi</option>
-                                <option value="{{ \App\Enums\MemberRelation::COACH }}">Coach</option>
+                                <option value="{{ \App\Enums\MemberRelation::PARENT }}">{{ __('Parent') }}</option>
+                                <option value="{{ \App\Enums\MemberRelation::SELF }}">{{ __('Self') }}</option>
+                                <option value="{{ \App\Enums\MemberRelation::COACH }}">{{ __('Coach') }}</option>
                             </select>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
 
         <button wire:click="save"
                 class="bg-black text-yellow-400 px-4 py-2 rounded">
-            {{ $editingId ? 'Mettre à jour' : 'Créer' }}
+            {{ $editingId ? __('Update') : __('Create') }}
         </button>
 
     </div>
@@ -85,7 +85,7 @@
                     <p class="text-sm text-gray-500">{{ $user->email }}</p>
 
                     <div class="text-xs text-gray-400 mt-1">
-                        Membres :
+                        {{ __('Members') }} :
                         {{ $user->members->pluck('prenom')->join(', ') }}
                     </div>
                 </div>
@@ -94,12 +94,12 @@
 
                     <button wire:click="edit({{ $user->id }})"
                         class="text-blue-600">
-                        Modifier
+                        {{ __('Edit') }}
                     </button>
 
                     <button wire:click="delete({{ $user->id }})"
                         class="text-red-600">
-                        Supprimer
+                        {{ __('Delete') }}
                     </button>
 
                 </div>

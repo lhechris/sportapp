@@ -6,8 +6,14 @@ use App\Livewire\Member;
 use App\Livewire\Dashboard;
 use App\Livewire\User;
 use App\Livewire\Game;
+use App\Livewire\Training;
 
-Route::view('/', 'welcome');
+//Route::view('/', 'welcome');
+Route::get('/', function () {
+        return auth()->check()
+            ? redirect()->route('dashboard')
+            : view('welcome');
+});
 
 /*Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
@@ -18,7 +24,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/team/{team}', Team\Show::class)->name('team.show');
     Route::get('/team/{team}/members', Team\ManageMembers::class)->name('team.members');
-    Route::get('/team/{team}/games/create', Game\Create::class)->name('team.games.create');
 
     Route::get('/members', Member\Manage::class)->name("members");
     Route::get('/users', User\Manage::class)->name("users");
@@ -34,8 +39,11 @@ Route::view('profile', 'profile')
 
 Route::middleware(['auth', 'isCoach'])->group(function () {
     Route::get('/teams/create', Team\Create::class)->name('teams.create');
+    Route::get('/team/{team}/games/create', Game\Create::class)->name('team.games.create');
+    Route::get('/team/{team}/trainings/create', Training\Create::class)->name('team.trainings.create');
     Route::get('/gamesadmin/{game}', Game\ShowAdmin::class)->name('game-admin.show');
     Route::get('/games/{game}/selection', Game\Selection::class)->name('game.selection');
+    Route::get('/trainings/{training}', Training\Show::class)->name('training.show');
 });
 
 

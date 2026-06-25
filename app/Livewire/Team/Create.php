@@ -28,10 +28,6 @@ class Create extends Component
         // récupérer le member du coach
         $member = auth()->user()->members()->first();
 
-        $team->members()->attach($member->id, [
-            'role' => 'coach'
-        ]);
-
         session()->flash('success', 'Équipe créée');
 
         $this->reset('name');
