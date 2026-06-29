@@ -1,5 +1,5 @@
 <div class="space-y-6">
-
+    <livewire:InstallPrompt />
     <!-- MEMBRES -->
 @forelse($members as $member)
     <div class="bg-gray-900 p-5 rounded-2xl border border-gray-800">

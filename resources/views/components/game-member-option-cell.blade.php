@@ -13,7 +13,7 @@
     @elseif ($option->name === "numero")
         <input
             type="number"
-            class="w-full rounded border border-gray-300 px-2 py-1 text-black"
+            class="w-full max-w-20 rounded border border-gray-300 px-2 py-1 text-black"
             value="{{ $memberOption?->value ?? '' }}"
             wire:change="setGameOption({{ $member->id }}, {{ $option->id }}, $event.target.value)"
         />

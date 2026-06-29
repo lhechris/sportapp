@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'role'])]
+#[Fillable(['name', 'email', 'password', 'role','google_id','firstname'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -46,6 +46,10 @@ class User extends Authenticatable
             ->withTimestamps();
     }
     
+    public function invitations()
+    {
+        return $this->hasMany(Invitation::class);
+    }
 
     public function children()
     {

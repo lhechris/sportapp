@@ -18,7 +18,7 @@ new class extends Component
 
 <nav x-data="{ open: false }" class="border-b border-gray-900">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
@@ -27,9 +27,9 @@ new class extends Component
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                     </a>                    
                 </div>
-
+                @auth
                 <!-- Navigation Links -->
-                <div class="space-x-4 -my-px ms-10 flex">
+                <div class="space-x-4 -my-px ms-0 sm:ms-10 flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate class="flex flex-col mt-1 items-center gap-1">
                         <img src="{{ asset('images/home.png') }}" alt="{{ __('Home') }}" class="h-6 w-6" />
                         <span class="text-sm">{{ __('Home') }}</span>
@@ -99,9 +99,10 @@ new class extends Component
                     <button wire:click="logout" class="w-full text-start flex mt-1 flex-col items-center gap-1" >
                         <x-dropdown-link>
                             <img src="{{ asset('images/logout.png') }}" alt="{{ __('Log Out') }}" class="h-6 w-6" />
-                            <span class="text-sm">{{ __('Log Out') }}</span>                                
+                            <span class="text-sm truncate">{{ __('Log Out') }}</span>                                
                         </x-dropdown-link>
                     </button>
+                @endauth
             </div>
         </div>
     </div>

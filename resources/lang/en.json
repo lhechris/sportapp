@@ -27,6 +27,7 @@
     "View profile" : "View profile",
     "Title" : "Title",
     "Register": "Register",
+    "Registration" : "Registration",
     "Remember me": "Remember me",
     "Resend Verification Email": "Resend Verification Email",
     "Reset Password": "Reset Password",
@@ -91,5 +92,7 @@
     "Training" : "Training",
     "Trainings" : "Trainings",
     "No training for the team" : "No training for the team",
-    "New training for team" : "New training for team"
+    "New training for team" : "New training for team",
+    "Generate an invitation" : "Generate an invitation",
+    "Finalize my account" : "Finalize my account"
  }

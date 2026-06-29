@@ -1,4 +1,4 @@
-<div class="p-6 rounded shadow">
+<div class="p-0 sm:p-6 rounded shadow">
 
     <h1 class="text-xl font-bold mb-4">
         {{ __('Manage members') }}
@@ -34,32 +34,30 @@
     </div>
 
     <!-- LIST -->
-    <table class="w-full border">
+    <table class="w-full border text-left">
         <thead>
             <tr class="bg-gray-100">
-                <th class="p-2">{{ __('Name') }}</th>
-                <th class="p-2">{{ __('First name') }}</th>
-                <th class="p-2">{{ __('Type') }}</th>
-                <th class="p-2">{{ __('Birthdate') }}</th>
-                <th class="p-2">{{ __('License') }}</th>
-                <th class="p-2">{{ __('Actions') }}</th>
+                <th class="sm:p-2">{{ __('Name') }}</th>
+                <th class="sm:p-2">{{ __('Type') }}</th>
+                <th class="hidden sm:p-2 sm:block">{{ __('Birthdate') }}</th>
+                <th class="sm:p-2">{{ __('License') }}</th>
+                <th class="sm:p-2">{{ __('Actions') }}</th>
             </tr>
         </thead>
         <tbody>
             @foreach($members as $member)
                 <tr class="border-t">
-                    <td class="p-2">{{ $member->name }}</td>
-                    <td class="p-2">{{ $member->prenom }}</td>
-                    <td class="p-2">{{ $member->type }}</td>
-                    <td class="p-2">{{ $member->birthdate }}</td>
-                    <td class="p-2">{{ $member->licence }}</td>
-                    <td class="p-2">
+                    <td class="sm:p-2">{{ $member->prenom }} {{ $member->name }}</td>
+                    <td class="sm:p-2">{{ $member->type }}</td>
+                    <td class="hidden sm:p-2 sm:block">{{ $member->birthdate }}</td>
+                    <td class="sm:p-2">{{ $member->licence }}</td>
+                    <td class="sm:p-2">
                         <button wire:click="edit({{ $member->id }})" class="text-blue-600">
-                            {{ __('Edit') }}
+                            📝​
                         </button>
 
                         <button wire:click="delete({{ $member->id }})" class="text-red-600 ml-2">
-                            {{ __('Delete') }}
+                            ​🗑️​
                         </button>
                     </td>
                 </tr>

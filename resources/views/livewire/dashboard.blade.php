@@ -1,5 +1,4 @@
 <div class="space-y-6">
-
     <!-- HEADER -->
     <div class="flex items-center justify-between">
 
@@ -12,7 +11,9 @@
                     AS Labarthaise Basket
                 </p>
             </div>
+            <livewire:InstallPrompt />
         </div>
+ 
 
     </div>
 
@@ -111,10 +112,10 @@
             {{ __('Presence of') }} {{ $member->prenom }} {{ __('to upcoming matches') }}
         </h2>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <x-cards-scroll nextElementId="game-{{$member->id}}-{{$member->nextGameId}}" >
 
             @forelse($member->games as $game)
-            <div class="bg-black border border-yellow-300 p-4 rounded-2xl shadow hover:shadow-lg transition hover:-translate-y-1">
+            <div id="game-{{$member->id}}-{{$game->id}}" class="bg-black border border-yellow-300 p-4 rounded-2xl shadow hover:shadow-lg transition hover:-translate-y-1">
 
                 <div class="flex justify-between items-center mb-2">
 
@@ -155,15 +156,12 @@
             @empty
                 <p class="text-gray-500">{{ __('No games') }}</p>
             @endforelse
-
+        </x-cards-scroll>
 @endif
 @empty
         <p class="text-gray-500">{{ __('No members') }}</p>
 @endforelse
 
-        </div>
     </div>
-
-
 
 </div>

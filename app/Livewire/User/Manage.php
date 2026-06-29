@@ -13,12 +13,15 @@ class Manage extends Component
     public $members;
 
     public $name;
+    public $firstname;
     public $email;
     public $password;
     public $role;
 
     public $selectedMembers = [];
     public $editingId = null;
+
+    public $link = "";
 
     public function mount()
     {
@@ -27,17 +30,18 @@ class Manage extends Component
 
     public function loadData()
     {
-        $this->users = User::with('members')->get();
-        $this->members = Member::all();
+        $this->users = User::with('members')->with('invitations')->get();
+        $this->members = Member::select()->orderBy('prenom')->orderby('name')->get();
+        $this->link = "";
     }
 
     public function save()
     {
         $this->validate([
-            'name' => 'required',
-            'email' => 'required|email',
+            'firstname' => 'required|string|min:2',
+            'name' => 'required|string|min:2',
+            'role' => 'required',
         ]);
-
 
         $validRelations = [\App\Enums\MemberRelation::PARENT, \App\Enums\MemberRelation::SELF, \App\Enums\MemberRelation::COACH];
 
@@ -47,13 +51,16 @@ class Manage extends Component
             }
         }
 
-
         if ($this->editingId) {
 
+            $this->validate([
+                'email' => 'required|email',
+            ]);
             $user = User::findOrFail($this->editingId);
 
             $user->update([
                 'name' => $this->name,
+                'firstname' => $this->firstname,
                 'email' => $this->email,
                 'role' => $this->role,
             ]);
@@ -61,17 +68,25 @@ class Manage extends Component
         } else {
 
             $this->validate([
-                'password' => 'required|min:6'
+                'password' => 'required|min:6',
+                'email' => 'required|email|unique:users,email',
             ]);
 
             $user = User::create([
                 'name' => $this->name,
+                'firstname' => $this->firstname,
                 'email' => $this->email,
                 'password' => Hash::make($this->password),
                 'role' => $this->role,
             ]);
         }
 
+        $this->sync_members($user);
+        $this->resetForm();
+        $this->loadData();
+
+    }
+    private function sync_members($user) {
         //Sync members
         $sync = [];
 
@@ -86,16 +101,18 @@ class Manage extends Component
 
         $user->members()->sync($sync);
 
-        $this->resetForm();
-        $this->loadData();
+
     }
 
     public function edit($id)
     {
-        $user = User::with('members')->findOrFail($id);
+        $user = User::with(['members' => function($query) {
+            $query->orderBy('prenom')->orderby('name');
+        }])->findOrFail($id);
 
         $this->editingId = $user->id;
         $this->name = $user->name;
+        $this->firstname = $user->firstname;
         $this->email = $user->email;
         $this->role = $user->role;
 
@@ -115,9 +132,53 @@ class Manage extends Component
         $this->loadData();
     }
 
+    public function invit()
+    {
+        $this->validate([
+            'name' => 'required',
+            'role' => 'required'
+        ]);
+
+        $validRelations = [\App\Enums\MemberRelation::PARENT, \App\Enums\MemberRelation::SELF, \App\Enums\MemberRelation::COACH];
+
+        foreach ($this->selectedMembers as $relation) {
+            if ($relation && !in_array($relation, $validRelations)) {
+                abort(400);
+            }
+        }
+
+        $token = \Illuminate\Support\Str::uuid();
+
+        //On cree l'utilisateur avec juste un nom
+        $user = User::create([
+            'name' => $this->name,
+            'firstname' => $this->firstname,
+            'email' => '',
+            'password' => Hash::make(uniqid()), //cree un mdp aléatoire
+            'role' => $this->role,
+        ]);
+
+        //On génère l'invitation
+        \App\Models\Invitation::create([
+            'email' => $this->email,
+            'token' => $token,
+            'created_by' => auth()->id(),
+            'user_id' => $user->id,
+            'expires_at' => now()->addDays(7),
+        ]);
+
+        $this->sync_members($user);
+
+        $this->resetForm();
+        $this->loadData();
+
+        $this->link = url('/invitation/' . $token);
+
+    }
+
     public function resetForm()
     {
-        $this->reset(['name', 'email', 'password', 'role', 'selectedMembers', 'editingId']);
+        $this->reset(['name', 'firstname','email', 'password', 'role', 'selectedMembers', 'editingId']);
     }
 
     public function render()

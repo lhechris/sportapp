@@ -23,7 +23,10 @@ class Manage extends Component
 
     public function loadMembers()
     {
-        $this->members = Member::latest()->get();
+        $this->members = Member::select()
+                            ->orderBy('prenom')
+                            ->orderBy('name')
+                            ->get();
     }
 
     public function save()

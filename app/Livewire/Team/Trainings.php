@@ -8,6 +8,7 @@ use App\Models\Team;
 class Trainings extends Component
 {
     public Team $team;
+    public $trainings;
     public $nextTrainingId;
 
     public function mount()
@@ -20,6 +21,7 @@ class Trainings extends Component
                 break;
             }
         }
+        $this->trainings = $this->team->trainings;
     }
 
     public function render()

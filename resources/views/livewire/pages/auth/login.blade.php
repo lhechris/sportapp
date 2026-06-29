@@ -68,4 +68,19 @@ new #[Layout('layouts.guest')] class extends Component
             </x-primary-button>
         </div>
     </form>
+
+    <div class="flex items-center my-4">
+        <div class="flex-1 border-t"></div>
+        <span class="px-2 text-gray-400 text-sm">ou</span>
+        <div class="flex-1 border-t"></div>
+    </div>
+
+    <a href="{{ url('/auth/google') }}"
+       class="flex items-center justify-center gap-3 bg-white border border-gray-300 px-4 py-2 rounded-xl shadow hover:bg-gray-100 transition">
+
+        <img src="/images/google-logo.png" class="w-5 h-5">
+        <span class="font-medium text-gray-800">
+            Se connecter avec Google
+        </span>
+    </a>
 </div>

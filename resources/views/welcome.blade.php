@@ -2,108 +2,61 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>AS Labarthaise Basket</title>
+    <title>{{ config('app.name', 'sportapp') }}</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
 </head>
 
-<body class="bg-yellow-200 text-gray-900">
-
-    <!-- NAVBAR -->
-    <nav class="px-6 py-4 flex justify-between items-center shadow">
-        <h1 class="text-lg font-bold">{{ __('🏀 Welcome to AS Labarthaise Basket') }}</h1>
-
-        <div class="space-x-4">
-            @auth
-                <a href="/dashboard"
-                   class="bg-black text-yellow-400 px-4 py-2 rounded-lg font-semibold">
-                    {{ __('Dashboard') }}
-                </a>
-            @else
-                <a href="/login" class="hover:underline">{{ __('Log in') }}</a>
-                <a href="/register"
-                   class="bg-white text-yellow-400 px-4 py-2 rounded-lg font-semibold">
-                    {{ __('Register') }}
-                </a>
-            @endauth
-        </div>
-    </nav>
-
-    <!-- HERO -->
-    <section class="relative text-white py-24 text-center bg-yellow-200 overflow-hidden">
-
-        <img src="{{ asset('images/baniere.jpg') }}" class="absolute inset-0 w-full h-full object-cover">
-        <!-- Effet overlay -->
-        <div class="absolute inset-0 bg-black/40"></div>
-
-        <div class="relative z-10 max-w-3xl mx-auto">
-            <h2 class="text-4xl md:text-5xl font-bold mb-6">
-                {{ __('🏀 Welcome to AS Labarthaise Basket') }}
-            </h2>
-
-            <p class="text-lg mb-8">
-                {{ __('Manage your teams, players and matches with simplicity and performance.') }}
-            </p>
-
-            @guest
-                <a href="/register"
-                   class="bg-white text-yellow-400 px-8 py-3 rounded-xl text-lg font-bold shadow hover:scale-105 transition">
-                    {{ __('Get started') }}
-                </a>
-            @endguest
-        </div>
-
-    </section>
-
-    <!-- FEATURES -->
-    <section class="py-16 px-6 max-w-6xl mx-auto">
-
-        <div class="grid md:grid-cols-3 gap-8 text-center">
-
-            <div class="p-6 rounded-2xl shadow hover:shadow-lg transition bg-yellow-400">
-                <h3 class="font-bold text-lg mb-3">{{ __('🏆 Teams') }}</h3>
-                <p class="text-gray-500">
-                    {{ __('Organize your basketball teams in a few clicks.') }}
-                </p>
-            </div>
-
-            <div class="p-6 rounded-2xl shadow hover:shadow-lg transition bg-yellow-400">
-                <h3 class="font-bold text-lg mb-3">{{ __('👥 Team numbers') }}</h3>
-                <p class="text-gray-500">
-                    {{ __('Manage players, coaches and staff easily.') }}
-                </p>
-            </div>
-
-            <div class="p-6 rounded-2xl shadow hover:shadow-lg transition bg-yellow-400">
-                <h3 class="font-bold text-lg mb-3">{{ __('📅 Matches') }}</h3>
-                <p class="text-gray-500">
-                    {{ __('Schedule matches and trainings efficiently.') }}
-                </p>
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- CTA FINAL -->
-
-    <section class="text-gray-900 py-16 text-center bg-yellow-400">
-        <h3 class="text-2xl font-bold mb-6">
-            {{ __('Join your team now 🏀') }}
-        </h3>
-
-        @guest
-            <a href="/register"
-               class="bg-white text-red-700 px-6 py-3 rounded-xl font-bold shadow">
-                {{ __('Create an account') }}
+<body class="bg-black overflow-hidden">
+ 
+<section class="relative w-full h-screen flex flex-col items-center justify-center text-center">
+ 
+    <!-- Image de fond -->
+    <img src="{{ asset('images/baniere.jpg') }}" alt="AS Labarthaise Basket"
+         class="absolute inset-0 w-full h-full object-cover object-center">
+ 
+    <!-- Overlay dégradé -->
+    <div class="absolute inset-0 bg-gradient-to-b from-black/35 via-black/60 to-black/85"></div>
+ 
+    <!-- Contenu -->
+    <div class="relative z-10 flex flex-col items-center gap-8 px-6">
+ 
+        <p class="font-['Barlow_Condensed'] text-xs font-bold tracking-[0.25em] uppercase text-yellow-400">
+            
+        </p>
+ 
+        <h1 class="font-['Barlow_Condensed'] text-[clamp(3rem,10vw,7rem)] font-black uppercase leading-none text-white">
+            Bienvenue
+        </h1>
+ 
+        <div class="w-12 h-[3px] bg-yellow-400"></div>
+ 
+        @auth
+            <a href="/dashboard"
+               class="font-['Barlow_Condensed'] text-lg font-bold tracking-widest uppercase text-black bg-yellow-400 border-2 border-yellow-400 px-11 py-4 transition-all duration-200 hover:bg-transparent hover:text-yellow-400 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-yellow-400">
+                {{ __('Mon espace') }}
             </a>
-        @endguest
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="bg-black text-gray-400 text-center py-6">
-        <p>© {{ date('Y') }} AS Labarthaise Basket</p>
+        @else
+            <a href="/login"
+               class="font-['Barlow_Condensed'] text-lg font-bold tracking-widest uppercase text-black bg-yellow-400 border-2 border-yellow-400 px-11 py-4 transition-all duration-200 hover:bg-transparent hover:text-yellow-400 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-yellow-400">
+                {{ __('Se connecter') }}
+            </a>
+        @endauth
+    </div>
+ 
+    <!-- Footer -->
+    <footer class="absolute bottom-0 left-0 right-0 text-center py-5 text-xs tracking-widest text-white/30">
+        © {{ date('Y') }} AS Labarthaise Basket
     </footer>
-
+ 
+</section>
+ 
 </body>
+
 </html>

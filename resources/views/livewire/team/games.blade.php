@@ -1,9 +1,8 @@
 <div>
     <div class="flex gap-4 mb-2">
         <h2 class="text-lg font-semibold mb-4">{{ __('Matches') }}</h2>
-        <a href="{{ route('team.games.create', ['team' => $team->id ]) }}" 
-           class="bg-black text-white px-4 py-2 rounded-xl font-semibold hover:bg-gray-800">
-            ➕️{{ __('Create') }}
+        <a href="{{ route('team.games.create', ['team' => $team->id ]) }}" wire:navigate>
+            <x-button>➕️{{ __('Create') }}</x-button>
         </a>
     </div>
 

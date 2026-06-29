@@ -65,6 +65,10 @@ class Dashboard extends Component
         }
     }
 
+    public function installPwa() {
+        $this->dispatch('triggerInstall');
+    }
+
     public function setAvailability($memberId, $gameId, $value)
     {
         $game = Game::find($gameId);
@@ -82,25 +86,24 @@ class Dashboard extends Component
 
     public function render()
     {
+        //Recherche le prochain match à afficher
+        $now = \Carbon\Carbon::now();
+        foreach ($this->members as &$member) {
+            $member->nextGameId = null;
+            foreach ($member->games as $game) {
+                if ($game->date >= $now) {
+                    $member->nextGameId = $game->id;
+                    break;
+                }
+            }
+        }
+
+
         if (auth()->user() && auth()->user()->isCoach()){
             return view('livewire.dashboard')
                 ->layout('layouts.app');
         
         } else if (auth()->user() && auth()->user()->isParent()){
-
-            //Recherche le prochain match à afficher
-            $now = \Carbon\Carbon::now();
-            foreach ($this->members as &$member) {
-                $member->nextGameId = null;
-                foreach ($member->games as $game) {
-                    if ($game->date >= $now) {
-                        $member->nextGameId = $game->id;
-                        break;
-                    }
-                }
-            }
-
-
             return view('livewire.dashboard-parent')
                 ->layout('layouts.app');
         }
