@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use NotificationChannels\WebPush\HasPushSubscriptions;
 
 #[Fillable(['name', 'email', 'password', 'role','google_id','firstname'])]
 #[Hidden(['password', 'remember_token'])]
@@ -16,6 +17,7 @@ class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+    use HasPushSubscriptions;
 
     const ROLE_COACH = 'coach';
     const ROLE_PLAYER = 'player';
@@ -33,9 +35,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    public function teams() {
-        
+    public function teams()
+    {
         return $this->belongsToMany(Team::class)
+            ->withTimestamps();
+    }
+
+    public function ownedTeams()
+    {
+        return $this->belongsToMany(Team::class, 'team_owner')
             ->withTimestamps();
     }
 

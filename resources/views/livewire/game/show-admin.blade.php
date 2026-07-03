@@ -43,14 +43,20 @@
                 <button wire:click="toggleEditingGame()" class="mt-2 text-blue-600 hover:text-blue-800 font-semibold text-sm">
                     ✏️ {{ __('Edit') }}
                 </button>
+                <button wire:click="deleteGame()" 
+                    wire:confirm="{{ __("Are you sure you want to delete this match?") }}"
+                    class="mt-2 text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                    🗑️​ {{ __('Delete') }}
+                </button>
+                
             @endif
         </div>
 
         <div class="flex gap-2">
-            <!--<button wire:click="sendNotification()"
+            <button wire:click="sendNotification()"
                     class="bg-blue-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-blue-700">
                 {{ __('Send notification') }}
-            </button>-->
+            </button>
             <a href="{{ route('team.show', ['team' => $game->team->id ]) }}" 
                class="bg-black text-white px-4 py-2 rounded-xl font-semibold hover:bg-gray-800">
                 {{ __('Back to team') }}
@@ -66,6 +72,7 @@
     <!-- LISTE -->
     <div class="flex flex-col lg:flex-row gap-4">
         <div>
+            <h2>{{ __("Team list") }}</h2>
             <table class="w-full text-sm text-left rtl:text-right text-body text-yellow-400 max-w-lg">
                 <thead class="bg-black border-b border-default">
                     <tr>
@@ -109,12 +116,15 @@
             </table>
         </div>
         <div>
+            <h2>{{ __("Selectionned list") }}</h2>
             <table class="text-sm text-left rtl:text-right text-body text-yellow-400 max-w-lg ">
                 <thead class="bg-black border-b border-default">
                     <tr>
-                        <th scope="col" class="px-2 sm:px-6 py-3 font-bold">{{ __('Member') }}</th>
+                        <th scope="col" class="px-2 sm:px-6 py-3 font-bold">{{ __('First name') }}</th>
                         @foreach($options as $option)
-                            <th scope="col" class="px-2 sm:px-6 py-3 font-bold">{{ $option->label ?? ucfirst($option->name) }}</th>
+                            @if( $option->isDisplayTable())
+                            <th scope="col" class="px-2 sm:px-6 py-3 font-bold">{{ $option->name }}</th>
+                            @endif
                         @endforeach
                     </tr>
                 </thead>
@@ -124,12 +134,14 @@
                         <tr class="odd:bg-gray-700 even:bg-gray-800 border-b border-default">
                             <td class="px-2 sm:px-6 py-4">{{ $member->prenom }}</td>
                             @foreach($options as $option)
-                                @php
-                                    $memberOption = $member->gameOptions->firstWhere('game_option_id', $option->id);
-                                @endphp
-                                <td class="px-2 sm:px-6 py-4">
-                                    <x-game-member-option-cell :member="$member" :option="$option" :memberOption="$memberOption" />
-                                </td>
+                                @if( $option->isDisplayTable())
+                                    @php
+                                        $memberOption = $member->gameOptions->firstWhere('game_option_id', $option->id);
+                                    @endphp
+                                    <td class="px-2 sm:px-6 py-4">
+                                        <x-game-member-option-cell :member="$member" :option="$option" :value="$memberOption?->value" />
+                                    </td>
+                                @endif
                             @endforeach
                         </tr>
                         @endif
@@ -138,7 +150,10 @@
             </table>
         </div>
     </div>
-
+    <h2>{{ __("Statistics") }}</h2>
+        @foreach($members as $member)
+        <x-player-stats :player="$member" :options="$options" />
+        @endforeach
 </div>
 
 

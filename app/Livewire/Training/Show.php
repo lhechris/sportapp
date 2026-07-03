@@ -66,6 +66,12 @@ class Show extends Component
 
     }
 
+    public function deleteTraining() {
+        $team_id = $this->training->team_id;
+        $this->training->delete();
+        redirect(route("team.show", [$team_id]));
+    }
+
     public function render()
     {
         return view('livewire.training.show', [

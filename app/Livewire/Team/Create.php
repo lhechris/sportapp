@@ -19,11 +19,11 @@ class Create extends Component
             abort(403);
         }
 
-        Team::create([
+        $team = Team::create([
             'name' => $this->name,
-            'owner_id' => auth()->id()
         ]);
 
+        $team->owners()->attach(auth()->id());
 
         // récupérer le member du coach
         $member = auth()->user()->members()->first();

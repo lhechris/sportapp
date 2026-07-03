@@ -61,7 +61,7 @@ Route::get('/auth/google/callback', function () {
             'google_id' => $googleUser->getId()
         ]);
     }
-    Auth::login($user);
+    Auth::login($user,true);
 
     return redirect('/dashboard');
 });

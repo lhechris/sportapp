@@ -21,6 +21,11 @@ class Create extends Component
 
     public function save()
     {
+        $this->validate([
+            'date' => 'required',
+            'titre' => 'required'
+        ]);
+
         $training = Training::create([
             'team_id' => $this->team->id,
             'date' => $this->date,

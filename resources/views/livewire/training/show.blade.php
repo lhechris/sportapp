@@ -38,6 +38,11 @@
                 <button wire:click="toggleEditingTraining()" class="mt-2 text-blue-600 hover:text-blue-800 font-semibold text-sm">
                     ✏️ {{ __('Edit') }}
                 </button>
+                <button wire:click="deleteTraining()" 
+                    wire:confirm="{{ __("Are you sure you want to delete this training?") }}"
+                    class="mt-2 text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                    🗑️​ {{ __('Delete') }}
+                </button>
             @endif
         </div>
 

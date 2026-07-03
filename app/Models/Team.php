@@ -8,8 +8,15 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 #[Fillable(['name','owner_id'])]
 class Team extends Model
 {
-    public function owner() {
-        return $this->hasMany(User::class, 'owner_id');
+    public function owners()
+    {
+        return $this->belongsToMany(User::class, 'team_owner')
+            ->withTimestamps();
+    }
+
+    public function owner()
+    {
+        return $this->owners()->first();
     }
     
     public function members()
@@ -28,6 +35,12 @@ class Team extends Model
     {
         return $this->hasMany(\App\Models\Training::class)
                 ->orderBy('date');
+    }
+
+    public function game_options() {
+        return $this->hasMany(\App\Models\GameOption::class)
+                ->orderBy('order');
+
     }
 
     // helpers utiles

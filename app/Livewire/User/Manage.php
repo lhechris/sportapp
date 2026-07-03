@@ -56,14 +56,33 @@ class Manage extends Component
             $this->validate([
                 'email' => 'required|email',
             ]);
+
             $user = User::findOrFail($this->editingId);
 
-            $user->update([
-                'name' => $this->name,
-                'firstname' => $this->firstname,
-                'email' => $this->email,
-                'role' => $this->role,
-            ]);
+            if ($this->password != null) {
+                $this->validate([
+                    'password' => 'required|min:6',
+                ]);
+
+                $user->update([
+                    'name' => $this->name,
+                    'firstname' => $this->firstname,
+                    'email' => $this->email,
+                    'role' => $this->role,
+                    'password' => Hash::make($this->password)
+                ]);
+
+            } else {
+                $user->update([
+                    'name' => $this->name,
+                    'firstname' => $this->firstname,
+                    'email' => $this->email,
+                    'role' => $this->role,
+                ]);
+
+            }
+
+
 
         } else {
 

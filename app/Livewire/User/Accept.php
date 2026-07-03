@@ -67,7 +67,7 @@ class Accept extends Component
         ]);*/
         $this->invitation->delete();
 
-        Auth::login($user);
+        Auth::login($user,true);
 
         return redirect()->route('dashboard');
     }

@@ -13,14 +13,14 @@ class Dashboard extends Component
 {
     public $members;
     public $teams;
+    public $hasSubscription;
 
     public function mount()
     {
         // équipes du user (via owner)
         if (auth()->user()) {
             if (auth()->user()->isCoach()) {
-                $this->teams = Team::where('owner_id', auth()->id())->get();
-
+                $this->teams = auth()->user()->ownedTeams()->get();
             }
             
             $this->members = auth()->user()->members()
@@ -30,6 +30,9 @@ class Dashboard extends Component
          
         }
         $this->checkPendingGames();
+
+        $this->hasSubscription = auth()->user()->pushSubscriptions()->exists();
+
     }
 
     /**

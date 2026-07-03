@@ -16,6 +16,8 @@
         <meta name="msapplication-TileColor" content="#fbbf24">
         <meta name="msapplication-config" content="{{ asset('browserconfig.xml') }}">
 
+        <meta name="vapid-public-key" content="{{ config('webpush.vapid.public_key') }}">
+
         <title>{{ config('app.name', 'sportapp') }}</title>
 
         <!-- Fonts -->
@@ -23,7 +25,7 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/pwa-register.js'])
+        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/pwa-register.js', 'resources/js/push.js'])
     </head>
     <body class="bg-yellow-200 text-gray-900">
         <div class="min-h-screen">
@@ -38,7 +40,7 @@
                 </header>
             @endif
             <!-- Page Content -->
-            <main class="p-6">
+            <main class="p-1 sm:p-6">
                 {{ $slot }}
             </main>
         </div>

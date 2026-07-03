@@ -7,6 +7,9 @@ use Livewire\Component;
 use App\Models\Game;
 use App\Models\GameMemberOption;
 use App\Models\GameOption;
+use App\Models\User;
+
+use App\Notifications\GameNotification;
 
 class ShowAdmin extends Component
 {
@@ -77,18 +80,33 @@ class ShowAdmin extends Component
         );
     }
 
+    public function deleteGame() {
+        $team_id=$this->game->team_id;
+        $this->game->delete();
+        redirect(route('team.show',[$team_id]));
+    }
+
     public function sendNotification()
     {
-       $this->dispatch('notify', ['title' => 'ASLB','body'=>'Je notifie un truc']);
+       //$this->dispatch('notify', ['title' => 'ASLB','body'=>'Je notifie un truc']);
+       \Log::info("sendNotification");
+       User::all()->each->notify(new GameNotification());
     }
 
     public function render()
     {
-        $members = $this->game->members()->with(['gameOptions' => function ($query) {
-            $query->where('game_id', $this->game->id);
-        }])->get();
+        $members = $this->game->members()
+                        ->with(['gameOptions' => function ($query) {
+                            $query->where('game_id', $this->game->id);
+                        }])
+                        ->with(['options' => function($query) {
+                            $query->wherePivot('game_id',$this->game->id);
+                        }])
+                        ->get();
 
-        $options = GameOption::all();
+        $options = GameOption::where("team_id",$this->game->team_id)
+                        ->orderBy('order')
+                        ->get();
 
         return view('livewire.game.show-admin', [
             'members' => $members,

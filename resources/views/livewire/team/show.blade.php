@@ -8,11 +8,11 @@
                 🏀 {{ $team->name }}
             </h1>
             <div class="text-gray-600 flex gap-2" >
-                <p>{{ $team->players()->count() }} {{ __('Players') }}</p>
-                <p>{{ $team->staffs()->count() }} {{ __('Staffs') }}</p>
-                <p>{{ $team->coaches()->count() }} {{ __('Coaches') }}</p>
-                <p>{{ $team->games()->count() }} {{ __('Matches') }}</p>
-                <p>{{ $team->trainings()->count() }} {{ __('Trainings') }}</p>
+                <p>{{ $team->players()->count() }} {{ __('team.players') }}</p>
+                <p>{{ $team->staffs()->count() }} {{ __('team.staffs') }}</p>
+                <p>{{ $team->coaches()->count() }} {{ __('team.coaches') }}</p>
+                <p>{{ $team->games()->count() }} {{ __('team.matches') }}</p>
+                <p>{{ $team->trainings()->count() }} {{ __('team.trainings') }}</p>
             </div>
         </div>
 
@@ -21,16 +21,24 @@
     <div class="mt-6">
         <nav class="flex flex-wrap gap-2 bg-white rounded-full border border-gray-200 p-2 shadow-sm">
             <button wire:click="setTab('members')"
-                    class="px-4 py-2 rounded-full text-sm font-semibold {{ $activeTab === 'members' ? 'bg-black text-white' : 'bg-transparent text-gray-700 hover:bg-gray-100' }}">
-                {{ __('Team numbers') }}
+                    class="px-2 sm:px-4 py-2 rounded-full text-sm font-semibold {{ $activeTab === 'members' ? 'bg-black text-white' : 'bg-transparent text-gray-700 hover:bg-gray-100' }}">
+                {{ __('team.number') }}
             </button>
             <button wire:click="setTab('games')"
-                    class="px-4 py-2 rounded-full text-sm font-semibold {{ $activeTab === 'games' ? 'bg-black text-white' : 'bg-transparent text-gray-700 hover:bg-gray-100' }}">
-                {{ __('Matches') }}
+                    class="px-2 sm:px-4 py-2 rounded-full text-sm font-semibold {{ $activeTab === 'games' ? 'bg-black text-white' : 'bg-transparent text-gray-700 hover:bg-gray-100' }}">
+                {{ __('team.matches') }}
             </button>
             <button wire:click="setTab('trainings')"
-                    class="px-4 py-2 rounded-full text-sm font-semibold {{ $activeTab === 'trainings' ? 'bg-black text-white' : 'bg-transparent text-gray-700 hover:bg-gray-100' }}">
-                {{ __('Trainings') }}
+                    class="px-2 sm:px-4 py-2 rounded-full text-sm font-semibold {{ $activeTab === 'trainings' ? 'bg-black text-white' : 'bg-transparent text-gray-700 hover:bg-gray-100' }}">
+                {{ __('team.trainings') }}
+            </button>
+            <button wire:click="setTab('selections')"
+                    class="px-2 sm:px-4 py-2 rounded-full text-sm font-semibold {{ $activeTab === 'selections' ? 'bg-black text-white' : 'bg-transparent text-gray-700 hover:bg-gray-100' }}">
+                {{ __('team.selections') }}
+            </button>
+            <button wire:click="setTab('parameters')"
+                    class="px-2 sm:px-4 py-2 rounded-full text-sm font-semibold {{ $activeTab === 'parameters' ? 'bg-black text-white' : 'bg-transparent text-gray-700 hover:bg-gray-100' }}">
+                ⚙️​
             </button>
         </nav>
     </div>
@@ -49,5 +57,16 @@
     @if($activeTab === 'trainings')
         <livewire:team.trainings :team="$team" />
     @endif
+
+    <!-- SELECTIONS -->
+    @if($activeTab === 'selections')
+        <livewire:team.selections :team="$team" />
+    @endif
+
+    <!-- PARAMETERS -->
+    @if($activeTab === 'parameters')
+        <livewire:team.parameters :team="$team" />
+    @endif
+
 
 </div>

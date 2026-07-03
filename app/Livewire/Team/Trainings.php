@@ -21,7 +21,12 @@ class Trainings extends Component
                 break;
             }
         }
-        $this->trainings = $this->team->trainings;
+        $this->trainings = $this->team->trainings()
+            ->withCount(['members as members_count' => function ($query) {
+                    $query->where('member_training.present', 'yes');
+            }])
+            ->orderBy('date')
+            ->get();        
     }
 
     public function render()

@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('game_options', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('label')->nullable();
+            $table->string('name');
+            $table->integer('team_id');
+            $table->string('display')->nullable();
+            $table->string('type');
+            $table->integer('order')->nullable();
             $table->timestamps();
         });
 

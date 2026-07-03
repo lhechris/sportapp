@@ -10,6 +10,8 @@ use App\Livewire\Training;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
 
+use App\Http\Controllers\PushSubscriptionController;
+
 //Route::view('/', 'welcome');
 Route::get('/', function () {
         return auth()->check()
@@ -24,7 +26,9 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');    
     Route::get('/games/{game}', Game\Show::class)->name('game.show');
-
+    
+    Route::post('/push/subscribe', [PushSubscriptionController::class, 'store'])->middleware('auth');
+    Route::delete('/push/unsubscribe', [PushSubscriptionController::class, 'destroy'])->middleware('auth');
 });
 
 
@@ -35,6 +39,7 @@ Route::view('profile', 'profile')
 Route::middleware(['auth', 'isCoach'])->group(function () {
     Route::get('/team/{team}', Team\Show::class)->name('team.show');
     Route::get('/team/{team}/members', Team\ManageMembers::class)->name('team.members');
+    Route::get('/team/{team}/owners', Team\Owners::class)->name('team.owners');
     Route::get('/members', Member\Manage::class)->name("members");
     Route::get('/users', User\Manage::class)->name("users");
     Route::get('/teams/create', Team\Create::class)->name('teams.create');
@@ -43,6 +48,7 @@ Route::middleware(['auth', 'isCoach'])->group(function () {
     Route::get('/gamesadmin/{game}', Game\ShowAdmin::class)->name('game-admin.show');
     Route::get('/games/{game}/selection', Game\Selection::class)->name('game.selection');
     Route::get('/trainings/{training}', Training\Show::class)->name('training.show');
+    Route::get('/member/{member}', Member\Profile::class)->name('member');
 });
 
 

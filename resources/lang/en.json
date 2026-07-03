@@ -42,6 +42,7 @@
     "Update your account's profile information and email address" : "Update your account's profile information and email address.",
     "Users" : "Users",
     "Members" : "Members",
+    "members" : "members",
     "Create a team": "Create a team",
     "Team name": "Team name",
     "Teams": "Teams",
@@ -94,5 +95,9 @@
     "No training for the team" : "No training for the team",
     "New training for team" : "New training for team",
     "Generate an invitation" : "Generate an invitation",
-    "Finalize my account" : "Finalize my account"
+    "Finalize my account" : "Finalize my account",
+    "Are you sure you want to delete this match?" :"Are you sure you want to delete this match?",
+    "Birthdate" : "Birthdate",
+    "Number of matches played" : "Number of matches played",
+    "Number of trainings" : "Number of trainings"
  }

@@ -4,7 +4,7 @@
 
         <div>
             <h1 class="text-2xl font-bold text-gray-900">
-                {{ __('team.members.update') }} {{ $team->name }}
+                {{ __('team.owner.manage') }} {{ $team->name }}
             </h1>
         </div>
 
@@ -19,7 +19,7 @@
     <input 
         type="text"
         wire:model.live="search"
-        placeholder="{{ __('team.members.search') }}"
+        placeholder="{{ __('team.owner.search') }}"
         class="border p-2 w-full mb-4"
     >
 
@@ -28,18 +28,13 @@
         <div class="flex justify-between border p-2 mb-2">
 
             <span>
-                {{ $member->prenom }} ({{ $member->type }})
+                {{ $member->firstname }} ({{ $member->name }})
             </span>
 
             <div class="space-x-2">
-                <button wire:click="addMember({{ $member->id }}, 'player')"
+                <button wire:click="addMember({{ $member->id }})"
                     class="bg-green-500 text-white px-2 py-1">
-                    {{ __('team.player') }}
-                </button>
-
-                <button wire:click="addMember({{ $member->id }}, 'coach')"
-                    class="bg-blue-500 text-white px-2 py-1">
-                    {{ __('team.coach') }}
+                    {{ __('global.add') }}
                 </button>
             </div>
 
@@ -54,15 +49,15 @@
         <thead class="bg-black border-b border-default">
             <tr>
                 <th scope="col" class="px-6 py-3 font-bold">{{ __('global.firstname') }}</th>
-                <th scope="col" class="px-6 py-3 font-bold">{{ __('team.role') }}</th>
+                <th scope="col" class="px-6 py-3 font-bold">{{ __('global.name') }}</th>
                 <th scope="col" class="px-6 py-3 font-bold"></th>
             </tr>
         </thead>
         <tbody>
             @foreach($members as $member)
             <tr class="odd:bg-gray-700 even:bg-gray-800 border-b border-default">
-                <td class="px-6 py-4">{{ $member->prenom }}</td>
-                <td class="px-6 py-4">{{ $member->type }}</td>
+                <td class="px-6 py-4">{{ $member->firstname }}</td>
+                <td class="px-6 py-4">{{ $member->name }}</td>
                 <td class="px-6 py-4">
                     <button wire:click="removeMember({{ $member->id }})" class="text-red-600">
                     {{ __('global.remove') }}

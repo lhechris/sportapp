@@ -24,13 +24,11 @@
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
         </div>
 
-        @if(!$editingId)
         <div>
             <x-input-label for="password" :value="__('Password')" />
             <x-text-input wire:model="password" id="password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" />
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
-        @endif
 
         <div>
             <x-input-label for="role" :value="__('Role')" />

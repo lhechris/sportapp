@@ -9,6 +9,8 @@ class Members extends Component
 {
     public Team $team;
     public $members;
+    public $coaches;
+    public $owners;
 
     public function mount()
     {
@@ -21,6 +23,10 @@ class Members extends Component
                     }])
                     ->where('type',\App\Models\Member::TYPE_PLAYER)
                     ->get();
+
+        $this->coaches = $this->team->coaches()->get();
+        $this->owners = $this->team->owners()->get();
+
     }
 
     public function render()

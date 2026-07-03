@@ -7,15 +7,16 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "laravel-notification-channels/webpush": "^11.0",
         "laravel/breeze": "^2.4",
         "laravel/framework": "^13.8",
         "laravel/socialite": "^5.28",
         "laravel/tinker": "^3.0",
         "livewire/livewire": "^3.6.4",
-        "livewire/volt": "^1.7.0",
-        "minishlink/web-push": "^0.2.2"
+        "livewire/volt": "^1.7.0"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^4.3",
         "fakerphp/faker": "^1.23",
         "laravel-lang/lang": "^11.0",
         "laravel/pail": "^1.2.5",

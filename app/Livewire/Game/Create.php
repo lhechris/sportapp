@@ -17,6 +17,12 @@ class Create extends Component
 
     public function save()
     {
+        $this->validate([
+            'date' => "required",
+            'location' => 'required',
+            'titre' => 'required',
+            'rendezvous' => 'required']);
+
         $game = Game::create([
             'team_id' => $this->team->id,
             'date' => $this->date,
@@ -30,7 +36,7 @@ class Create extends Component
             $game->members()->attach($player->id);
         }
 
-        return redirect('/games/' . $game->id);
+        return redirect(route('game-admin.show',[$game->id]));
     }
 
     public function render()

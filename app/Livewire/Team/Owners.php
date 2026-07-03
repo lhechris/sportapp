@@ -4,18 +4,18 @@ namespace App\Livewire\Team;
 
 use Livewire\Component;
 use App\Models\Team;
-use App\Models\Member;
+use App\Models\User;
 
-class ManageMembers extends Component
+class Owners extends Component
 {
     public Team $team;
-
+    public $members;
     public $search = '';
     public $results = [];
 
     public function updatedSearch()
     {
-        $this->results = Member::where('prenom', 'like', "%{$this->search}%")
+        $this->results = User::where('firstname', 'like', "%{$this->search}%")
             ->limit(10)
             ->get();
     }
@@ -26,20 +26,19 @@ class ManageMembers extends Component
             abort(403);
         }
 
-        $this->team->members()->syncWithoutDetaching([
+        $this->team->owners()->syncWithoutDetaching([
             $memberId
         ]);
     }
 
     public function removeMember($memberId)
     {
-        $this->team->members()->detach($memberId);
+        $this->team->owner()->detach($memberId);
     }
 
     public function render()
     {
-        return view('livewire.team.manage-members', [
-            'members' => $this->team->members
-        ])->layout('layouts.app');
+        $this->members = $this->team->owners;
+        return view('livewire.team.owners')->layout('layouts.app');;
     }
 }

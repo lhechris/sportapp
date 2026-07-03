@@ -55,7 +55,7 @@ class InvitationController extends Controller
             'used' => true
         ]);
 
-        Auth::login($user);
+        Auth::login($user,true);
 
         return redirect()->route('dashboard');
     }

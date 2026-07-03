@@ -4,32 +4,37 @@
         {{ __('New match for team :team', ['team' => $team->name]) }}
     </h1>
 
-    <div class="bg-white p-6 rounded-2xl shadow space-y-4">
+    <form wire:submit="save" class="bg-white p-4 rounded-xl shadow space-y-3">
 
-        <input type="text"
-               wire:model="titre"
-               placeholder="{{ __('Title') }}"
-               class="w-full border p-2 rounded">
+        <div>
+            <x-input-label for="titre" :value="__('Title')" />
+            <x-text-input wire:model="titre" id="titre" name="titre" type="text" class="mt-1 block w-full" required autofocus autocomplete="titre" />
+            <x-input-error class="mt-2" :messages="$errors->get('titre')" />
+        </div>
 
-        <input type="datetime-local"
-               wire:model="date"
-               class="w-full border p-2 rounded">
+        <div>
+            <x-input-label for="date" :value="__('Date')" />
+            <x-text-input wire:model="date" id="date" name="date" type="datetime-local" class="mt-1 block w-full" required autofocus autocomplete="date" />
+            <x-input-error class="mt-2" :messages="$errors->get('date')" />
+        </div>
 
-        <input type="text"
-               wire:model="location"
-               placeholder="{{ __('Location') }}"
-               class="w-full border p-2 rounded">
+        <div>
+            <x-input-label for="location" :value="__('Location')" />
+            <x-text-input wire:model="location" id="location" name="location" type="text" class="mt-1 block w-full" required autofocus autocomplete="location" />
+            <x-input-error class="mt-2" :messages="$errors->get('location')" />
+        </div>
 
-        <input type="text"
-               wire:model="rendezvous"
-               placeholder="{{ __('Rendezvous') }}"
-               class="w-full border p-2 rounded">
+        <div>
+            <x-input-label for="rendezvous" :value="__('Rendezvous')" />
+            <x-text-input wire:model="rendezvous" id="rendezvous" name="rendezvous" type="text" class="mt-1 block w-full" required autofocus autocomplete="rendezvous" />
+            <x-input-error class="mt-2" :messages="$errors->get('rendezvous')" />
+        </div>
 
-        <button wire:click="save"
-                class="bg-black text-yellow-400 px-4 py-2 rounded-lg">
+
+        <x-primary-button >
             {{ __('Create match') }}
-        </button>
+        </x-primary-button>
 
-    </div>
+    </form>
 
 </div>
