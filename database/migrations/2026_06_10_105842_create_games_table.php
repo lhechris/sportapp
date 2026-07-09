@@ -16,8 +16,11 @@ return new class extends Migration
             $table->foreignId('team_id')->constrained()->cascadeOnDelete();
             $table->string('titre');
             $table->dateTime('date');
-            $table->string('location');
-            $table->string("rendezvous");
+            $table->string('location')->nullable();
+            $table->string("rendezvous")->nullable();
+            $table->string("score")->nullable();
+            $table->string("commentaire")->nullable();
+
             $table->timestamps();
         });
     }

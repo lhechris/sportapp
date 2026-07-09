@@ -1,4 +1,4 @@
-<div class="space-y-6">
+<div class="space-y-6 mb-4">
 
     <!-- HEADER -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -9,11 +9,17 @@
             </p>
             <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div class="bg-slate-800 p-4 rounded-2xl shadow-sm border border-slate-700 text-yellow-300">
-                    <p class="text-xs uppercase tracking-[0.16em] font-semibold text-yellow-200">{{ __('Address') }}</p>
-                    <p class="mt-2 text-base font-semibold">{{ $game->location }}</p>
+                    <p class="text-xs uppercase tracking-[0.16em] font-semibold text-yellow-200">{{ __('team.game.location') }}</p>
+                    <div class="flex gap-2" >
+                        <p class="mt-2 text-base font-semibold">{{ $game->location }}</p>
+                        <livewire:itineraire
+                            :lat="43.4543407"
+                            :lng="1.3967473"
+                            label="Halle des sports de Labarthe"/>
+                    </div>
                 </div>
                 <div class="bg-slate-800 p-4 rounded-2xl shadow-sm border border-slate-700 text-yellow-300">
-                    <p class="text-xs uppercase tracking-[0.16em] font-semibold text-yellow-200">{{ __('Rendezvous') }}</p>
+                    <p class="text-xs uppercase tracking-[0.16em] font-semibold text-yellow-200">{{ __('team.game.rendezvous') }}</p>
                     <p class="mt-2 text-base font-semibold">{{ $game->rendezvous }}</p>
                 </div>
             </div>
@@ -21,16 +27,16 @@
 
         <div class="grid grid-cols-3 gap-3 w-full md:w-auto">
             <div class="bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-700 text-yellow-300">
-                <p class="font-semibold text-sm text-yellow-200">{{ __('Present') }}</p>
-                <p class="mt-2 text-2xl font-bold">{{ $members->where('pivot.availability', 'yes')->count() }}</p>
+                <p class="font-semibold text-sm text-yellow-200">{{ __('team.game.present') }}</p>
+                <p class="mt-2 text-2xl font-bold">{{ $players->where('pivot.availability', 'yes')->count() }}</p>
             </div>
             <div class="bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-700 text-yellow-300">
-                <p class="font-semibold text-sm text-yellow-200">{{ __('Absent') }}</p>
-                <p class="mt-2 text-2xl font-bold">{{ $members->where('pivot.availability', 'no')->count() }}</p>
+                <p class="font-semibold text-sm text-yellow-200">{{ __('team.game.absent') }}</p>
+                <p class="mt-2 text-2xl font-bold">{{ $players->where('pivot.availability', 'no')->count() }}</p>
             </div>
             <div class="bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-700 text-yellow-300">
-                <p class="font-semibold text-sm text-yellow-200">{{ __('Selected') }}</p>
-                <p class="mt-2 text-2xl font-bold">{{ $members->where('pivot.selected', true)->count() }}</p>
+                <p class="font-semibold text-sm text-yellow-200">{{ __('team.game.selected') }}</p>
+                <p class="mt-2 text-2xl font-bold">{{ $players->where('pivot.selected', true)->count() }}</p>
             </div>
         </div>
     </div>
@@ -41,29 +47,40 @@
                 <div class="flex items-center justify-between gap-4">
                     <div>
                         <p class="text-lg font-semibold text-gray-900">{{ $member->prenom }}</p>
-                        <p class="text-sm text-gray-500">{{ $member->pivot->availability ?? __('Not answered') }}</p>
+                        <p class="text-sm text-gray-500">{{ $member->pivot->availability ?? __('team.game.notrespond') }}</p>
                     </div>
                     @if($member->pivot->selected)
-                        <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold">{{ __('Selected') }}</span>
+                        <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold">{{ __('team.game.selected') }}</span>
                     @endif
                 </div>
 
                 <div class="flex flex-wrap gap-2">
                     <button wire:click="setAvailability({{ $member->id }}, 'yes')"
                         class="px-3 py-2 rounded-xl text-sm font-medium transition-colors {{ $member->pivot->availability === 'yes' ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
-                        {{ __('Present') }}
+                        {{__('team.game.present')}}
                     </button>
                     <button wire:click="setAvailability({{ $member->id }}, 'no')"
                         class="px-3 py-2 rounded-xl text-sm font-medium transition-colors {{ $member->pivot->availability === 'no' ? 'bg-red-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
-                        {{ __('Absent') }}
+                        {{ __('team.game.absent') }}
                     </button>
                     <button wire:click="setAvailability({{ $member->id }}, 'maybe')"
                         class="px-3 py-2 rounded-xl text-sm font-medium transition-colors {{ $member->pivot->availability === 'maybe' ? 'bg-yellow-400 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
-                        {{ __('Maybe') }}
+                        {{ __('team.game.maybe') }}
                     </button>
                 </div>
             </div>
         @endforeach
+    </div>
+
+    <div class="flex flex-col gap-2 bg-gray-800 border-2 border-yellow-500 rounded-xl p-4 text-yellow-200">
+        <p>{{ __('team.game.list_selected') }}:</p>
+        <div class="flex gap-2">
+            @foreach($players as $player)
+            @if($player->pivot->selected)
+            <p>{{ $player->prenom }}</p>
+            @endif
+            @endforeach
+        </div>
     </div>
 
 </div>

@@ -8,6 +8,8 @@ use App\Models\Team;
 class Create extends Component
 {
     public $name;
+    public $whatsapp;
+    public $msg_convocation="Bonjour pour le match du %JOURMATCH% voici la liste des joueurs sélectionnées %SELECTIONS%";
 
     public function create()
     {
@@ -21,6 +23,8 @@ class Create extends Component
 
         $team = Team::create([
             'name' => $this->name,
+            'whatsapp' => $this->whatsapp,
+            'msg_convocation' => $this->msg_convocation
         ]);
 
         $team->owners()->attach(auth()->id());

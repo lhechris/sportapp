@@ -8,6 +8,7 @@ return [
     "save" => "Enregistrer",
     "update" => "Modifier",    
     "savesuccess" => "Enregistré avec succès",
+    "delete" => "Supprimer",
 
     "email" => "Email",
     "users" => "Utilisateurs",
@@ -17,4 +18,8 @@ return [
     "manage" => "Gérer",
     "info" => "Info",
     "seeprofile" => "Voir le profile",
+
+    "title" => "Titre",
+    "yes" => "Oui",
+    "no"  => "Non"
 ];

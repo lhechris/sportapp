@@ -30,6 +30,17 @@
             <x-input-error class="mt-2" :messages="$errors->get('rendezvous')" />
         </div>
 
+        <div>
+            <x-input-label for="score" :value="__('Score')" />
+            <x-text-input wire:model="score" id="score" name="score" type="text" class="mt-1 block w-full" required autofocus autocomplete="score" />
+            <x-input-error class="mt-2" :messages="$errors->get('score')" />
+        </div>
+
+        <div>
+            <x-input-label for="commentaire" :value="__('Comment')" />
+            <x-text-input wire:model="commentaire" id="commentaire" name="commentaire" type="text" class="mt-1 block w-full" required autofocus autocomplete="commentaire" />
+            <x-input-error class="mt-2" :messages="$errors->get('commentaire')" />
+        </div>
 
         <x-primary-button >
             {{ __('Create match') }}

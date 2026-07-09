@@ -14,6 +14,20 @@
         class="border p-2 w-full mb-2"
     >
 
+    <input 
+        type="text" 
+        wire:model="whatsapp" 
+        placeholder="{{ __('team.whatsapp') }}"
+        class="border p-2 w-full mb-2"
+    >
+
+    <input 
+        type="text" 
+        wire:model="msg_convocation" 
+        placeholder="{{ __('team.convocation') }}"
+        class="border p-2 w-full mb-2"
+    >
+
     @error('name') 
         <div class="text-red-500">{{ $message }}</div> 
     @enderror

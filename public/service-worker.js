@@ -51,6 +51,11 @@ self.addEventListener('fetch', (event) => {
           return response;
         }
 
+        const url = new URL(event.request.url);
+        if (url.origin !== self.location.origin) {
+            return; 
+        }
+
         // Cloner la réponse
         const responseToCache = response.clone();
 

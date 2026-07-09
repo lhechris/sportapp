@@ -10,6 +10,9 @@ class Show extends Component
 {
     public Game $game;
     public $members;
+    public $players;
+
+    private $memberIds;
 
     public function mount()
     {
@@ -18,34 +21,27 @@ class Show extends Component
 
     public function loadMembers()
     {
-        $memberIds = auth()->user()->members()->pluck('members.id');
+        $this->memberIds = auth()->user()->members()->pluck('members.id');
+        $this->players = $this->game->members()->get();
 
         $this->members = $this->game->members()
-            ->whereIn('members.id', $memberIds)
+            ->whereIn('members.id', $this->memberIds)
             ->get();
     }
 
 
     public function setAvailability($memberId, $value)
     {
-        $this->game->members()->updateExistingPivot($memberId, [
-            'availability' => $value
-        ]);
-    }
-
-    public function toggleSelection($memberId)
-    {
-        $pivot = $this->game->members()->find($memberId)->pivot;
-
-        $this->game->members()->updateExistingPivot($memberId, [
-            'selected' => !$pivot->selected
-        ]);
+        /* Protection uniquement les membres de l'utilisateur peuvent être modifiés */
+        if ($this->memberIds->contains($memberId) ) {
+            $this->game->members()->updateExistingPivot($memberId, [
+                'availability' => $value
+            ]);
+        }
     }
 
     public function render()
     {
-        return view('livewire.game.show', [
-            'members' => $this->members
-        ])->layout('layouts.app');
+        return view('livewire.game.show')->layout('layouts.app');
     }
 }

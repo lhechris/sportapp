@@ -7,11 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Game extends Model
 {
 
-    protected $fillable = ['team_id', 'date', 'location','rendezvous','titre'];
+    protected $fillable = ['team_id','place_id', 'date', 'location','rendezvous','titre','score','commentaire','whatsapp'];
 
     public function team()
     {
         return $this->belongsTo(Team::class);
+    }
+
+    public function place()
+    {
+        return $this->belongsTo(Place::class);
     }
 
     public function members()

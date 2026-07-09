@@ -12,7 +12,7 @@
                     id="game-{{ $game->id }}" 
                     href="{{ route('game-admin.show', [ 'game' => $game->id]) }}"
                     description="{{ $game->formatdate() }}" >
-                <p>{{ __('game.rendezvous') }} : {{ $game->rendezvous }}</p>
+                <p>{{ __('team.game.rendezvous') }} : {{ $game->rendezvous }}</p>
                 <p>{{ $game->members_count }} {{ __('team.players')}}</p>
             </x-card>
         @empty

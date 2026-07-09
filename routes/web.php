@@ -7,6 +7,7 @@ use App\Livewire\Dashboard;
 use App\Livewire\User;
 use App\Livewire\Game;
 use App\Livewire\Training;
+use App\Livewire\Gymnase;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
 
@@ -49,6 +50,8 @@ Route::middleware(['auth', 'isCoach'])->group(function () {
     Route::get('/games/{game}/selection', Game\Selection::class)->name('game.selection');
     Route::get('/trainings/{training}', Training\Show::class)->name('training.show');
     Route::get('/member/{member}', Member\Profile::class)->name('member');
+
+    Route::get('/gymnase',Gymnase\Show::class)->name('gymnase.show');
 });
 
 

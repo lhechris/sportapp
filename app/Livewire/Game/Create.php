@@ -14,6 +14,8 @@ class Create extends Component
     public $titre;
     public $location;
     public $rendezvous;
+    public $score;
+    public $commentaire;
 
     public function save()
     {
@@ -25,10 +27,13 @@ class Create extends Component
 
         $game = Game::create([
             'team_id' => $this->team->id,
+            'place_id' => $this->place->id,
             'date' => $this->date,
             'location' => $this->location,
             'titre' => $this->titre,
-            'rendezvous' => $this->rendezvous
+            'rendezvous' => $this->rendezvous,
+            'score' => $this>score,
+            'commentaire' => $this->commentaire
         ]);
 
         // initialiser tous les joueurs

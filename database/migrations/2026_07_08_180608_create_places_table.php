@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('teams', function (Blueprint $table) {
+        Schema::create('places', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->foreignId('owner_id')->constrained('users')->cascadeOnDelete;
-            $table->string('whatsapp')->nullable();
-            $table->string('msg_convocation')->nullable();
-            $table->timestamps();            
+            $table->string("name");
+            $table->float("lat");
+            $table->float("lng");
+            $table->string("address");
+            $table->timestamps();
         });
     }
 
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('teams');
+        Schema::dropIfExists('places');
     }
 };

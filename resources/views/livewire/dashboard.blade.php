@@ -65,6 +65,10 @@
                 👥 {{ __('team.number') }}
             </a>
 
+            <a href="{{ route('gymnase.show') }}"
+               class="bg-white text-black px-4 py-2 rounded-lg font-semibold hover:bg-gray-200">
+                ​📍​ {{ __('team.gymnase') }}
+            </a>
         </div>
 
     </div>

@@ -7,46 +7,72 @@
             @if($editingGame)
                 <div class="space-y-3 bg-white p-4 rounded-xl shadow mb-4">
                     <div>
-                        <label class="block text-sm font-bold text-gray-700">{{ __('Title') }}</label>
+                        <label class="block text-sm font-bold text-gray-700">{{ __('global.title') }}</label>
                         <input type="text" wire:model="gameTitle" class="w-full rounded border border-gray-300 px-3 py-2 text-black">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-gray-700">{{ __('Date') }}</label>
+                        <label class="block text-sm font-bold text-gray-700">{{ __('team.game.date') }}</label>
                         <input type="datetime-local" wire:model="gameDate" class="w-full rounded border border-gray-300 px-3 py-2 text-black">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-gray-700">{{ __('Location') }}</label>
-                        <input type="text" wire:model="gameLocation" class="w-full rounded border border-gray-300 px-3 py-2 text-black">
+                        <label class="block text-sm font-bold text-gray-700">{{ __('team.game.location') }}</label>
+                        <select wire:model="gamePlaceId" class="w-full rounded border border-gray-300 px-3 py-2 text-black">
+                            <option value="">-- {{ __('team.game.select_place') }} --</option>
+                            @foreach($places as $place)
+                                <option value="{{ $place->id }}">{{ $place->name }} {{ $place->address ? '— ' . $place->address : '' }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-gray-700">{{ __('Rendezvous') }}</label>
+                        <label class="block text-sm font-bold text-gray-700">{{ __('team.game.rendezvous') }}</label>
                         <input type="text" wire:model="gameRendezvous" class="w-full rounded border border-gray-300 px-3 py-2 text-black">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700">{{ __('team.game.score') }}</label>
+                        <input type="text" wire:model="gameScore" class="w-full rounded border border-gray-300 px-3 py-2 text-black">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700">{{ __('team.game.comment') }}</label>
+                        <textarea wire:model="gameCommentaire" class="w-full rounded border border-gray-300 px-3 py-2 text-black"></textarea>
                     </div>
                     <div class="flex gap-2">
                         <button wire:click="updateGame()" class="bg-green-600 text-white px-3 py-2 rounded font-semibold hover:bg-green-700">
-                            {{ __('Save') }}
+                            {{ __('global.save') }}
                         </button>
                         <button wire:click="toggleEditingGame()" class="bg-gray-600 text-white px-3 py-2 rounded font-semibold hover:bg-gray-700">
-                            {{ __('Cancel') }}
+                            {{ __('global.cancel') }}
                         </button>
                     </div>
                 </div>
             @else
                 <h1 class="text-2xl font-bold text-gray-900">
-                    {{ $game->titre }}
+                    <span>{{ $game->titre }}</span>
+                    <span>{{ $game->score}}</span>
                 </h1>
 
-                <p class="text-gray-600">
-                    {{ $game->formatdate() }} • {{ $game->location }}
+                <p class="text-gray-600"> {{ $game->formatdate() }} </p>
+
+                @if($game->place !==NULL)
+                <p class="text-gray-600">{{ $game->place->address }}</p>
+                <livewire:itineraire
+                        :lat="$game->place->lat"
+                        :lng="$game->place->lng"
+                        label="$game->place->name"/>
+                @endif
+                <p class="text-gray-900">
+                    {{ __("team.game.rendezvous") }} : {{ $game->rendezvous }}
                 </p>
-                <p class="text-gray-900">Rendez-vous : {{ $game->rendezvous }}</p>
+                <p>
+                {{ $game->commentaire }}
+                </p>
+
                 <button wire:click="toggleEditingGame()" class="mt-2 text-blue-600 hover:text-blue-800 font-semibold text-sm">
-                    ✏️ {{ __('Edit') }}
+                    ✏️ {{ __('global.edit') }}
                 </button>
                 <button wire:click="deleteGame()" 
-                    wire:confirm="{{ __("Are you sure you want to delete this match?") }}"
+                    wire:confirm="{{ __("team.game.confirmdelete") }}"
                     class="mt-2 text-blue-600 hover:text-blue-800 font-semibold text-sm">
-                    🗑️​ {{ __('Delete') }}
+                    🗑️​ {{ __('global.delete') }}
                 </button>
                 
             @endif
@@ -59,12 +85,12 @@
             </button>
             <a href="{{ route('team.show', ['team' => $game->team->id ]) }}" 
                class="bg-black text-white px-4 py-2 rounded-xl font-semibold hover:bg-gray-800">
-                {{ __('Back to team') }}
+                {{ __('team.back') }}
             </a>
         </div>
 
         <div class="bg-white p-3 rounded-xl shadow">
-            {{ __('Selected') }}: {{ $members->where('pivot.selected', true)->count() }}
+            {{ __('team.game.selected') }}: {{ $members->where('pivot.selected', true)->count() }}
         </div>
 
     </div>
@@ -72,13 +98,13 @@
     <!-- LISTE -->
     <div class="flex flex-col lg:flex-row gap-4">
         <div>
-            <h2>{{ __("Team list") }}</h2>
+            <h2>{{ __("team.game.players") }}</h2>
             <table class="w-full text-sm text-left rtl:text-right text-body text-yellow-400 max-w-lg">
                 <thead class="bg-black border-b border-default">
                     <tr>
-                        <th scope="col" class="px-2 sm:px-6 py-3 font-bold">{{ __('First name') }}</th>
-                        <th scope="col" class="px-2 sm:px-6 py-3 font-bold">{{ __('Availability') }}</th>
-                        <th scope="col" class="px-2 sm:px-6 py-3 font-bold">{{ __('Selected') }}</th>
+                        <th scope="col" class="px-2 sm:px-6 py-3 font-bold">{{ __('global.firstname') }}</th>
+                        <th scope="col" class="px-2 sm:px-6 py-3 font-bold">{{ __('team.game.availability') }}</th>
+                        <th scope="col" class="px-2 sm:px-6 py-3 font-bold">{{ __('team.game.selected') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -106,7 +132,7 @@
                                 <button wire:click="toggleSelection({{ $member->id }})"
                                     class="px-3 py-1 rounded font-semibold
                                     {{ $member->pivot->selected ? 'bg-green-500' : 'bg-red-500' }}">
-                                    {{ $member->pivot->selected ? __('Yes') : __('No') }}
+                                    {{ $member->pivot->selected ? __('global.yes') : __('global.no') }}
                                 </button>
                             @endif
                         </td>
@@ -116,11 +142,11 @@
             </table>
         </div>
         <div>
-            <h2>{{ __("Selectionned list") }}</h2>
+            <h2>{{ __("team.game.list_selected") }}</h2>
             <table class="text-sm text-left rtl:text-right text-body text-yellow-400 max-w-lg ">
                 <thead class="bg-black border-b border-default">
                     <tr>
-                        <th scope="col" class="px-2 sm:px-6 py-3 font-bold">{{ __('First name') }}</th>
+                        <th scope="col" class="px-2 sm:px-6 py-3 font-bold">{{ __('global.firstname') }}</th>
                         @foreach($options as $option)
                             @if( $option->isDisplayTable())
                             <th scope="col" class="px-2 sm:px-6 py-3 font-bold">{{ $option->name }}</th>
@@ -150,7 +176,36 @@
             </table>
         </div>
     </div>
-    <h2>{{ __("Statistics") }}</h2>
+
+    <!-- Notifications -->
+    <div>
+        <textarea rows="6" class="w-96 border rounded p-2" wire:model="message" ></textarea>
+        <button        
+            wire:click="copyAndOpenWhatsapp"
+            class="px-4 py-2 bg-green-600 text-white rounded"
+        >
+            {{ __("team.game.copy_whatsapp") }}
+        </button>
+        <span>{{ __("team.game.description_whatsapp") }}</span>
+    </div>
+
+    @script
+    <script>
+        $wire.on('copy-and-open-whatsapp', async (event) => {
+
+            try {
+                await navigator.clipboard.writeText(event.message);
+
+                window.open(event.link, '_blank');
+            } catch (e) {
+                alert({{ __("alert_copy") }});
+            }
+        });
+    </script>
+    @endscript    
+
+
+    <h2>{{ __("team.game.statistics") }}</h2>
         @foreach($members as $member)
         <x-player-stats :player="$member" :options="$options" />
         @endforeach

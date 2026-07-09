@@ -20,6 +20,8 @@ return [
     "coaches" => "Entraineurs",
     "staffs" => "Staffs",
 
+    "gymnase" => "Gérer les Gymnases",
+
     "members" => "Membres",
     "member" => [
         "no" => "Pas de membres pour l'équipe",
@@ -36,7 +38,22 @@ return [
         "notrespond" => "Pas répondu",
         "absent" => "Absent",
         "present" => "Présent",
+        "maybe" => "Peut être",
         "no" => "Pas de matchs pour l'équipe",
+        "location" => "Addresse",
+        "selected" => "Selectionné",
+        "list_selected" => "Joueurs sélectionnés",
+        "route" => "Itinéraire",
+        "date" => "Date du match",
+        "confirmdelete" => "Voulez vous supprimer ce match?",
+        "players" => "Liste des joueurs de l'équipe",
+        "statistics" => "Statistiques",
+        "copy_whatsapp" => "Copier et ouvrir WhatsApp",
+        "description_whatsapp" => "L'application whatsapp vas s'ouvrir, il ne vous restera plus qu'a coller le texte",
+        "alert_copy" => 'Impossible de copier le message.',
+        "select_place" => "Selectionnez un Gymnase",
+        "score" => "score",
+        "comment" => "Commentaires sur le match",
 
     ],
 
@@ -59,7 +76,11 @@ return [
         "display" => "Affichage",
         "select" => "-- Selectionner --",
         "suppopt" => "Supprimer cette option ?",
-        "add" => "Ajouter l'option",
+        "add" => "Ajouter une option",
+        "convocation" => "Message de convocation",
+        "whatsapp" => "Lien d'invitation du groupe Whatsapp",
+        "options" => "Liste des options des matchs",
+        "confirm" => "Etes vous sur de vouloir supprimer cette équipe?"
     ],
 
     "selections" => "Selections",

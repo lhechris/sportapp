@@ -15,11 +15,16 @@ class Parameters extends Component
     public array $typeOptions = [];
     public array $displayOptions = [];
 
+    public $teamName;
+    public $teamWhatsapp;
+    public $teamMsgConvocation;
+    
+
     public function mount(): void
     {
         $this->typeOptions = GameOption::types();
         $this->displayOptions = GameOption::displays();
-        $this->loadData();
+        $this->loadData();        
     }
 
     private function loadData(): void
@@ -36,6 +41,10 @@ class Parameters extends Component
                 'display' => $option->display,
             ])
             ->toArray();
+
+        $this->teamName = $this->team->name===null?'':$this->team->name;
+        $this->teamWhatsapp = $this->team->whatsapp;
+        $this->teamMsgConvocation = $this->team->msg_convocation;
     }
 
     public function addRow(): void
@@ -62,6 +71,11 @@ class Parameters extends Component
         unset($this->gameoptions[$key]);
     }
 
+    public function deleteTeam() {
+        $this->team->delete();
+        redirect(route('dashboard'));
+    }
+    
     public function saveAll(): void
     {
         $validated = validator($this->gameoptions, [
@@ -70,6 +84,13 @@ class Parameters extends Component
             '*.order'   => 'nullable|integer',
             '*.display' => ['nullable', Rule::in(array_keys(GameOption::displays()))],
         ])->validate();
+
+        $this->team->update([
+            'name' => $this->teamName,
+            'whatsapp' => $this->teamWhatsapp,
+            'msg_convocation' => $this->teamMsgConvocation
+        ]);
+
 
         foreach ($this->gameoptions as $key => $data) {
             $row = $validated[$key];
