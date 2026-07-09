@@ -20,26 +20,34 @@
 
     <div class="mt-6">
         <nav class="flex flex-wrap gap-2 bg-white rounded-full border border-gray-200 p-2 shadow-sm">
-            <button wire:click="setTab('members')"
-                    class="px-2 sm:px-4 py-2 rounded-full text-sm font-semibold {{ $activeTab === 'members' ? 'bg-black text-white' : 'bg-transparent text-gray-700 hover:bg-gray-100' }}">
-                {{ __('team.number') }}
-            </button>
             <button wire:click="setTab('games')"
-                    class="px-2 sm:px-4 py-2 rounded-full text-sm font-semibold {{ $activeTab === 'games' ? 'bg-black text-white' : 'bg-transparent text-gray-700 hover:bg-gray-100' }}">
-                {{ __('team.matches') }}
+                    class="px-2 sm:px-4 py-2 rounded-full text-sm font-semibold {{ $activeTab === 'games' ? 'bg-gray-500 text-white' : 'bg-transparent text-gray-700 hover:bg-gray-100' }}">
+                <img src="{{ asset('images/basketball.png') }}" alt="{{ __('team.matches') }}"/>
+                <p class="text-xs">{{ __('team.matches') }}</p>
+            </button>
+            <button wire:click="setTab('members')"
+                    class="px-2 sm:px-4 py-2 rounded-full text-sm font-semibold {{ $activeTab === 'members' ? 'bg-gray-500 text-white' : 'bg-transparent text-gray-700 hover:bg-gray-100' }}">
+                <img src="{{ asset('images/utilisateurs.png') }}" alt="{{ __('team.number') }}"/>
+                <p class="text-xs">{{ __('team.number') }}</p>
             </button>
             <button wire:click="setTab('trainings')"
-                    class="px-2 sm:px-4 py-2 rounded-full text-sm font-semibold {{ $activeTab === 'trainings' ? 'bg-black text-white' : 'bg-transparent text-gray-700 hover:bg-gray-100' }}">
-                {{ __('team.trainings') }}
+                    class="px-2 sm:px-4 py-2 rounded-full text-sm font-semibold {{ $activeTab === 'trainings' ? 'bg-gray-500 text-white' : 'bg-transparent text-gray-700 hover:bg-gray-100' }}">
+                <img src="{{ asset('images/exercice.png') }}" alt="{{ __('team.trainings') }}"/>
+                <p class="text-xs hidden sm:block">{{ __('team.trainings') }}</p><p class="text-xs sm:hidden">{{ __('team.trainings_cut') }}</p>
             </button>
             <button wire:click="setTab('selections')"
-                    class="px-2 sm:px-4 py-2 rounded-full text-sm font-semibold {{ $activeTab === 'selections' ? 'bg-black text-white' : 'bg-transparent text-gray-700 hover:bg-gray-100' }}">
-                {{ __('team.selections') }}
+                    class="px-2 sm:px-4 py-2 rounded-full text-sm font-semibold {{ $activeTab === 'selections' ? 'bg-gray-500 text-white' : 'bg-transparent text-gray-700 hover:bg-gray-100' }}">
+                <img src="{{ asset('images/selection.png') }}" alt="{{ __('team.selections') }}"/>
+                <p class="text-xs">{{ __('team.selections') }}</p>
             </button>
-            <button wire:click="setTab('parameters')"
-                    class="px-2 sm:px-4 py-2 rounded-full text-sm font-semibold {{ $activeTab === 'parameters' ? 'bg-black text-white' : 'bg-transparent text-gray-700 hover:bg-gray-100' }}">
-                ⚙️​
-            </button>
+            <div class="flex flex-col">
+                <button wire:click="setTab('parameters')"
+                        class="px-2 sm:px-4 py-2 rounded-full text-sm font-semibold {{ $activeTab === 'parameters' ? 'bg-gray-500 text-white' : 'bg-transparent text-gray-700 hover:bg-gray-100' }}">
+                    <img src="{{ asset('images/parametres.png') }}" alt="{{ __('global.parameters') }}"/>
+                    <p class="text-xs hidden sm:block">{{ __('global.parameters') }}</p></p><p class="text-xs sm:hidden">{{ __('global.parameters_cut') }}</p>
+                </button>
+                
+            </div>
         </nav>
     </div>
 

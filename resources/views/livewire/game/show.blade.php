@@ -11,11 +11,13 @@
                 <div class="bg-slate-800 p-4 rounded-2xl shadow-sm border border-slate-700 text-yellow-300">
                     <p class="text-xs uppercase tracking-[0.16em] font-semibold text-yellow-200">{{ __('team.game.location') }}</p>
                     <div class="flex gap-2" >
-                        <p class="mt-2 text-base font-semibold">{{ $game->location }}</p>
+                        <p class="mt-2 text-base font-semibold">{{ $game->place->address }}</p>
+                        @if($game->place !==NULL)                        
                         <livewire:itineraire
-                            :lat="43.4543407"
-                            :lng="1.3967473"
-                            label="Halle des sports de Labarthe"/>
+                                :lat="$game->place->lat"
+                                :lng="$game->place->lng"
+                                label="$game->place->name"/>
+                        @endif
                     </div>
                 </div>
                 <div class="bg-slate-800 p-4 rounded-2xl shadow-sm border border-slate-700 text-yellow-300">
@@ -24,30 +26,14 @@
                 </div>
             </div>
         </div>
-
-        <div class="grid grid-cols-3 gap-3 w-full md:w-auto">
-            <div class="bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-700 text-yellow-300">
-                <p class="font-semibold text-sm text-yellow-200">{{ __('team.game.present') }}</p>
-                <p class="mt-2 text-2xl font-bold">{{ $players->where('pivot.availability', 'yes')->count() }}</p>
-            </div>
-            <div class="bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-700 text-yellow-300">
-                <p class="font-semibold text-sm text-yellow-200">{{ __('team.game.absent') }}</p>
-                <p class="mt-2 text-2xl font-bold">{{ $players->where('pivot.availability', 'no')->count() }}</p>
-            </div>
-            <div class="bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-700 text-yellow-300">
-                <p class="font-semibold text-sm text-yellow-200">{{ __('team.game.selected') }}</p>
-                <p class="mt-2 text-2xl font-bold">{{ $players->where('pivot.selected', true)->count() }}</p>
-            </div>
-        </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         @foreach ($members as $member)
-            <div class="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 flex flex-col gap-4">
+            <div class="bg-slate-800 p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col gap-4 text-yellow-300">
                 <div class="flex items-center justify-between gap-4">
                     <div>
-                        <p class="text-lg font-semibold text-gray-900">{{ $member->prenom }}</p>
-                        <p class="text-sm text-gray-500">{{ $member->pivot->availability ?? __('team.game.notrespond') }}</p>
+                        <p class="text-lg font-semibold text-yellow-200">{{ $member->prenom }}</p>
                     </div>
                     @if($member->pivot->selected)
                         <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold">{{ __('team.game.selected') }}</span>

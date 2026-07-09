@@ -9,6 +9,8 @@ return [
     "update" => "Modifier",    
     "savesuccess" => "Enregistré avec succès",
     "delete" => "Supprimer",
+    "parameters" => "Paramètres",
+    "parameters_cut" => "Param...",
 
     "email" => "Email",
     "users" => "Utilisateurs",

@@ -58,6 +58,7 @@ return [
     ],
 
     "trainings" => "Entrainements",
+    "trainings_cut" => "Entr...",
     "training" => [
         "no" => "Pas d'entrainements pour l'équipe"
     ],

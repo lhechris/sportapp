@@ -8,7 +8,7 @@ use App\Models\Team;
 class Show extends Component
 {
     public Team $team;
-    public string $activeTab = 'members';
+    public string $activeTab = 'games';
 
     public function setTab(string $tab)
     {
