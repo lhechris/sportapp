@@ -33,6 +33,7 @@ return [
     "matches" => "Matchs",
     "game" => [
         "create" => "Ajouter le match",
+        "new_message" => "Nouveau match pour l'équipe :team",
         "rendezvous" => "Rendez-vous",
         "availability" => "Disponibilité",
         "notrespond" => "Pas répondu",
@@ -52,8 +53,21 @@ return [
         "description_whatsapp" => "L'application whatsapp vas s'ouvrir, il ne vous restera plus qu'a coller le texte",
         "alert_copy" => 'Impossible de copier le message.',
         "select_place" => "Selectionnez un Gymnase",
-        "score" => "score",
+        "score" => "Score",
         "comment" => "Commentaires sur le match",
+        "send_notification" => "Envoyer une notification",
+
+        "option" => [
+            "text" => "Texte",
+            "checkbox" => "Case à cocher",
+            "number" => "Nombre",
+            "opposition" => "Opposition",
+
+            "all" => "Tous",
+            "editable" => "Tous et modifiable",
+            "coach" => "Entraineurs",
+            "stat" => "Statistiques",
+        ],
 
     ],
 

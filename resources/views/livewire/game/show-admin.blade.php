@@ -57,7 +57,7 @@
                 <livewire:itineraire
                         :lat="$game->place->lat"
                         :lng="$game->place->lng"
-                        label="$game->place->name"/>
+                        :label="$game->place->name"/>
                 @endif
                 <p class="text-gray-900">
                     {{ __("team.game.rendezvous") }} : {{ $game->rendezvous }}
@@ -77,11 +77,12 @@
                 
             @endif
         </div>
-
-        <div class="flex gap-2">
+    </div>
+    <div>
+        <div class="flex gap-2 mb-2">
             <button wire:click="sendNotification()"
                     class="bg-blue-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-blue-700">
-                {{ __('Send notification') }}
+                {{ __('team.game.send_notification') }}
             </button>
             <a href="{{ route('team.show', ['team' => $game->team->id ]) }}" 
                class="bg-black text-white px-4 py-2 rounded-xl font-semibold hover:bg-gray-800">

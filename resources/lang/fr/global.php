@@ -14,14 +14,25 @@ return [
 
     "email" => "Email",
     "users" => "Utilisateurs",
+    "users_cut" => "Utilis...",
     "firstname" => "Prénom",
     "name" => "Nom",
 
+    "home" => "Accueil",
+
     "manage" => "Gérer",
     "info" => "Info",
-    "seeprofile" => "Voir le profile",
+
+    "profile" => [
+        "see" => "Voir le profile",
+        "my" => "Mon profile",
+        "title" => "Profile",
+    ],
 
     "title" => "Titre",
     "yes" => "Oui",
-    "no"  => "Non"
+    "no"  => "Non",
+
+    "welcome" => "Bienvenue",
+    "area" => "Mon espace"
 ];

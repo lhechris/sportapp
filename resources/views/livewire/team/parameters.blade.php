@@ -39,8 +39,8 @@
                             <select wire:model="gameoptions.{{ $key }}.type"
                                 class="w-full rounded border-gray-300 focus:border-yellow-400 focus:ring-yellow-400 text-sm">
                                 <option value="">{{ __('team.param.select') }}</option>
-                                @foreach($typeOptions as $value => $label)
-                                    <option value="{{ $value }}">{{ $label }}</option>
+                                @foreach($typeOptions as $k => $v)
+                                    <option value="{{ $k }}">{{ $v }}</option>
                                 @endforeach
                             </select>
                             @error("gameoptions.{$key}.type") <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
@@ -54,8 +54,8 @@
                             <select wire:model="gameoptions.{{ $key }}.display"
                                 class="w-full rounded border-gray-300 focus:border-yellow-400 focus:ring-yellow-400 text-sm">
                                 <option value="">{{ __('team.param.select') }}</option>
-                                @foreach($displayOptions as $value => $label)
-                                    <option value="{{ $value }}">{{ $label }}</option>
+                                @foreach($displayOptions as $k => $v)
+                                    <option value="{{ $k }}">{{ $v }}</option>
                                 @endforeach
                             </select>
                         </td>

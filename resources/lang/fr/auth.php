@@ -9,10 +9,13 @@ return [
         "remember" => "Se souvenir de moi",
         "forgot" => "Mot de passe oublié?",
         "login" => "Connexion",
+        "logout" => "Déconnexion",
+        "logout_cut" => "Décon...",
         "google" => "Se connecter avec Google",
         "or" => "ou"
 
-    ]
+    ],
+    "connect" => "Se connecter",
 ];
 
 /**

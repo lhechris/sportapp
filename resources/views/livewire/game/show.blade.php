@@ -58,15 +58,43 @@
         @endforeach
     </div>
 
-    <div class="flex flex-col gap-2 bg-gray-800 border-2 border-yellow-500 rounded-xl p-4 text-yellow-200">
-        <p>{{ __('team.game.list_selected') }}:</p>
-        <div class="flex gap-2">
-            @foreach($players as $player)
-            @if($player->pivot->selected)
-            <p>{{ $player->prenom }}</p>
-            @endif
-            @endforeach
-        </div>
+    <div>
+        <h2>{{ __("team.game.list_selected") }}</h2>
+        <table class="text-sm text-left rtl:text-right text-body text-yellow-400 max-w-lg ">
+            <thead class="bg-black border-b border-default">
+                <tr>
+                    <th scope="col" class="px-2 sm:px-6 py-3 font-bold">{{ __('global.firstname') }}</th>
+                    @foreach($options as $option)
+                        @if( $option->isDisplayTable())
+                        <th scope="col" class="px-2 sm:px-6 py-3 font-bold">{{ $option->name }}</th>
+                        @endif
+                    @endforeach
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($players as $player)
+                    @if($player->pivot->selected)
+                    <tr class="odd:bg-gray-700 even:bg-gray-800 border-b border-default">
+                        <td class="px-2 sm:px-6 py-4">{{ $player->prenom }}</td>
+                        @foreach($options as $option)
+                            @if( $option->isDisplayTable())
+                                @php
+                                    $memberOption = $player->gameOptions->firstWhere('game_option_id', $option->id);
+                                @endphp
+                                <td class="px-2 sm:px-6 py-4">
+                                    @if($members->contains('id',$player->id) && ($option->isDisplayTableAllEditable()))
+                                    <x-game-member-option-cell :member="$player" :option="$option" :value="$memberOption?->value" />
+                                    @else
+                                    {{ $memberOption?->value }}
+                                    @endif
+                                    
+                                </td>
+                            @endif
+                        @endforeach
+                    </tr>
+                    @endif
+                @endforeach
+            </tbody>
+        </table>
     </div>
-
 </div>

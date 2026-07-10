@@ -5,6 +5,8 @@ namespace App\Livewire\Game;
 use Livewire\Component;
 
 use App\Models\Game;
+use App\Models\GameOption;
+use App\Models\GameMemberOption;
 
 class Show extends Component
 {
@@ -33,15 +35,43 @@ class Show extends Component
     public function setAvailability($memberId, $value)
     {
         /* Protection uniquement les membres de l'utilisateur peuvent être modifiés */
-        if ($this->memberIds->contains($memberId) ) {
+        if ($this->members->contains('id',$memberId) ) {
             $this->game->members()->updateExistingPivot($memberId, [
                 'availability' => $value
             ]);
         }
+        $this->loadMembers();
+
     }
+
+    public function setGameOption($memberId, $optionId, $value)
+    {
+        if($this->members->contains('id',$memberId)) {
+
+            GameMemberOption::updateOrCreate(
+                [
+                    'game_id' => $this->game->id,
+                    'member_id' => $memberId,
+                    'game_option_id' => $optionId,
+                ],
+                [
+                    'value' => $value,
+                ]
+            );
+        }
+        $this->loadMembers();
+    }
+
 
     public function render()
     {
-        return view('livewire.game.show')->layout('layouts.app');
+        $options = GameOption::where("team_id",$this->game->team_id)
+                ->whereIn("display", [GameOption::DISP_ALL,GameOption::DISP_ALL_EDITABLE])
+                ->orderBy('order')
+                ->get();
+
+        return view('livewire.game.show', [
+            'options' => $options,
+        ])->layout('layouts.app');
     }
 }

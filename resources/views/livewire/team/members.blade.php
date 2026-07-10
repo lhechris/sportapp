@@ -56,7 +56,7 @@
                     <td class="px-2 py-4">{{ $player->trainings_count }}</td>
                     <td class="px-2 py-4">
                     <button class="text-sm text-white hover:underline">
-                        <a href="{{ route('member',["member"=>$player->id]) }}" />{{ __('global.seeprofile') }} →</a>
+                        <a href="{{ route('member',["member"=>$player->id]) }}" />{{ __('global.profile.see') }} →</a>
                     </button>
                     </td>
                 </tr>

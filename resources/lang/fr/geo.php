@@ -16,7 +16,7 @@ return [
     ],
 
     "placeholder" => [
-        "name" => "Ex: Halle des sports",
+        "name" => "Ex: Labarthe sur Lèze, Halle des sports",
         "address" => "Ex: place fournil, Labarthe sur lèze"
     ]
 

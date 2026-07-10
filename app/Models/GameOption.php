@@ -13,9 +13,10 @@ class GameOption extends Model
     const TYPE_OPPOSITION = "opposition";
     const TYPE_NUM = "num";
 
-    const DISP_TAB_ALL = "tab_all";
-    const DISP_TAB_COACH = "tab_coach";
+    const DISP_ALL = "all";
+    const DISP_COACH = "coach";
     const DISP_STAT = "stat";
+    const DISP_ALL_EDITABLE = "all_editable";
 
     public function values()
     {
@@ -45,30 +46,37 @@ class GameOption extends Model
     public static function types(): array
     {
         return [
-            self::TYPE_TEXT     => __('Text'),
-            self::TYPE_CHECKBOX => __('Checkbox'),
-            self::TYPE_OPPOSITION => __('Opposition'),
-            self::TYPE_NUM      => __('Number'),
+            self::TYPE_TEXT     => __('team.game.option.text'),
+            self::TYPE_CHECKBOX => __('team.game.option.checkbox'),
+            self::TYPE_OPPOSITION => __('team.game.option.opposition'),
+            self::TYPE_NUM      => __('team.game.option.number'),
         ];
     }
 
     public static function displays(): array
     {
         return [
-            self::DISP_TAB_ALL   => __('Table (all)'),
-            self::DISP_TAB_COACH => __('Table (coach)'),
-            self::DISP_STAT      => __('Statistic'),
+            self::DISP_ALL   => __('team.game.option.all'),
+            self::DISP_ALL_EDITABLE   => __('team.game.option.editable'),
+            self::DISP_COACH => __('team.game.option.coach'),
+            self::DISP_STAT      => __('team.game.option.stat'),
         ];
     }
 
     public function isDisplayTable() :bool {
-        return (($this->display === self::DISP_TAB_ALL) || ($this->display === self::DISP_TAB_COACH));
+        return (($this->display === self::DISP_ALL) || 
+                ($this->display === self::DISP_ALL_EDITABLE) ||
+                ($this->display === self::DISP_COACH));
     }
 
-    public function isDisplayTableAll() :bool {
-        return ($this->display === self::DISP_TAB_COACH);
+    public function isDisplayTableCoach() :bool {
+        return ($this->display === self::DISP_COACH);
     }
 
+    public function isDisplayTableAllEditable() :bool {
+        return (($this->display === self::DISP_ALL_EDITABLE) ||
+                ($this->display === self::DISP_COACH));
+    }
 
     public function isDisplayStat() :bool {
         return ($this->display === self::DISP_STAT);

@@ -4,7 +4,7 @@
 
         <div>
             <h1 class="text-2xl font-bold text-gray-900">
-                {{ __('team.members.update') }} {{ $team->name }}
+                {{ __('team.member.update') }} {{ $team->name }}
             </h1>
         </div>
 
@@ -19,7 +19,7 @@
     <input 
         type="text"
         wire:model.live="search"
-        placeholder="{{ __('team.members.search') }}"
+        placeholder="{{ __('team.member.search') }}"
         class="border p-2 w-full mb-4"
     >
 

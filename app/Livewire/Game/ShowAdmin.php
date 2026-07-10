@@ -154,6 +154,7 @@ class ShowAdmin extends Component
                 'value' => $value,
             ]
         );
+         $this->loaddata();
     }
 
     public function deleteGame() {
