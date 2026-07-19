@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire\Game;
+namespace App\Livewire\Event;
 
 use Livewire\Component;
-use App\Models\Game;
+use App\Models\Event;
 use App\Models\Team;
 
 class Create extends Component
@@ -13,40 +13,34 @@ class Create extends Component
     public $date;
     public $titre;
     public $location;
-    public $rendezvous;
-    public $score;
-    public $commentaire;
+    public $description;
 
     public function save()
     {
         $this->validate([
             'date' => "required",
             'location' => 'required',
-            'titre' => 'required',
-            'rendezvous' => 'required']);
+            'titre' => 'required']);
 
-        $game = Game::create([
+        $event = Event::create([
             'team_id' => $this->team->id,
-            'place_id' => $this->place->id,
             'date' => $this->date,
             'location' => $this->location,
             'titre' => $this->titre,
-            'rendezvous' => $this->rendezvous,
-            'score' => $this>score,
-            'commentaire' => $this->commentaire
+            'description' => $this->description
         ]);
 
         // initialiser tous les joueurs
         foreach ($this->team->players as $player) {
-            $game->members()->attach($player->id);
+            $event->members()->attach($player->id);
         }
 
-        return redirect(route('game.edit',[$game->id]));
+        return redirect(route('event.edit',[$event->id]));
     }
 
     public function render()
     {
-        return view('livewire.game.create')
+        return view('livewire.event.create')
             ->layout('layouts.app');
     }
 }

@@ -71,6 +71,20 @@ return [
 
     ],
 
+    "events" => "Evénements",
+    "event" => [
+        "create" => "Ajouter l'événement",
+        "new_message" => "Nouvel événement pour l'équipe :team",
+        "date" => "Date",
+        "location" => "Lieu",
+        "description" => "Description",
+        "confirmdelete" => "Voulez vous supprimer cet événement?",
+        "no" => "Pas d'événements pour l'équipe",
+        "availability" => "Disponibilité",
+        "players" => "Liste des joueurs de l'équipe",
+        "list" => "Liste des jouers disponibles",
+    ],
+
     "trainings" => "Entrainements",
     "trainings_cut" => "Entr...",
     "training" => [

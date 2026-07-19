@@ -7,6 +7,7 @@ use App\Livewire\Dashboard;
 use App\Livewire\User;
 use App\Livewire\Game;
 use App\Livewire\Training;
+use App\Livewire\Event;
 use App\Livewire\Gymnase;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,8 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');    
-    Route::get('/games/{game}', Game\Show::class)->name('game.show');
+    Route::get('/games/show/{game}', Game\Show::class)->name('game.show');
+    Route::get('/events/show/{event}', Event\Show::class)->name('event.show');
     
     Route::post('/push/subscribe', [PushSubscriptionController::class, 'store'])->middleware('auth');
     Route::delete('/push/unsubscribe', [PushSubscriptionController::class, 'destroy'])->middleware('auth');
@@ -46,8 +48,12 @@ Route::middleware(['auth', 'isCoach'])->group(function () {
     Route::get('/teams/create', Team\Create::class)->name('teams.create');
     Route::get('/team/{team}/games/create', Game\Create::class)->name('team.games.create');
     Route::get('/team/{team}/trainings/create', Training\Create::class)->name('team.trainings.create');
-    Route::get('/gamesadmin/{game}', Game\ShowAdmin::class)->name('game-admin.show');
-    Route::get('/games/{game}/selection', Game\Selection::class)->name('game.selection');
+    Route::get('/team/{team}/events/create', Event\Create::class)->name('team.events.create');
+
+    Route::get('/events/edit/{event}', Event\Edit::class)->name('event.edit');
+
+    Route::get('/games/edit/{game}', Game\Edit::class)->name('game.edit');
+    Route::get('/games/selection/{game}', Game\Selection::class)->name('game.selection');
     Route::get('/trainings/{training}', Training\Show::class)->name('training.show');
     Route::get('/member/{member}', Member\Profile::class)->name('member');
 

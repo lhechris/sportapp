@@ -12,7 +12,7 @@ use App\Models\User;
 
 use App\Notifications\GameNotification;
 
-class ShowAdmin extends Component
+class Edit extends Component
 {
     public Game $game;
     public bool $editingGame = false;
@@ -187,7 +187,7 @@ class ShowAdmin extends Component
                         ->orderBy('order')
                         ->get();
 
-        return view('livewire.game.show-admin', [
+        return view('livewire.game.edit', [
             'options' => $options,
         ])->layout('layouts.app');
     }

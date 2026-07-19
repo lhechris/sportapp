@@ -1,5 +1,4 @@
-@props(['member', 'option', 'value'])
-
+@props(['member', 'option', 'value'])  
     @if($option->type === \App\Models\GameOption::TYPE_OPPOSITION) 
         <button wire:click="setGameOption({{ $member->id }}, {{ $option->id }},'A')"
             class="px-2 py-1 rounded {{$value === 'A' ? 'bg-green-500 text-white' : 'bg-gray-200 text-black' }}">

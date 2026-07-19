@@ -55,6 +55,14 @@ class Member extends Model
             ->orderBy('date');
     }
 
+    public function events()
+    {
+        return $this->belongsToMany(Event::class)
+            ->withPivot('availability')
+            ->withTimestamps()
+            ->orderBy('date');
+    }
+
     public function gameOptions()
     {
         return $this->hasMany(GameMemberOption::class);

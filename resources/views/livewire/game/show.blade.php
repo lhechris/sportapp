@@ -79,13 +79,19 @@
                         @foreach($options as $option)
                             @if( $option->isDisplayTable())
                                 @php
-                                    $memberOption = $player->gameOptions->firstWhere('game_option_id', $option->id);
+                                    $memberOption = $player->gameOptions
+                                                        ->where('game_option_id', $option->id)
+                                                        ->where('game_id',$game->id)
+                                                        ->first();
                                 @endphp
                                 <td class="px-2 sm:px-6 py-4">
+                                    
                                     @if($members->contains('id',$player->id) && ($option->isDisplayTableAllEditable()))
                                     <x-game-member-option-cell :member="$player" :option="$option" :value="$memberOption?->value" />
+                                    @elseif ($option->type === \App\Models\GameOption::TYPE_CHECKBOX)
+                                    {{ $memberOption?->value === 'yes'?'✅​':''}}
                                     @else
-                                    {{ $memberOption?->value }}
+                                    {{ $memberOption?->value }}                                    
                                     @endif
                                     
                                 </td>

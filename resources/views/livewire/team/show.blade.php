@@ -4,9 +4,16 @@
     <div class="flex gap-4">
 
         <div>
-            <h1 class="text-3xl font-bold text-gray-900">
-                🏀 {{ $team->name }}
-            </h1>
+            <div class="flex">
+                <h1 class="text-3xl font-bold text-gray-900">
+                    🏀 {{ $team->name }}
+                </h1>
+                <button wire:click="setTab('parameters')"
+                    class="px-2 sm:px-4 py-2 rounded-full text-sm font-semibold {{ $activeTab === 'parameters' ? 'bg-gray-500 text-white' : 'bg-transparent text-gray-700 hover:bg-gray-100' }}">
+                    <img src="{{ asset('images/parametres.png') }}" alt="{{ __('global.parameters') }}"/>
+                    <p class="text-xs hidden sm:block">{{ __('global.parameters') }}</p></p><p class="text-xs sm:hidden">{{ __('global.parameters_cut') }}</p>
+                </button>
+            </div>
             <div class="text-gray-600 flex gap-2" >
                 <p>{{ $team->players()->count() }} {{ __('team.players') }}</p>
                 <p>{{ $team->staffs()->count() }} {{ __('team.staffs') }}</p>
@@ -40,14 +47,11 @@
                 <img src="{{ asset('images/selection.png') }}" alt="{{ __('team.selections') }}"/>
                 <p class="text-xs">{{ __('team.selections') }}</p>
             </button>
-            <div class="flex flex-col">
-                <button wire:click="setTab('parameters')"
-                        class="px-2 sm:px-4 py-2 rounded-full text-sm font-semibold {{ $activeTab === 'parameters' ? 'bg-gray-500 text-white' : 'bg-transparent text-gray-700 hover:bg-gray-100' }}">
-                    <img src="{{ asset('images/parametres.png') }}" alt="{{ __('global.parameters') }}"/>
-                    <p class="text-xs hidden sm:block">{{ __('global.parameters') }}</p></p><p class="text-xs sm:hidden">{{ __('global.parameters_cut') }}</p>
-                </button>
-                
-            </div>
+            <button wire:click="setTab('events')"
+                    class="px-2 sm:px-4 py-2 rounded-full text-sm font-semibold {{ $activeTab === 'events' ? 'bg-gray-500 text-white' : 'bg-transparent text-gray-700 hover:bg-gray-100' }}">
+                <img src="{{ asset('images/fete.png') }}" alt="{{ __('team.events') }}"/>
+                <p class="text-xs">{{ __('team.events') }}</p>
+            </button>
         </nav>
     </div>
 
@@ -64,6 +68,11 @@
     <!-- ENTRAINEMENTS -->
     @if($activeTab === 'trainings')
         <livewire:team.trainings :team="$team" />
+    @endif
+
+    <!-- EVENEMENTS -->
+    @if($activeTab === 'events')
+        <livewire:team.events :team="$team" />
     @endif
 
     <!-- SELECTIONS -->

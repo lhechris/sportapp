@@ -25,6 +25,7 @@ class Dashboard extends Component
             
             $this->members = auth()->user()->members()
                 ->with('games')
+                ->with('events')
                 ->where('type',Member::TYPE_PLAYER)
                 ->get();
          
@@ -72,21 +73,6 @@ class Dashboard extends Component
         $this->dispatch('triggerInstall');
     }
 
-    public function setAvailability($memberId, $gameId, $value)
-    {
-        $game = Game::find($gameId);
-
-        if (!$game) {
-            return;
-        }
-
-        $game->members()->updateExistingPivot($memberId, [
-            'availability' => $value,
-        ]);
-
-        $this->members = auth()->user()->members()->with('games')->get();
-    }
-
     public function render()
     {
         //Recherche le prochain match à afficher
@@ -99,6 +85,11 @@ class Dashboard extends Component
                     break;
                 }
             }
+        }
+
+        foreach($this->members as &$member) {
+            $combined = $member->games->merge($member->events);
+            $member->combined = $combined->sortBy('date');
         }
 
 

@@ -10,7 +10,7 @@
         @forelse($games as $game)
             <x-card title="{{$game->titre}}" 
                     id="game-{{ $game->id }}" 
-                    href="{{ route('game-admin.show', [ 'game' => $game->id]) }}"
+                    href="{{ route('game.edit', [ 'game' => $game->id]) }}"
                     description="{{ $game->formatdate() }}" >
                 <p>{{ __('team.game.rendezvous') }} : {{ $game->rendezvous }}</p>
                 <p>{{ $game->members_count }} {{ __('team.players')}}</p>

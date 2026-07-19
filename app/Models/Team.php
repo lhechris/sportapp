@@ -31,6 +31,12 @@ class Team extends Model
                 ->orderBy('date');
     }
 
+    public function events()
+    {
+        return $this->hasMany(\App\Models\Event::class)
+                ->orderBy('date');
+    }
+
     public function trainings()
     {
         return $this->hasMany(\App\Models\Training::class)
