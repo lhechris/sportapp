@@ -14,10 +14,16 @@ class Dashboard extends Component
     public $members;
     public $teams;
     public $hasSubscription;
+    public $activeTab;
 
     public function mount()
     {
-        // équipes du user (via owner)
+        $this->activeTab = '';
+        $this->loaddata();
+    }
+
+    private function loaddata()
+    {
         if (auth()->user()) {
             if (auth()->user()->isCoach()) {
                 $this->teams = auth()->user()->ownedTeams()->get();
@@ -28,6 +34,9 @@ class Dashboard extends Component
                 ->with('events')
                 ->where('type',Member::TYPE_PLAYER)
                 ->get();
+            if (count($this->members)>0) {
+                $this->activeTab = $this->members[0]->prenom;
+            }
          
         }
         $this->checkPendingGames();
@@ -35,6 +44,11 @@ class Dashboard extends Component
         $this->hasSubscription = auth()->user()->pushSubscriptions()->exists();
 
     }
+    public function setTab(string $tab)
+    {
+        $this->activeTab = $tab;
+    }
+
 
     /**
      * Verifie s'il y a des matchs qui n'ont pas été validée 

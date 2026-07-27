@@ -4,6 +4,20 @@
          x-show="!{{$hasSubscription ? 'true' : 'false'}}"
          onclick="subscribeToPush()" > S'abonner</x-button>
     <!-- MEMBRES -->
+    @if(count($members)>1)
+    <div class="mt-6">
+        <nav class="flex flex-wrap gap-2 bg-white rounded-full border border-gray-200 p-2 shadow-sm">
+        @foreach($members as $member)
+            <button wire:click="setTab('{{$member->prenom}}')"
+                    class="px-2 sm:px-4 py-2 rounded-full text-sm font-semibold {{ $activeTab === $member->prenom ? 'bg-gray-500 text-white' : 'bg-transparent text-gray-700 hover:bg-gray-100' }}">
+                <p class="text-lg">{{ $member->prenom }}</p>
+            </button>
+        @endforeach    
+        </nav>
+    </div>
+    @endif
+
+
 @forelse($members as $member)
     <div class="bg-gray-900 p-5 rounded-2xl border border-gray-800">
         <h2 class="text-white font-bold mb-4">
