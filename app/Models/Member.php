@@ -75,6 +75,15 @@ class Member extends Model
             ->withTimestamps();
     }
 
+
+    public function oppositionOptions()
+    {
+        return $this->gameOptions()->whereHas('option', function ($query) {
+            $query->where('type', 'opposition');
+        });
+    }
+
+
     public function isplayer() 
     {
         return $this->type === self::TYPE_PLAYER;

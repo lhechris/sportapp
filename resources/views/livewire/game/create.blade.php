@@ -19,9 +19,19 @@
         </div>
 
         <div>
-            <x-input-label for="location" :value="__('team.game.location')" />
-            <x-text-input wire:model="location" id="location" name="location" type="text" class="mt-1 block w-full" required autofocus autocomplete="location" />
-            <x-input-error class="mt-2" :messages="$errors->get('location')" />
+            <x-input-label for="numero" :value="__('team.game.numero')" />
+            <x-text-input wire:model="numero" id="numero" name="numero" type="text" class="mt-1 block w-full" autofocus autocomplete="numero" />
+            <x-input-error class="mt-2" :messages="$errors->get('numero')" />
+        </div>
+
+        <div>
+            <x-input-label for="place_id" :value="__('team.game.location')" />
+            <select wire:model="place_id" class="w-full rounded border border-gray-300 px-3 py-2 text-black">
+                <option value="">-- {{ __('team.game.select_place') }} --</option>
+                @foreach($places as $place)
+                    <option value="{{ $place->id }}">{{ $place->name }} {{ $place->address ? '— ' . $place->address : '' }}</option>
+                @endforeach
+            </select>
         </div>
 
         <div>
@@ -32,13 +42,13 @@
 
         <div>
             <x-input-label for="score" :value="__('team.game.score')" />
-            <x-text-input wire:model="score" id="score" name="score" type="text" class="mt-1 block w-full" required autofocus autocomplete="score" />
+            <x-text-input wire:model="score" id="score" name="score" type="text" class="mt-1 block w-full" autofocus autocomplete="score" />
             <x-input-error class="mt-2" :messages="$errors->get('score')" />
         </div>
 
         <div>
             <x-input-label for="commentaire" :value="__('team.game.comment')" />
-            <x-text-input wire:model="commentaire" id="commentaire" name="commentaire" type="text" class="mt-1 block w-full" required autofocus autocomplete="commentaire" />
+            <x-text-input wire:model="commentaire" id="commentaire" name="commentaire" type="text" class="mt-1 block w-full" autofocus autocomplete="commentaire" />
             <x-input-error class="mt-2" :messages="$errors->get('commentaire')" />
         </div>
 

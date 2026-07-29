@@ -15,6 +15,10 @@
                         <input type="datetime-local" wire:model="gameDate" class="w-full rounded border border-gray-300 px-3 py-2 text-black">
                     </div>
                     <div>
+                        <label class="block text-sm font-bold text-gray-700">{{ __('team.game.numero') }}</label>
+                        <input type="text" wire:model="gameNumero" class="w-full rounded border border-gray-300 px-3 py-2 text-black">
+                    </div>
+                    <div>
                         <label class="block text-sm font-bold text-gray-700">{{ __('team.game.location') }}</label>
                         <select wire:model="gamePlaceId" class="w-full rounded border border-gray-300 px-3 py-2 text-black">
                             <option value="">-- {{ __('team.game.select_place') }} --</option>
@@ -46,8 +50,9 @@
                 </div>
             @else
                 <h1 class="text-2xl font-bold text-gray-900">
+                    <span class="text-lg">{{ $game->numero }}</span>
                     <span>{{ $game->titre }}</span>
-                    <span>{{ $game->score}}</span>
+                    <span>({{ $game->score}})</span>
                 </h1>
 
                 <p class="text-gray-600"> {{ $game->formatdate() }} </p>
@@ -84,6 +89,12 @@
                     class="bg-blue-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-blue-700">
                 {{ __('team.game.send_notification') }}
             </button>
+            @if($game->team->isU11())
+            <button wire:click="generateFeuille()"
+                    class="bg-green-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-green-700">
+                {{ __('team.game.feuille') }}
+            </button>
+            @endif
             <a href="{{ route('team.show', ['team' => $game->team->id ]) }}" 
                class="bg-black text-white px-4 py-2 rounded-xl font-semibold hover:bg-gray-800">
                 {{ __('team.back') }}

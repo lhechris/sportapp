@@ -24,7 +24,7 @@ return [
 
     "members" => "Membres",
     "member" => [
-        "no" => "Pas de membres pour l'équipe",
+        "no" => "Pas de joueur attaché à l'utilisateur",
         "update" => "Modifier les membres de l'équipe",
         "search" => "Rechercher un membre",
         "licence" => "Licence"
@@ -56,6 +56,8 @@ return [
         "score" => "Score",
         "comment" => "Commentaires sur le match",
         "send_notification" => "Envoyer une notification",
+        "feuille" => "Feuille de route",
+        "numero" => "Numéro de match",
 
         "option" => [
             "text" => "Texte",

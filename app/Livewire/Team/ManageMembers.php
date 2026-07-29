@@ -29,11 +29,47 @@ class ManageMembers extends Component
         $this->team->members()->syncWithoutDetaching([
             $memberId
         ]);
+
+        $now = \Carbon\Carbon::now();
+
+        //Attach to games
+        foreach($this->team->games()->get() as $game) {
+            if ($now->lt(\Carbon\Carbon::parse($game->date))) {
+                \Log::info("attach $memberId dans le game $game->id" );
+                $game->members()->attach($memberId); 
+            }       
+        }
+        //Attach to games
+        foreach($this->team->events()->get() as $event) {
+            if ($now->lt(\Carbon\Carbon::parse($event->date))) {
+                \Log::info("attach $memberId dans l'event $event->id" );
+                $event->members()->attach($memberId); 
+            }       
+        }
     }
 
     public function removeMember($memberId)
     {
         $this->team->members()->detach($memberId);
+        
+        $now = \Carbon\Carbon::now();
+
+        //Detach des games uniquement pour les future, on garde les anciens
+        foreach($this->team->games()->get() as $game) {
+            if ($now->lt(\Carbon\Carbon::parse($game->date))) {
+                \Log::info("detach $memberId dans le game $game->id" );
+                $game->members()->detach($memberId);
+            }
+        }        
+        //Detach des events uniquement pour les future, on garde les anciens
+        foreach($this->team->events()->get() as $event) {
+            if ($now->lt(\Carbon\Carbon::parse($event->date))) {
+                \Log::info("detach $memberId dans l'event $event->id" );
+                $event->members()->detach($memberId);
+            }
+        }        
+
+
     }
 
     public function render()

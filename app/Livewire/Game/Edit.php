@@ -11,6 +11,9 @@ use App\Models\Place;
 use App\Models\User;
 
 use App\Notifications\GameNotification;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class Edit extends Component
 {
@@ -18,11 +21,12 @@ class Edit extends Component
     public bool $editingGame = false;
     public string $gameTitle = '';
     public string $gameDate = '';
-    public string $gameLocation = '';
+    public ?string $gameLocation = '';
     public ?int $gamePlaceId = null;
     public string $gameRendezvous = '';
-    public string $gameScore = '';
-    public string $gameCommentaire = '';
+    public ?string $gameScore = '';
+    public ?string $gameCommentaire = '';
+    public ?int $gameNumero = null;
 
     public string $message = '';
     public $members;
@@ -39,6 +43,7 @@ class Edit extends Component
         $this->gameRendezvous = $this->game->rendezvous ?? '';
         $this->gameScore = $this->game->score ?? '';
         $this->gameCommentaire = $this->game->commentaire ?? '';
+        $this->gameNumero = $this->game->numero ?? 0;
         
         $this->loaddata();
 
@@ -57,6 +62,15 @@ class Edit extends Component
         $this->generateMessage();
         
         $this->places = Place::orderby('name')->get();
+
+        /*foreach ($this->members as $member) {
+            \Log::info("$member->prenom");
+            foreach ($member->options as $option) {
+                \Log::info("$option->type = ".$option->pivot->value);
+            }
+        }*/
+
+
     }
 
 
@@ -90,6 +104,80 @@ class Edit extends Component
 
     }
 
+
+    public function generateFeuille() {
+        $spreadsheet = new Spreadsheet();
+        $inputFileName = storage_path('app/' .  env("TEMPLATE_FILE"));
+        $spreadsheet = IOFactory::load($inputFileName);
+        $activeWorksheet = $spreadsheet->getActiveSheet();
+        $activeWorksheet->setCellValue('C3', $this->game->numero);
+        $date = \Carbon\Carbon::parse($this->game->date)->format("Y-m-d"); 
+        $activeWorksheet->setCellValue('E3', $date);
+
+        $oppositionA = $this->game->members()
+                                  ->whereHas('oppositionOptions', function ($query) {
+                    $query->where('game_id', $this->game->id)
+                        ->where('value', 'A');
+                })->get();
+
+        $oppositionB = $this->game->members()
+                                  ->whereHas('oppositionOptions', function ($query) {
+                    $query->where('game_id', $this->game->id)
+                        ->where('value', 'B');
+                })->get();
+
+        $this->writeopposition($activeWorksheet,$oppositionB,8);
+        $this->writeopposition($activeWorksheet,$oppositionA,18);
+        $this->writestaff($activeWorksheet,$this->game->team->coaches()->get(),27);
+        /*$this->writestaff($activeWorksheet,$this->game->otm,32);*/
+        $writer = new Xlsx($spreadsheet);
+
+        $filename = 'feuille_match_' . $this->game->numero . '.xlsx';
+
+        $this->loaddata();
+
+        return response()->streamDownload(
+            function () use ($spreadsheet) {
+                $writer = new Xlsx($spreadsheet);
+                $writer->save('php://output');
+            },
+            $filename,
+            [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            ]
+        );
+        
+    }
+
+    private function writeopposition($sheet,$opp,$start) 
+    {
+        $numligne=$start;
+        foreach($opp as $joueur) {
+            foreach ($joueur->options as $option) {
+                if ($option->type === GameOption::TYPE_NUM) {
+                    $sheet->setCellValue("A$numligne", $option->pivot->value);                    
+                }
+            }
+            
+            $sheet->setCellValue("B$numligne", $joueur->licence);
+            $sheet->setCellValue("C$numligne", $joueur->name);
+            $sheet->setCellValue("D$numligne", $joueur->prenom);
+            $numligne++;
+        }
+    }
+
+    private function writestaff($sheet,$staffs,$start) 
+    {
+        $numligne=$start;
+        foreach($staffs as $s) {            
+            $sheet->setCellValue("A$numligne", $s->licence);
+            $sheet->setCellValue("C$numligne", $s->name);
+            $sheet->setCellValue("D$numligne", $s->prenom);
+            $numligne++;
+        }
+    }    
+
+
     public function toggleEditingGame()
     {
         $this->editingGame = !$this->editingGame;
@@ -100,7 +188,8 @@ class Edit extends Component
             $this->gameLocation = $this->game->location;
             $this->gameRendezvous = $this->game->rendezvous ?? '';
             $this->gameScore = $this->game->score ?? '';
-            $this->gameCommentaire = $this->game->commentaire ?? '';           
+            $this->gameCommentaire = $this->game->commentaire ?? ''; 
+            $this->gameNumero = $this->game->numero ?? 0;          
         }
         $this->loaddata();
     }
@@ -116,7 +205,8 @@ class Edit extends Component
             'place_id' => $this->gamePlaceId,
             'rendezvous' => $this->gameRendezvous,
             'score' => $this->gameScore,
-            'commentaire' => $this->gameCommentaire
+            'commentaire' => $this->gameCommentaire,
+            'numero' => $this->gameNumero
         ]);
         $this->editingGame = false;
         $this->loaddata();

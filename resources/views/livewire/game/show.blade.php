@@ -8,18 +8,18 @@
                 {{ $game->formatdate() }}
             </p>
             <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                @if($game->place !==NULL)                        
                 <div class="bg-slate-800 p-4 rounded-2xl shadow-sm border border-slate-700 text-yellow-300">
                     <p class="text-xs uppercase tracking-[0.16em] font-semibold text-yellow-200">{{ __('team.game.location') }}</p>
                     <div class="flex gap-2" >
                         <p class="mt-2 text-base font-semibold">{{ $game->place->address }}</p>
-                        @if($game->place !==NULL)                        
                         <livewire:itineraire
                                 :lat="$game->place->lat"
                                 :lng="$game->place->lng"
                                 label="$game->place->name"/>
-                        @endif
                     </div>
                 </div>
+                @endif
                 <div class="bg-slate-800 p-4 rounded-2xl shadow-sm border border-slate-700 text-yellow-300">
                     <p class="text-xs uppercase tracking-[0.16em] font-semibold text-yellow-200">{{ __('team.game.rendezvous') }}</p>
                     <p class="mt-2 text-base font-semibold">{{ $game->rendezvous }}</p>

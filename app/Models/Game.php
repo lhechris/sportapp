@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Game extends Model
 {
 
-    protected $fillable = ['team_id','place_id', 'date', 'location','rendezvous','titre','score','commentaire','whatsapp'];
+    protected $fillable = ['team_id','place_id', 'date', 'location','rendezvous','numero','titre','score','commentaire','whatsapp'];
 
     public function team()
     {
@@ -41,5 +41,4 @@ class Game extends Model
     public function formatdate() {
         return  \Carbon\Carbon::parse($this->date)->translatedFormat('d F Y à H:i');
     }
-
 }

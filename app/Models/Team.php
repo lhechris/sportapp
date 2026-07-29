@@ -64,4 +64,10 @@ class Team extends Model
     {
         return $this->members()->where('type', Member::TYPE_STAFF);
     }
+
+    public function isU11()
+    {
+        $name = str_replace(" ","",strtolower($this->name));
+        return (str_contains($name,"u11") || str_contains($name,"poussin"));
+    }
 }

@@ -82,7 +82,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
 
-            @forelse(auth()->user()->teams as $team)
+            @forelse($teams as $team)
 
                 <a href="{{ route('team.show', ['team' => $team->id]) }}" >
                     <div class="flex justify-between items-center bg-black p-4 rounded-xl border border-yellow-300 hover:scale-[1.02] transition">
@@ -138,9 +138,16 @@
 
             @forelse($member->combined as $game)
                 @if($game instanceof \App\Models\Event)
-                <livewire:event.card :event="$game" :member="$member"></livewire:event.card>                
+                <livewire:event.card 
+                        :event="$game" :member="$member"
+                        :key="'event-'.$member->id.'-'.$game->id"
+                ></livewire:event.card>                
                 @elseif($game instanceof \App\Models\Game)
-                <livewire:game.card :game="$game" :member="$member"></livewire:game.card>                
+                <livewire:game.card 
+                        :game="$game" 
+                        :member="$member"
+                        :key="'event-'.$member->id.'-'.$game->id"
+                    ></livewire:game.card>                
                 @endif 
             @empty
                 <p class="text-gray-500">{{ __("team.game.no") }}</p>
@@ -148,7 +155,7 @@
         </x-cards-scroll>
 @endif
 @empty
-        <p class="text-gray-500">{{ __("team.nomembers") }}</p>
+        <p class="text-gray-500">{{ __("team.member.no") }}</p>
 @endforelse
 
     </div>

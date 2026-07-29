@@ -17,7 +17,7 @@
     <input 
         type="text" 
         wire:model="whatsapp" 
-        placeholder="{{ __('team.whatsapp') }}"
+        placeholder="{{ __('team.param.whatsapp') }}"
         class="border p-2 w-full mb-2"
     >
 

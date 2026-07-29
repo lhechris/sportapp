@@ -3,8 +3,16 @@
 use App\Livewire\Actions\Logout;
 use Livewire\Volt\Component;
 
+
 new class extends Component
 {
+    public $teams;
+
+    public function mount() {
+        if (auth()->user()) {
+            $this->teams = auth()->user()->ownedTeams()->get();
+        }
+    }
     /**
      * Log the current user out of the application.
      */
@@ -59,7 +67,7 @@ new class extends Component
                             </x-slot>
                     
                             <x-slot name="content">
-                            @foreach( auth()->user()->teams as $team)
+                            @foreach( $teams as $team)
                                 <x-dropdown-link :href="route('team.show', ['team'=>$team->id])" wire:navigate>
                                     {{ $team->name }}
                                 </x-dropdown-link>

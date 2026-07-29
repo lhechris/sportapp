@@ -5,6 +5,7 @@ namespace App\Livewire\Game;
 use Livewire\Component;
 use App\Models\Game;
 use App\Models\Team;
+use App\Models\Place;
 
 class Create extends Component
 {
@@ -16,24 +17,33 @@ class Create extends Component
     public $rendezvous;
     public $score;
     public $commentaire;
+    public $place_id;
+    public $numero;
+
+    public $places;
+
+    public function mount() 
+    {
+        $this->places=Place::orderby('name')->get();
+    }
 
     public function save()
     {
         $this->validate([
             'date' => "required",
-            'location' => 'required',
             'titre' => 'required',
             'rendezvous' => 'required']);
 
         $game = Game::create([
             'team_id' => $this->team->id,
-            'place_id' => $this->place->id,
+            'place_id' => $this->place_id,
             'date' => $this->date,
             'location' => $this->location,
             'titre' => $this->titre,
             'rendezvous' => $this->rendezvous,
-            'score' => $this>score,
-            'commentaire' => $this->commentaire
+            'score' => $this->score,
+            'commentaire' => $this->commentaire,
+            'numero' => $this->numero
         ]);
 
         // initialiser tous les joueurs

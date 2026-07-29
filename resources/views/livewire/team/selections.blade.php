@@ -34,7 +34,7 @@
                         @endphp
                         <td class="px-3 py-2">
                             @if (is_null($pivotMember))
-                                <span class="text-gray-300">–</span>
+                                <span class="text-gray-300">➖​</span>
                             @elseif ($availability === 'yes')
                                 <input type="checkbox" 
                                        @checked($selected === 1)
