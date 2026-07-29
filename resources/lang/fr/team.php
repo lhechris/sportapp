@@ -26,6 +26,8 @@ return [
     "member" => [
         "no" => "Pas de joueur attaché à l'utilisateur",
         "update" => "Modifier les membres de l'équipe",
+        "manage_admin" => "Gérer les administrateurs",
+        "manage_members" => "Gérer les membres",
         "search" => "Rechercher un membre",
         "licence" => "Licence"
     ],

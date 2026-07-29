@@ -21,12 +21,12 @@
         class="border p-2 w-full mb-2"
     >
 
-    <input 
-        type="text" 
+    <textarea
         wire:model="msg_convocation" 
         placeholder="{{ __('team.convocation') }}"
-        class="border p-2 w-full mb-2"
-    >
+        rows="6" 
+        class="w-full rounded border border-gray-300 px-3 py-2 text-black"
+    ></textarea>
 
     @error('name') 
         <div class="text-red-500">{{ $message }}</div> 

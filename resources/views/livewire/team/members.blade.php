@@ -1,4 +1,15 @@
 <div>
+
+    <div class="flex gap-4">
+        <a href="{{ route('team.owners', ['team' => $team->id ]) }}" wire:navigate>
+            <x-button>⚙️ {{ __('team.member.manage_admin') }}</x-button>
+        </a>
+
+        <a href="{{ route('team.members', ['team' => $team->id ]) }}" wire:navigate>
+            <x-button>⚙️ {{ __('team.member.manage_members') }}</x-button>
+        </a>
+
+    </div>
     <!-- COACHS -->
     <div>
         <h2 class="text-lg font-semibold mb-2">{{ __('team.coaches') }}</h2>
@@ -23,17 +34,11 @@
             <p class="text-gray-500">{{ __('team.owner.no') }}</p>
         @endforelse
 
-        <a href="{{ route('team.owners', ['team' => $team->id ]) }}" wire:navigate>
-            <x-button>⚙️ {{ __('global.edit') }}</x-button>
-        </a>
     </div>
 
 
     <div class="flex gap-4 mb-2 mt-2">
         <h2 class="text-lg font-semibold mb-4">{{ __('team.players') }}</h2>
-        <a href="{{ route('team.members', ['team' => $team->id ]) }}" wire:navigate>
-            <x-button>⚙️ {{ __('global.edit') }}</x-button>
-        </a>
     </div>
 
     <div class="flex gap-4">

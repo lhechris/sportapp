@@ -9,7 +9,7 @@ class Create extends Component
 {
     public $name;
     public $whatsapp;
-    public $msg_convocation="Bonjour pour le match du %JOURMATCH% voici la liste des joueurs sélectionnées %SELECTION%<br/>Et non sélectionnées %NONSELECTION%<br/>Le rendez-vous est %RENDEZVOUS%";
+    public $msg_convocation="Bonjour pour le match du %JOURMATCH% voici la liste des joueurs sélectionnées %SELECTION%\n\nEt non sélectionnées %NONSELECTION%\n\nLe rendez-vous est %RENDEZVOUS%";
 
     public function create()
     {
@@ -31,9 +31,9 @@ class Create extends Component
         $team->owners()->attach(auth()->id());
 
         // récupérer le member du coach
-        $member = auth()->user()->members()->first();
+        //$member = auth()->user()->members()->first();
 
-        $team->members()->attach($member->id);
+        //$team->members()->attach($member->id);
 
         session()->flash('success', 'Équipe créée');
 
