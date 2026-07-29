@@ -37,6 +37,7 @@ Route::get('/auth/google', function () {
 Route::get('/auth/google/callback', function () {
 
     $googleUser = Socialite::driver('google')->user();
+    $googleRawUser =  $googleUser->getRaw();
 
     // chercher ou créer utilisateur
     $user = App\Models\User::where('google_id', $googleUser->getId())
@@ -45,14 +46,23 @@ Route::get('/auth/google/callback', function () {
 
 
     if (!$user) {
-        \Log::info("Cree un nouvel utilisateur google :".$googleUser->getId());
+        // L'utilisateur n'existe pas, on cherche s'il y a une invit en cours        
+        $invitation =  App\Models\Invitation::findOrFail(session('invitation_id'));
 
-        $user = App\Models\User::create([
-            'name' => $googleUser->getName(),
-            'email' => $googleUser->getEmail(),
-            'google_id' => $googleUser->getId(),
-            'password' => bcrypt(uniqid()), // obligatoire mais inutile
-        ]);
+        session()->forget('invitation_id');
+
+        $user = App\Models\User::findOrFail($invitation->user_id);
+        
+        if ($user) {
+            \Log::info("Ajoute l'utilisateur google par l'invitation".$googleUser->getId());
+            \Log::info(print_r($googleRawUser,true));
+            $user->update([
+                'name' => $googleRawUser['family_name'],
+                'firstname' => $googleRawUser['given_name'],
+                'email' => $googleUser->getEmail(),
+                'google_id' => $googleUser->getId(),
+            ]);
+        }
 
     } else {
         \Log::info("Utilisateur google existant :".$googleUser->getId());

@@ -172,7 +172,7 @@ class Manage extends Component
         $user = User::create([
             'name' => $this->name,
             'firstname' => $this->firstname,
-            'email' => '',
+            'email' => $this->firstname.".".$this->name."@example.com",
             'password' => Hash::make(uniqid()), //cree un mdp aléatoire
             'role' => $this->role,
         ]);

@@ -37,10 +37,17 @@ class Accept extends Component
                 abort(403, 'Invitation expirée');
             }
         }
+
+        //on stocke l'invit en session au cas ou on fait du google
+        session(['invitation_id' => $this->invitation->id]);
+
     }
 
     public function store()
     {
+        //on a plus besoin de cette session
+        session()->forget('invitation_id');
+
         if ($this->invitation->used) {
             abort(403);
         }

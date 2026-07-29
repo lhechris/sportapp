@@ -65,7 +65,10 @@ sudo rm -f "${NEW_WEB_RELEASE}/database/database.sqlite"
 sudo ln -s "${SHARED}/database.sqlite" "${NEW_WEB_RELEASE}/database/database.sqlite"
 
 sudo rm -rf "${NEW_WEB_RELEASE}/storage/app/public"
-sudo ln -s "${SHARED}/app" "${NEW_WEB_RELEASE}/storage/app/public"
+sudo ln -s "${SHARED}/app/public" "${NEW_WEB_RELEASE}/storage/app/public"
+
+sudo rm -rf "${NEW_WEB_RELEASE}/storage/app/templates"
+sudo ln -s "${SHARED}/app/templates" "${NEW_WEB_RELEASE}/storage/app/templates"
 
 sudo rm -f "${NEW_WEB_RELEASE}/.env"
 sudo ln -s "${SHARED}/.env" "${NEW_WEB_RELEASE}/.env"
