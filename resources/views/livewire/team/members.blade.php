@@ -47,6 +47,7 @@
                 <tr>
                     <th scope="col" class="px-2 py-3 font-medium">{{ __('global.firstname') }}</th>
                     <th scope="col" class="px-2 py-3 font-medium">{{ __('team.member.licence') }}</th>
+                    <th scope="col" class="px-2 py-3 font-medium">{{ __('team.member.number') }}</th>
                     <th scope="col" class="px-2 py-3 font-medium">{{ __('team.matches') }}</th>
                     <th scope="col" class="px-2 py-3 font-medium">{{ __('team.trainings') }}</th>
                     <th scope="col" class="px-2 py-3 font-medium"></th>
@@ -57,6 +58,7 @@
                 <tr class="odd:bg-gray-800 even:bg-gray-900 border-b border-default">
                     <td class="px-2 py-4">{{ $player->prenom }}</td>
                     <td class="px-2 py-4">{{ $player->licence ?? '.....' }}</td>
+                    <td class="px-2 py-4">{{ $player->numero }}</td>
                     <td class="px-2 py-4">{{ $player->games_count }}</td>
                     <td class="px-2 py-4">{{ $player->trainings_count }}</td>
                     <td class="px-2 py-4">

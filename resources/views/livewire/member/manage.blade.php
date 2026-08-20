@@ -39,6 +39,7 @@
             <tr class="bg-gray-100">
                 <th class="sm:p-2">{{ __('Name') }}</th>
                 <th class="sm:p-2">{{ __('Type') }}</th>
+                <th class="sm:p-2">{{ __("team.member.number") }}
                 <th class="hidden sm:p-2 sm:block">{{ __('Birthdate') }}</th>
                 <th class="sm:p-2">{{ __('License') }}</th>
                 <th class="sm:p-2">{{ __('Actions') }}</th>
@@ -49,6 +50,7 @@
                 <tr class="border-t">
                     <td class="sm:p-2">{{ $member->prenom }} {{ $member->name }}</td>
                     <td class="sm:p-2">{{ $member->type }}</td>
+                    <td class="sm:p-2">{{ $member->numero }}</td>
                     <td class="hidden sm:p-2 sm:block">{{ $member->birthdate }}</td>
                     <td class="sm:p-2">{{ $member->licence }}</td>
                     <td class="sm:p-2">

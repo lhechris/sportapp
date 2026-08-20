@@ -28,6 +28,8 @@ class Edit extends Component
     public ?string $gameCommentaire = '';
     public ?int $gameNumero = null;
 
+    public $options;
+
     public string $message = '';
     public $members;
     public $selected;
@@ -58,6 +60,40 @@ class Edit extends Component
                     $query->wherePivot('game_id',$this->game->id);
                 }])
                 ->get();
+        $this->options = GameOption::where("team_id",$this->game->team_id)
+                        ->orderBy('order')
+                        ->get();
+
+        $opts = $this->options->filter(function ($option) {
+            return in_array(
+                mb_strtolower($option->name),
+                ['numero', 'numéro']
+            );
+        });
+        if ($opts->count() > 0) {
+            foreach ($this->members as $member) {
+                $tocreate=true;
+                foreach ($member->options as $option) {
+                    if (in_array(strtolower($option->name), ['numero', 'numéro']) &&
+                        !empty($member->gameOptions->firstWhere('game_option_id', $option->id)?->value)) {
+                        
+                        $tocreate=false;
+                    }
+                }
+                if ($tocreate) {
+                        $member->gameOptions->push(GameMemberOption::updateOrCreate(
+                            [
+                                'game_id' => $this->game->id,
+                                'member_id' => $member->id,
+                                'game_option_id' => $opts->first()->id,
+                            ],
+                            [
+                                'value' => $member->numero,
+                            ]
+                        ));
+                }
+            }
+        }
 
         $this->generateMessage();
         
@@ -273,12 +309,7 @@ class Edit extends Component
 
     public function render()
     {
-        $options = GameOption::where("team_id",$this->game->team_id)
-                        ->orderBy('order')
-                        ->get();
-
         return view('livewire.game.edit', [
-            'options' => $options,
         ])->layout('layouts.app');
     }
 }

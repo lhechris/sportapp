@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->date('birthdate')->nullable();
             $table->string('licence')->nullable();
+            $table->integer('numero')->nullable();
             $table->timestamps();
         });
     }

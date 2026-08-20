@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Member extends Model
 {
+    use HasFactory;
     
     const TYPE_PLAYER = 'player';
     const TYPE_COACH = 'coach';
@@ -17,7 +19,8 @@ class Member extends Model
         'type',
         'user_id',
         'birthdate',
-        'licence'
+        'licence',
+        'numero'
     ];
 
     public function users()

@@ -15,7 +15,7 @@ class MemberSeeder extends Seeder
     public function run(): void
     {
 
-        $csvFile = database_path('data/members.csv');
+        $csvFile = storage_path('app/csv/members.csv');
 
         $file = fopen($csvFile, 'r');
 

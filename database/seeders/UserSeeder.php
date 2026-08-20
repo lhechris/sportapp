@@ -5,9 +5,9 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-use App\Models\Place;
+use App\Models\User;
 
-class PlaceSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,7 +15,7 @@ class PlaceSeeder extends Seeder
     public function run(): void
     {
 
-        $csvFile = storage_path('app/csv/places.csv');
+        $csvFile = storage_path('app/csv/users.csv');
 
         $file = fopen($csvFile, 'r');
 
@@ -24,12 +24,13 @@ class PlaceSeeder extends Seeder
         while (($row = fgetcsv($file)) !== false) {
             $data = array_combine($header, $row);
 
-            Place::updateOrCreate(
-                ['name' => $data['name']],
+            User::updateOrCreate(
+                ['email' => $data['email']],
                 [
-                    'lat' => (float) $data['lat'],
-                    'lng' => (float) $data['lng'],
-                    'address' => $data['address'],
+                    'name' => $data['name'],
+                    'firstname' => $data['firstname'],
+                    'password' => $data['password'],
+                    'role' => $data['role']
                 ]
             );
         }

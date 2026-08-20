@@ -173,9 +173,10 @@
                             <td class="px-2 sm:px-6 py-4">{{ $member->prenom }}</td>
                             @foreach($options as $option)
                                 @if( $option->isDisplayTable())
-                                    @php
-                                        $memberOption = $member->gameOptions->firstWhere('game_option_id', $option->id);
-                                    @endphp
+                                    @php($memberOption = $member->gameOptions
+                                        ->where('game_option_id', $option->id)
+                                        ->where('game_id', $game->id)
+                                        ->first())
                                     <td class="px-2 sm:px-6 py-4">
                                         <x-game-member-option-cell :member="$member" :option="$option" :value="$memberOption?->value" />
                                     </td>

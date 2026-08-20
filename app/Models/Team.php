@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 #[Fillable(['name','owner_id','whatsapp', 'msg_convocation'])]
 class Team extends Model
 {
+    use HasFactory;
+    
     public function owners()
     {
         return $this->belongsToMany(User::class, 'team_owner')

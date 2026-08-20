@@ -29,7 +29,8 @@ return [
         "manage_admin" => "Gérer les administrateurs",
         "manage_members" => "Gérer les membres",
         "search" => "Rechercher un membre",
-        "licence" => "Licence"
+        "licence" => "Licence",
+        "number" => "Numéro",
     ],
 
     "matches" => "Matchs",

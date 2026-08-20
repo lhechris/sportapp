@@ -11,7 +11,7 @@
     @elseif ($option->type === \App\Models\GameOption::TYPE_NUM)
         <input
             type="number"
-            class="w-full max-w-20 rounded border border-gray-300 px-2 py-1 text-black"
+            class="w-full w-16 rounded border border-gray-300 px-2 py-1 text-black"
             value="{{ $value ?? '' }}"
             wire:change="setGameOption({{ $member->id }}, {{ $option->id }}, $event.target.value)"
         />

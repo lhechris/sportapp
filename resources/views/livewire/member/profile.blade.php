@@ -25,6 +25,12 @@
         </div>
 
         <div>
+            <x-input-label for="numero" :value="__('team.member.number')" />
+            <x-text-input wire:model="numero" id="numero" name="numero" type="text" class="mt-1 block w-full" required autocomplete="numero" />
+            <x-input-error class="mt-2" :messages="$errors->get('numero')" />
+        </div>
+
+        <div>
             <x-input-label for="birthdate" :value="__('Birthdate')" />
             <x-text-input wire:model="birthdate" id="birthdate" name="birthdate" type="date" class="mt-1 block w-full" required autocomplete="birthdate" />
             <x-input-error class="mt-2" :messages="$errors->get('birthdate')" />
