@@ -2,22 +2,20 @@
 
 namespace App\Notifications;
 
-//use Illuminate\Bus\Queueable;
-//use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Models\Game;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 use NotificationChannels\WebPush\WebPushChannel;
 use NotificationChannels\WebPush\WebPushMessage;
+use \Carbon\Carbon;
 
 class GameNotification extends Notification
 {
-    //use Queueable;
-
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(public Game $game)
     {
         \Log::info("GameNotification::__construct");
     }
@@ -46,12 +44,12 @@ class GameNotification extends Notification
 
     public function toWebPush($notifiable, $notification): WebPushMessage
     {
-        \Log::info("GameNotification::via");
+        \Log::info("GameNotification::toWebPush");
         return (new WebPushMessage)
             ->title('ASLB')
-            ->body('Nouveau match programmé ce samedi !')
+            ->body('Match le '.Carbon::parse($this->game->date)->translatedFormat('d F Y à H:i').' merci de valider les disponibilités')
             ->icon('/icons/icon-192.png')
-            ->data(['url' => route('game.show',['game' => 3])]);
+            ->data(['url' => route('game.show', ['game' => $this->game->id])]);
     }
 
     /**

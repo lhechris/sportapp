@@ -291,9 +291,17 @@ class Edit extends Component
 
     public function sendNotification()
     {
-       //$this->dispatch('notify', ['title' => 'ASLB','body'=>'Je notifie un truc']);
        \Log::info("sendNotification");
-       User::all()->each->notify(new GameNotification());
+
+       $usersToNotify = User::whereHas('members', function ($query) {
+           $query->whereHas('games', function ($subQuery) {
+               $subQuery->where('game_id', $this->game->id)
+                   ->where('availability', 'maybe');
+           });
+       })->get();
+
+       $usersToNotify->each->notify(new GameNotification($this->game));
+       $this->loaddata();
     }
 
     public function copyAndOpenWhatsapp(): void

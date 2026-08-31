@@ -92,10 +92,36 @@ self.addEventListener('fetch', (event) => {
 });
 
 self.addEventListener('push', function(event) {
-    const data = event.data.json();
+    const data = event.data?.json?.() ?? {};
+    const url = data.data?.url ?? data.url ?? '/';
 
-    self.registration.showNotification(data.title, {
-        body: data.body,
-        icon: '/images/logo.png'
-    });
+    event.waitUntil(
+        self.registration.showNotification(data.title ?? 'ASLB', {
+            body: data.body ?? '',
+            icon: data.icon ?? '/images/logo.png',
+            badge: data.badge ?? '/icons/icon-72.png',
+            data: { url }
+        })
+    );
+});
+
+self.addEventListener('notificationclick', function(event) {
+    event.preventDefault();
+    event.notification.close();
+
+    const url = event.notification?.data?.url || '/';
+
+    event.waitUntil(
+        clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
+            const matchingClient = windowClients.find((client) => {
+                return client.url.includes(self.location.origin) && 'focus' in client;
+            });
+
+            if (matchingClient) {
+                return matchingClient.focus().then(() => matchingClient.navigate(url));
+            }
+
+            return clients.openWindow(url);
+        })
+    );
 });
