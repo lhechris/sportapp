@@ -296,7 +296,10 @@ class Edit extends Component
        $usersToNotify = User::whereHas('members', function ($query) {
            $query->whereHas('games', function ($subQuery) {
                $subQuery->where('game_id', $this->game->id)
-                   ->where('availability', 'maybe');
+                   ->where(function ($availabilityQuery) {
+                       $availabilityQuery->where('availability', 'maybe')
+                           ->orWhereNull('availability');
+                   });
            });
        })->get();
 

@@ -52,4 +52,25 @@ class WebPushNotificationTest extends TestCase
         Notification::assertSentTo($userMaybe, GameNotification::class);
         Notification::assertNotSentTo($userYes, GameNotification::class);
     }
+
+    public function test_send_notification_when_member_availability_is_null(): void
+    {
+        Notification::fake();
+
+        $team = Team::factory()->create();
+        $game = Game::factory()->create(['team_id' => $team->id]);
+
+        $user = User::factory()->create();
+        $member = Member::factory()->create();
+
+        $member->users()->attach($user->id, ['relation' => 'player']);
+        $game->members()->attach($member->id, ['availability' => null]);
+
+        $component = new Edit();
+        $component->game = $game;
+
+        $component->sendNotification();
+
+        Notification::assertSentTo($user, GameNotification::class);
+    }
 }
