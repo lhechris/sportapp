@@ -89,23 +89,22 @@ class Dashboard extends Component
 
     public function render()
     {
+        foreach($this->members as &$member) {
+            $combined = $member->games->merge($member->events);
+            $member->combined = $combined->sortBy('date');
+        }
+
         //Recherche le prochain match à afficher
         $now = \Carbon\Carbon::now();
         foreach ($this->members as &$member) {
             $member->nextGameId = null;
-            foreach ($member->games as $game) {
+            foreach ($member->combined as $game) {
                 if ($game->date >= $now) {
                     $member->nextGameId = $game->id;
                     break;
                 }
             }
         }
-
-        foreach($this->members as &$member) {
-            $combined = $member->games->merge($member->events);
-            $member->combined = $combined->sortBy('date');
-        }
-
 
         if (auth()->user() && auth()->user()->isCoach()){
             return view('livewire.dashboard')
