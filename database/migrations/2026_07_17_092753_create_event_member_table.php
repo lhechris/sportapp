@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('event_id')->constrained()->cascadeOnDelete();
             $table->foreignId('member_id')->constrained()->cascadeOnDelete();
+            $table->unique(['event_id', 'member_id'], 'event_member_event_id_member_id_unique');
             $table->string('availability')->nullable(); // yes, no, maybe
             $table->timestamps();
         });

@@ -32,19 +32,26 @@ class ManageMembers extends Component
 
         $now = \Carbon\Carbon::now();
 
-        //Attach to games
-        foreach($this->team->games()->get() as $game) {
+        foreach ($this->team->games()->get() as $game) {
             if ($now->lt(\Carbon\Carbon::parse($game->date))) {
-                \Log::info("attach $memberId dans le game $game->id" );
-                $game->members()->attach($memberId); 
-            }       
+                $alreadyAttached = $game->members()->whereKey($memberId)->exists();
+
+                if (! $alreadyAttached) {
+                    \Log::info("attach $memberId dans le game $game->id");
+                    $game->members()->attach($memberId);
+                }
+            }
         }
-        //Attach to games
-        foreach($this->team->events()->get() as $event) {
+
+        foreach ($this->team->events()->get() as $event) {
             if ($now->lt(\Carbon\Carbon::parse($event->date))) {
-                \Log::info("attach $memberId dans l'event $event->id" );
-                $event->members()->attach($memberId); 
-            }       
+                $alreadyAttached = $event->members()->whereKey($memberId)->exists();
+
+                if (! $alreadyAttached) {
+                    \Log::info("attach $memberId dans l'event $event->id");
+                    $event->members()->attach($memberId);
+                }
+            }
         }
     }
 

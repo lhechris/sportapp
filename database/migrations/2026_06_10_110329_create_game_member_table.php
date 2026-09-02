@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('game_id')->constrained()->cascadeOnDelete();
             $table->foreignId('member_id')->constrained()->cascadeOnDelete();
+            $table->unique(['game_id', 'member_id'], 'game_member_game_id_member_id_unique');
             $table->string('availability')->nullable(); // yes, no, maybe
             $table->boolean('selected')->default(false);
             $table->timestamps();

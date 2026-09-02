@@ -30,7 +30,7 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/pwa-register.js', 'resources/js/push.js'])
     </head>
-    <body class="bg-yellow-200 text-gray-900">
+    <body class="bg-yellow-200 text-gray-900 safe-area">
         <div class="min-h-screen">
             <livewire:layout.navigation />
 

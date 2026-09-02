@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Livewire\Game\Edit;
+use App\Livewire\Team\ManageMembers;
 use App\Models\Game;
 use App\Models\GameMemberOption;
 use App\Models\GameOption;
@@ -92,6 +93,30 @@ class GameEditTest extends TestCase
             'value' => (string) $member->numero,
         ]);
 
+    }
+
+    public function test_add_member_does_not_duplicate_game_pivot_rows(): void
+    {
+        $user = User::factory()->create();
+        $team = Team::factory()->create();
+        $team->owners()->attach($user->id);
+        $member = Member::factory()->create();
+        $game = Game::factory()->create([
+            'team_id' => $team->id,
+            'date' => now()->addDay(),
+        ]);
+
+        $this->actingAs($user);
+
+        Livewire::test(ManageMembers::class, ['team' => $team])
+            ->call('addMember', $member->id)
+            ->call('addMember', $member->id);
+
+        $this->assertDatabaseCount('game_member', 1);
+        $this->assertDatabaseHas('game_member', [
+            'game_id' => $game->id,
+            'member_id' => $member->id,
+        ]);
     }
 
     private function createGameWithNumberOption(): array
