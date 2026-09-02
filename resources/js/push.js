@@ -6,13 +6,33 @@ function urlBase64ToUint8Array(base64String) {
 
 async function subscribeToPush() {
     const button = document.getElementById('subscribe-push-button');
+    const status = document.getElementById('push-subscription-status');
+
+    const showStatus = (message, isError = false) => {
+        if (status) {
+            status.textContent = message;
+            status.className = isError
+                ? 'mt-2 text-sm text-red-600'
+                : 'mt-2 text-sm text-green-700';
+        }
+    };
 
     if (!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window)) {
-        throw new Error('Les notifications push ne sont pas supportees par ce navigateur.');
+        const error = new Error('Les notifications push ne sont pas supportees par ce navigateur.');
+        showStatus(error.message, true);
+        throw error;
+    }
+
+    if (!window.isSecureContext) {
+        const error = new Error('Les notifications necessitent une connexion HTTPS.');
+        showStatus(error.message, true);
+        throw error;
     }
 
     if (Notification.permission === 'denied') {
-        throw new Error('Les notifications sont bloquees dans les reglages du navigateur.');
+        const error = new Error('Les notifications sont bloquees dans les reglages du navigateur.');
+        showStatus(error.message, true);
+        throw error;
     }
 
     if (button) {
@@ -43,6 +63,7 @@ async function subscribeToPush() {
 
         const response = await fetch('/push/subscribe', {
             method: 'POST',
+            credentials: 'same-origin',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
@@ -56,19 +77,21 @@ async function subscribeToPush() {
         });
 
         if (!response.ok) {
-            throw new Error(`L\'inscription a echoue (${response.status}).`);
+            const details = await response.text();
+            throw new Error(`L\'inscription a echoue (${response.status})${details ? `: ${details.slice(0, 160)}` : '.'}`);
         }
 
         if (button) {
             button.hidden = true;
         }
+        showStatus('Notifications activees.');
     } catch (error) {
         if (button) {
             button.disabled = false;
             button.textContent = "S'abonner";
         }
+        showStatus(error.message || 'Erreur lors de l\'inscription aux notifications.', true);
         console.error('Erreur lors de l\'inscription aux notifications:', error);
-        throw error;
     }
 }
 

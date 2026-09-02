@@ -3,7 +3,8 @@
     <x-button
             id="subscribe-push-button"
          x-show="!{{$hasSubscription ? 'true' : 'false'}}"
-         onclick="subscribeToPush()" > S'abonner</x-button>
+         onclick="subscribeToPush()" type="button"> S'abonner</x-button>
+        <p id="push-subscription-status" class="mt-2 text-sm" role="status" aria-live="polite"></p>
     <!-- MEMBRES -->
     @if(count($members)>1)
     <div class="mt-6">
