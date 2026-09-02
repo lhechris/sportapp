@@ -4,6 +4,15 @@ function urlBase64ToUint8Array(base64String) {
     return Uint8Array.from(atob(base64), c => c.charCodeAt(0));
 }
 
+function withTimeout(promise, milliseconds, message) {
+    let timeoutId;
+    const timeout = new Promise((_, reject) => {
+        timeoutId = setTimeout(() => reject(new Error(message)), milliseconds);
+    });
+
+    return Promise.race([promise, timeout]).finally(() => clearTimeout(timeoutId));
+}
+
 async function subscribeToPush() {
     const button = document.getElementById('subscribe-push-button');
     const status = document.getElementById('push-subscription-status');
@@ -41,12 +50,28 @@ async function subscribeToPush() {
     }
 
     try {
+        showStatus('Autorisation des notifications...');
         const permission = await Notification.requestPermission();
         if (permission !== 'granted') {
             throw new Error('La permission de notification n\'a pas ete accordee.');
         }
 
-        const registration = await navigator.serviceWorker.ready;
+        showStatus('Activation du service de notifications...');
+        let registration = await navigator.serviceWorker.getRegistration('/');
+        if (!registration) {
+            registration = await withTimeout(
+                navigator.serviceWorker.register('/service-worker.js', { scope: '/' }),
+                10000,
+                'Le service de notifications ne repond pas.'
+            );
+        }
+        registration = await withTimeout(
+            navigator.serviceWorker.ready,
+            10000,
+            'Le service de notifications ne demarre pas. Rechargez la page.'
+        );
+
+        showStatus('Creation de la souscription...');
         let subscription = await registration.pushManager.getSubscription();
 
         if (!subscription) {
@@ -61,7 +86,8 @@ async function subscribeToPush() {
             });
         }
 
-        const response = await fetch('/push/subscribe', {
+        showStatus('Enregistrement de la souscription...');
+        const response = await withTimeout(fetch('/push/subscribe', {
             method: 'POST',
             credentials: 'same-origin',
             headers: {
@@ -74,7 +100,7 @@ async function subscribeToPush() {
                     ? (PushManager.supportedContentEncodings.includes('aes128gcm') ? 'aes128gcm' : 'aesgcm')
                     : 'aes128gcm',
             }),
-        });
+            }), 10000, 'Le serveur ne repond pas.');
 
         if (!response.ok) {
             const details = await response.text();
@@ -92,6 +118,11 @@ async function subscribeToPush() {
         }
         showStatus(error.message || 'Erreur lors de l\'inscription aux notifications.', true);
         console.error('Erreur lors de l\'inscription aux notifications:', error);
+    } finally {
+        if (button && !button.hidden) {
+            button.disabled = false;
+            button.textContent = "S'abonner";
+        }
     }
 }
 
