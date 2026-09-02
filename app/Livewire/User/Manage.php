@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\User;
 use App\Models\Member;
 use Illuminate\Support\Facades\Hash;
+use App\Notifications\userNotification;
 
 class Manage extends Component
 {
@@ -135,7 +136,6 @@ class Manage extends Component
         $this->email = $user->email;
         $this->role = $user->role;
 
-
         $this->selectedMembers = $user->members
             ->mapWithKeys(function ($member) {
                 return [
@@ -199,6 +199,19 @@ class Manage extends Component
     {
         $this->reset(['name', 'firstname','email', 'password', 'role', 'selectedMembers', 'editingId']);
     }
+
+     public function sendNotification($userId)
+    {
+         $user = User::findOrFail($userId);
+
+         \Log::info('sendNotification', [
+              'user_id' => $user->id,
+              'push_subscriptions' => $user->pushSubscriptions()->count(),
+         ]);
+
+         $user->notify(new userNotification());
+    }
+
 
     public function render()
     {
