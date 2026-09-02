@@ -1,6 +1,7 @@
 <div class="space-y-6">
     <livewire:InstallPrompt />
     <x-button
+            id="subscribe-push-button"
          x-show="!{{$hasSubscription ? 'true' : 'false'}}"
          onclick="subscribeToPush()" > S'abonner</x-button>
     <!-- MEMBRES -->

@@ -16,7 +16,7 @@
                         <livewire:itineraire
                                 :lat="$game->place->lat"
                                 :lng="$game->place->lng"
-                                label="$game->place->name"/>
+                                :label="$game->place->name"/>
                     </div>
                 </div>
                 @endif

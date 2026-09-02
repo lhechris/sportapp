@@ -13,6 +13,7 @@
             </div>
             <livewire:InstallPrompt />
             <x-button 
+                id="subscribe-push-button"
                 x-show="!{{$hasSubscription ? 'true' : 'false'}}"
                 onclick="subscribeToPush()" > S'abonner</x-button>
         </div>

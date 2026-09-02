@@ -15,13 +15,14 @@ class PushSubscriptionController extends Controller
             'endpoint'        => 'required|url',
             'keys.auth'       => 'required',
             'keys.p256dh'     => 'required',
+            'contentEncoding' => 'nullable|in:aes128gcm,aesgcm',
         ]);
 
         $request->user()->updatePushSubscription(
             $request->endpoint,
             $request->keys['p256dh'],
             $request->keys['auth'],
-            $request->get('contentEncoding', 'aesgcm')
+            $request->get('contentEncoding', 'aes128gcm')
         );
 
         return response()->json(['success' => true]);
