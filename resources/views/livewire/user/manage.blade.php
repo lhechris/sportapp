@@ -1,142 +1,111 @@
-<div class="space-y-6">
-
+<div class="space-y-6 p-0 sm:p-6">
     <h1 class="text-2xl font-bold text-gray-900">
         👤 {{ __('User management') }}
     </h1>
 
-    <!-- FORM -->
-    <form wire:submit="save" class="bg-white p-4 rounded-xl shadow space-y-3">
+    @if (session('success'))
+        <p class="rounded-lg bg-green-100 px-4 py-3 text-sm text-green-800" role="status">
+            {{ session('success') }}
+        </p>
+    @endif
 
-        <div>
-            <x-input-label for="firstname" :value="__('First name')" />
-            <x-text-input wire:model="firstname" id="firstname" name="firstname" type="text" class="mt-1 block w-full" required autofocus autocomplete="firstname" />
-            <x-input-error class="mt-2" :messages="$errors->get('firstname')" />
-        </div>
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input wire:model="name" id="name" name="name" type="text" class="mt-1 block w-full" required autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
-        </div>
+    <div class="overflow-hidden rounded-xl border border-gray-800 bg-gray-900 shadow">
+        <table class="w-full text-left text-sm text-white">
+            <thead class="bg-black text-xs uppercase tracking-wide text-yellow-400">
+                <tr>
+                    <th class="px-4 py-3">{{ __('User') }}</th>
+                    <th class="px-4 py-3 text-right">{{ __('Actions') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($users as $index => $user)
+                    <tr wire:key="user-{{ $user['id'] }}" class="border-b border-gray-800 last:border-0">
+                        <td class="px-4 py-4">
+                            <p class="font-semibold">{{ $user['firstname'] }} {{ $user['name'] }}</p>
+                            <p class="mt-1 text-xs text-gray-400">{{ $user['email'] }}</p>
+                        </td>
+                        <td class="px-4 py-4 text-right">
+                            <button wire:click="editUser({{ $index }})" type="button" class="rounded-lg bg-yellow-400 px-3 py-2 font-semibold text-black hover:bg-yellow-300">
+                                Edit
+                            </button>
+                            <button wire:click="delete({{ $user['id'] }})" type="button" class="ml-2 rounded-lg border border-red-400 px-3 py-2 font-semibold text-red-400 hover:bg-red-950">
+                                Delete
+                            </button>
+                            <button wire:click="sendNotification({{ $user['id'] }})" type="button" class="ml-2 rounded-lg border border-blue-400 px-3 py-2 font-semibold text-blue-300 hover:bg-blue-950" title="{{ __('Send notification') }}">
+                                🔔
+                            </button>
+                        </td>
+                    </tr>
 
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model="email" id="email" name="email" type="email" class="mt-1 block w-full" required autocomplete="username" />
-            <x-input-error class="mt-2" :messages="$errors->get('email')" />
-        </div>
+                    @if($editingIndex === $index)
+                        <tr wire:key="user-edit-{{ $user['id'] }}" class="border-b border-gray-800 bg-gray-800/70">
+                            <td colspan="2" class="px-4 py-4">
+                                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                    <div>
+                                        <x-input-label for="user-firstname-{{ $user['id'] }}" value="{{ __('First name') }}" class="text-gray-200" />
+                                        <x-text-input wire:model="users.{{ $index }}.firstname" id="user-firstname-{{ $user['id'] }}" type="text" class="mt-1 w-full bg-gray-900 text-white" />
+                                        <x-input-error class="mt-1" :messages="$errors->get('users.' . $index . '.firstname')" />
+                                    </div>
+                                    <div>
+                                        <x-input-label for="user-name-{{ $user['id'] }}" value="{{ __('Name') }}" class="text-gray-200" />
+                                        <x-text-input wire:model="users.{{ $index }}.name" id="user-name-{{ $user['id'] }}" type="text" class="mt-1 w-full bg-gray-900 text-white" />
+                                        <x-input-error class="mt-1" :messages="$errors->get('users.' . $index . '.name')" />
+                                    </div>
+                                    <div>
+                                        <x-input-label for="user-email-{{ $user['id'] }}" value="{{ __('Email') }}" class="text-gray-200" />
+                                        <x-text-input wire:model="users.{{ $index }}.email" id="user-email-{{ $user['id'] }}" type="email" class="mt-1 w-full bg-gray-900 text-white" />
+                                        <x-input-error class="mt-1" :messages="$errors->get('users.' . $index . '.email')" />
+                                    </div>
+                                    <div>
+                                        <x-input-label for="user-password-{{ $user['id'] }}" value="{{ __('Password') }}" class="text-gray-200" />
+                                        <x-text-input wire:model="users.{{ $index }}.password" id="user-password-{{ $user['id'] }}" type="password" class="mt-1 w-full bg-gray-900 text-white" placeholder="Laisser vide pour conserver" />
+                                        <x-input-error class="mt-1" :messages="$errors->get('users.' . $index . '.password')" />
+                                    </div>
+                                    <div>
+                                        <x-input-label for="user-role-{{ $user['id'] }}" value="{{ __('Role') }}" class="text-gray-200" />
+                                        <select wire:model="users.{{ $index }}.role" id="user-role-{{ $user['id'] }}" class="mt-1 w-full rounded-md border-gray-700 bg-gray-900 text-white focus:border-yellow-500 focus:ring-yellow-500">
+                                            <option value="player">{{ __('Player') }}</option>
+                                            <option value="parent">{{ __('Parent') }}</option>
+                                            <option value="coach">{{ __('Coach') }}</option>
+                                        </select>
+                                        <x-input-error class="mt-1" :messages="$errors->get('users.' . $index . '.role')" />
+                                    </div>
+                                </div>
 
-        <div>
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input wire:model="password" id="password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+                                <div class="mt-5">
+                                    <p class="font-semibold text-gray-200">{{ __('Associated members') }}</p>
+                                    <div class="mt-2 max-h-60 space-y-2 overflow-y-auto rounded-lg border border-gray-700 p-2">
+                                        @foreach($members as $member)
+                                            <label class="flex flex-col gap-2 rounded-lg bg-gray-900 p-3 sm:flex-row sm:items-center sm:justify-between">
+                                                <span>{{ $member->prenom }} {{ $member->name }} ({{ $member->type }})</span>
+                                                <select wire:model="users.{{ $index }}.selectedMembers.{{ $member->id }}" class="rounded border-gray-700 bg-gray-800 p-1 text-white">
+                                                    <option value="">--</option>
+                                                    <option value="{{ \App\Enums\MemberRelation::PARENT }}">{{ __('Parent') }}</option>
+                                                    <option value="{{ \App\Enums\MemberRelation::SELF }}">{{ __('Self') }}</option>
+                                                    <option value="{{ \App\Enums\MemberRelation::COACH }}">{{ __('Coach') }}</option>
+                                                </select>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
 
-        <div>
-            <x-input-label for="role" :value="__('Role')" />
-            <select wire:model="role" placeholder="{{ __('Email') }}"
-                class="w-full border p-2 rounded">
-                <option value="" >--</option>
-                <option value="{{ \App\Models\User::ROLE_PLAYER }}" >{{ __('Player') }}</option>
-                <option value="{{ \App\Models\User::ROLE_PARENT }}" >{{ __('Parent') }}</option>
-                <option value="{{ \App\Models\User::ROLE_COACH }}" >{{ __('Coach') }}</option>
-            </select>
-            <x-input-error :messages="$errors->get('role')" class="mt-2" />
-        </div>
-        <!-- MEMBERS -->
-        <div>
-            <p class="font-semibold mb-2">{{ __('Associated members') }}</p>
-
-            <div class="space-y-2 max-h-60 overflow-y-auto border p-2 rounded">
-
-                @foreach($members as $member)
-
-                    <div class="flex items-center justify-between bg-gray-50 p-2 rounded">
-
-                        <span>
-                            {{ $member->prenom }} {{ $member->name }} ({{ $member->type }})
-                        </span>
-                        <div class="flex items-center gap-2">
-                            
-                            <input type="checkbox"
-                                wire:model="selectedMembers.{{ $member->id }}"
-                                value="parent">
-
-                            <select
-                                wire:model="selectedMembers.{{ $member->id }}"
-                                class="border rounded p-1 min-w-32"
-                            >
-                                <option value="">--</option>
-                                <option value="{{ \App\Enums\MemberRelation::PARENT }}">{{ __('Parent') }}</option>
-                                <option value="{{ \App\Enums\MemberRelation::SELF }}">{{ __('Self') }}</option>
-                                <option value="{{ \App\Enums\MemberRelation::COACH }}">{{ __('Coach') }}</option>
-                            </select>
-                        </div>
-                    </div>
-
-                @endforeach
-
-            </div>
-
-        </div>
-
-        <x-primary-button>
-            {{ $editingId ? __('Update') : __('Create') }}
-        </x-primary-button>
-
-        @if(!$editingId)
-        <x-button wire:click="invit" >
-            {{ __('Generate an invitation') }}
-        </x-button>
-        <div>{{ $link }}</div>
-        @endif
-
-    </form>
-
-    <!-- LIST -->
-    <div class="space-y-3">
-
-        @foreach($users as $user)
-
-            <div class="bg-white p-4 rounded-xl shadow flex justify-between">
-
-                <div>
-                    <p class="font-semibold">{{ $user->firstname }} {{ $user->name }}</p>
-                    <p class="text-sm text-gray-500">{{ $user->email }}</p>
-
-                    <div class="text-xs text-gray-400 mt-1">
-                        {{ __('Members') }} :
-                        {{ $user->members->pluck('prenom')->join(', ') }}
-                    </div>
-                    @if($user->invitations->count()>0)
-                    <div class="text-xs text-gray-400 mt-1">
-                        {{ __('Invitations') }} :
-                        {{ $user->invitations->pluck('token')->join(', ') }}                        
-                    </div>
+                                <div class="mt-4 flex justify-end gap-2">
+                                    <button wire:click="cancelEdit" type="button" class="rounded-lg border border-gray-500 px-3 py-2 font-semibold text-gray-200 hover:bg-gray-700">
+                                        Cancel
+                                    </button>
+                                    <button wire:click="saveUser({{ $index }})" type="button" class="rounded-lg bg-yellow-400 px-3 py-2 font-semibold text-black hover:bg-yellow-300">
+                                        Save
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
                     @endif
-                </div>
-
-                <div class="space-x-2">
-
-                    <button wire:click="edit({{ $user->id }})"
-                        class="text-blue-600">
-                        {{ __('Edit') }}
-                    </button>
-
-                    <button wire:click="delete({{ $user->id }})"
-                        class="text-red-600">
-                        {{ __('Delete') }}
-                    </button>
-
-                    <button wire:click="sendNotification({{ $user->id }})"
-                            class="bg-blue-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-blue-700">
-                        notification
-                    </button>
-
-                </div>
-
-            </div>
-
-        @endforeach
-
+                @empty
+                    <tr>
+                        <td colspan="2" class="px-4 py-6 text-center text-gray-400">{{ __('No users found') }}</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
-
 </div>

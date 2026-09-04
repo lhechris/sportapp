@@ -7,14 +7,8 @@ use App\Models\Member;
 
 class Manage extends Component
 {
-    public $members;
-
-    public $name;
-    public $type = 'player';
-    public $birthdate;
-    public $prenom;
-    public $licence;
-    public $editingId = null;
+    public array $members = [];
+    public ?int $editingIndex = null;
 
     public function mount()
     {
@@ -23,68 +17,63 @@ class Manage extends Component
 
     public function loadMembers()
     {
-        $this->members = Member::select()
-                            ->orderBy('prenom')
-                            ->orderBy('name')
-                            ->get();
+        $this->members = Member::query()
+            ->orderBy('prenom')
+            ->orderBy('name')
+            ->get()
+            ->map(fn (Member $member): array => [
+                'id' => $member->id,
+                'name' => $member->name,
+                'prenom' => $member->prenom,
+                'type' => $member->type,
+                'birthdate' => $member->birthdate,
+                'licence' => $member->licence,
+                'numero' => $member->numero,
+            ])
+            ->all();
     }
 
-    public function save()
+    public function saveMember(int $index): void
     {
         $this->validate([
-            'name' => 'required|min:2',
-            'type' => 'required|in:player,coach,staff',
+            "members.$index.name" => ['required', 'string', 'min:2'],
+            "members.$index.prenom" => ['nullable', 'string'],
+            "members.$index.type" => ['required', 'in:player,coach,staff'],
+            "members.$index.birthdate" => ['nullable', 'date'],
+            "members.$index.licence" => ['nullable', 'string'],
+            "members.$index.numero" => ['nullable', 'string'],
         ]);
 
-        if ($this->editingId) {
+        $member = $this->members[$index];
+        Member::findOrFail($member['id'])->update([
+            'name' => $member['name'],
+            'prenom' => $member['prenom'],
+            'type' => $member['type'],
+            'birthdate' => $member['birthdate'],
+            'licence' => $member['licence'],
+            'numero' => $member['numero'],
+        ]);
 
-            $member = Member::findOrFail($this->editingId);
-
-            $member->update([
-                'name' => $this->name,
-                'type' => $this->type,
-                'birthdate' => $this->birthdate,
-                'prenom' => $this->prenom,
-                'licence' => $this->licence
-            ]);
-
-        } else {
-
-            Member::create([
-                'name' => $this->name,
-                'type' => $this->type,
-                'birthdate' => $this->birthdate,
-                'prenom' => $this->prenom,
-                'licence' => $this->licence
-            ]);
-        }
-
-        $this->resetForm();
-        $this->loadMembers();
+        session()->flash('success', 'Membre modifié.');
+        $this->editingIndex = null;
     }
 
-    public function edit($id)
+    public function editMember(int $index): void
     {
-        $member = Member::findOrFail($id);
+        $this->editingIndex = $index;
+    }
 
-        $this->editingId = $member->id;
-        $this->name = $member->name;
-        $this->type = $member->type;
-        $this->birthdate = $member->birthdate;
-        $this->prenom = $member->prenom;
-        $this->licence = $member->licence;
+    public function cancelEdit(): void
+    {
+        $this->loadMembers();
+        $this->editingIndex = null;
     }
 
     public function delete($id)
     {
         Member::findOrFail($id)->delete();
         $this->loadMembers();
-    }
-
-    public function resetForm()
-    {
-        $this->reset(['name', 'type', 'birthdate', 'editingId','prenom','licence']);
-        $this->type = 'player';
+        $this->editingIndex = null;
     }
 
     public function render()

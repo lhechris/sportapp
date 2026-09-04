@@ -60,11 +60,11 @@ self.addEventListener('fetch', (event) => {
         const responseToCache = response.clone();
 
         // Vérifier si c'est une ressource statique (assets, CSS, JS, images)
-        const url = new URL(event.request.url);
+        const requestUrl = new URL(event.request.url);
         if (
-          url.pathname.startsWith('/build/') ||
-          url.pathname.startsWith('/images/') ||
-          url.pathname.startsWith('/fonts/') ||
+          requestUrl.pathname.startsWith('/build/') ||
+          requestUrl.pathname.startsWith('/images/') ||
+          requestUrl.pathname.startsWith('/fonts/') ||
           event.request.destination === 'style' ||
           event.request.destination === 'script' ||
           event.request.destination === 'image'
