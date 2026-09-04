@@ -11,6 +11,7 @@ return [
     "delete" => "Supprimer",
     "parameters" => "Paramètres",
     "parameters_cut" => "Param...",
+    "news" => "Actualités",
 
     "email" => "Email",
     "users" => "Utilisateurs",

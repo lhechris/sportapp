@@ -1,4 +1,5 @@
 <div class="space-y-6">
+    <livewire:news.show />
     <livewire:InstallPrompt />
     <x-button
             id="subscribe-push-button"

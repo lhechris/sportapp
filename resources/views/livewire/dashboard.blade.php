@@ -22,31 +22,7 @@
 
     </div>
 
-    <!-- STATS -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-        <div class="bg-gray-900 p-5 rounded-2xl shadow border border-gray-800">
-            <p class="text-gray-400 text-sm">{{ __('team.teams') }}</p>
-            <p class="text-3xl font-bold text-yellow-400">
-                {{ $teams->count() }}
-            </p>
-        </div>
-
-        <div class="bg-gray-900 p-5 rounded-2xl shadow border border-gray-800">
-            <p class="text-gray-400 text-sm">{{ __('team.members') }}</p>
-            <p class="text-3xl font-bold text-yellow-400">
-                {{ \App\Models\Member::count() }}
-            </p>
-        </div>
-
-        <div class="bg-gray-900 p-5 rounded-2xl shadow border border-gray-800">
-            <p class="text-gray-400 text-sm">{{ __('team.role') }}</p>
-            <p class="text-3xl font-bold text-yellow-400 capitalize">
-                {{ auth()->user()->role }}
-            </p>
-        </div>
-
-    </div>
+    <livewire:news.show />
 
     <!-- ACTIONS -->
     <div class="bg-gray-900 p-5 rounded-2xl border border-gray-800">
