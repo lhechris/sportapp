@@ -16,6 +16,18 @@
         </p>
     @endif
 
+    @if($link)
+        <div class="rounded-xl border border-green-700 bg-green-950/40 p-4 text-white" role="status">
+            <p class="font-semibold">{{ __('Invitation created') }}</p>
+            <div class="mt-2 flex flex-col gap-2 sm:flex-row">
+                <input type="text" value="{{ $link }}" readonly class="w-full rounded-md border-gray-700 bg-gray-900 text-white" />
+                <button type="button" onclick="navigator.clipboard.writeText('{{ $link }}')" class="rounded-lg bg-green-400 px-3 py-2 font-semibold text-black hover:bg-green-300">
+                    {{ __('Copy') }}
+                </button>
+            </div>
+        </div>
+    @endif
+
     @if($creating)
         <div class="rounded-xl border border-gray-800 bg-gray-900 p-4 shadow">
             <h2 class="text-lg font-semibold text-white">{{ __('user.add') }}</h2>
@@ -69,6 +81,9 @@
             <div class="mt-4 flex justify-end gap-2">
                 <button wire:click="cancelCreate" type="button" class="rounded-lg border border-gray-500 px-3 py-2 font-semibold text-gray-200 hover:bg-gray-700">
                     {{ __('global.cancel') }}
+                </button>
+                <button wire:click="invit" type="button" class="rounded-lg border border-blue-400 px-3 py-2 font-semibold text-blue-300 hover:bg-blue-950">
+                    {{ __('Créer une invitation') }}
                 </button>
                 <button wire:click="createUser" type="button" class="rounded-lg bg-yellow-400 px-3 py-2 font-semibold text-black hover:bg-yellow-300">
                     {{ __('global.save') }}

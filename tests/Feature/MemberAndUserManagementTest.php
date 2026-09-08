@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Livewire\Member\Manage as MemberManage;
 use App\Livewire\User\Manage as UserManage;
 use App\Models\Member;
+use App\Models\Invitation;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -79,5 +80,29 @@ class MemberAndUserManagementTest extends TestCase
             ->set('newUser.password', 'short')
             ->call('createUser')
             ->assertHasErrors(['newUser.email', 'newUser.password']);
+    }
+
+    public function test_coach_can_create_an_invitation_from_the_user_form(): void
+    {
+        $coach = User::factory()->create(['role' => User::ROLE_COACH]);
+
+        Livewire::actingAs($coach)
+            ->test(UserManage::class)
+            ->set('newUser.firstname', 'Alice')
+            ->set('newUser.name', 'Dupont')
+            ->set('newUser.email', 'alice@example.test')
+            ->set('newUser.role', User::ROLE_PARENT)
+            ->call('invit')
+            ->assertHasNoErrors()
+            ->assertSet('link', fn (?string $link): bool => str_starts_with($link ?? '', url('/invitation/')));
+
+        $invitation = Invitation::where('email', 'alice@example.test')->firstOrFail();
+
+        $this->assertDatabaseHas('users', [
+            'id' => $invitation->user_id,
+            'firstname' => 'Alice',
+            'name' => 'Dupont',
+            'role' => User::ROLE_PARENT,
+        ]);
     }
 }

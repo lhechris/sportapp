@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Member;
 use Illuminate\Support\Facades\Hash;
 use App\Notifications\userNotification;
+use Illuminate\Support\Str;
+use App\Models\Invitation;
 
 class Manage extends Component
 {
@@ -21,6 +23,7 @@ class Manage extends Component
         'selectedMembers' => [],
     ];
     public bool $creating = false;
+    public ?string $link = null;
     public ?int $editingIndex = null;
 
     public function mount()
@@ -155,7 +158,42 @@ class Manage extends Component
         }
 
         $user->members()->sync($sync);
+    }
 
+
+    public function invit(): void
+    {
+        $this->validate([
+            'newUser.firstname' => ['required', 'string', 'min:2'],
+            'newUser.name' => ['required', 'string', 'min:2'],
+            'newUser.email' => ['required', 'email'],
+            'newUser.role' => ['required', 'in:player,parent,coach'],
+            'newUser.selectedMembers' => ['array'],
+        ]);
+
+        $token = Str::uuid();
+        $user = User::create([
+            'name' => $this->newUser['name'],
+            'firstname' => $this->newUser['firstname'],
+            'email' => Str::slug($this->newUser['firstname'].'.'.$this->newUser['name']).'+'.Str::lower(Str::random(8)).'@example.com',
+            'password' => Hash::make(Str::random(40)),
+            'role' => $this->newUser['role'],
+        ]);
+
+        Invitation::create([
+            'email' => $this->newUser['email'],
+            'token' => $token,
+            'created_by' => auth()->id(),
+            'user_id' => $user->id,
+            'expires_at' => now()->addDays(7),
+        ]);
+
+        $this->sync_members($user, $this->newUser['selectedMembers']);
+
+        $this->loadData();
+        $this->newUser['password'] = '';
+        $this->creating = false;
+        $this->link = url('/invitation/'.$token);
 
     }
 
