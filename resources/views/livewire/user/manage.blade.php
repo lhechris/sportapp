@@ -24,6 +24,9 @@
                 <button type="button" onclick="navigator.clipboard.writeText('{{ $link }}')" class="rounded-lg bg-green-400 px-3 py-2 font-semibold text-black hover:bg-green-300">
                     {{ __('Copy') }}
                 </button>
+                <a href="https://wa.me/?text={{ urlencode("Bonjour, voici votre lien d'invitation : ".$link) }}" target="_blank" rel="noopener noreferrer" class="rounded-lg bg-green-600 px-3 py-2 text-center font-semibold text-white hover:bg-green-500">
+                    WhatsApp
+                </a>
             </div>
         </div>
     @endif
