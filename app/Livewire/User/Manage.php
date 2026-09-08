@@ -12,6 +12,15 @@ class Manage extends Component
 {
     public array $users = [];
     public $members;
+    public array $newUser = [
+        'name' => '',
+        'firstname' => '',
+        'email' => '',
+        'password' => '',
+        'role' => 'player',
+        'selectedMembers' => [],
+    ];
+    public bool $creating = false;
     public ?int $editingIndex = null;
 
     public function mount()
@@ -37,6 +46,61 @@ class Manage extends Component
             ])
             ->all();
         $this->members = Member::select()->orderBy('prenom')->orderby('name')->get();
+        if (!$this->newUser['selectedMembers']) {
+            $this->newUser['selectedMembers'] = $this->members->mapWithKeys(fn (Member $member): array => [$member->id => ''])->all();
+        }
+    }
+
+    public function startCreate(): void
+    {
+        $this->resetValidation();
+        $this->editingIndex = null;
+        $this->creating = true;
+    }
+
+    public function cancelCreate(): void
+    {
+        $this->resetValidation();
+        $this->newUser = [
+            'name' => '',
+            'firstname' => '',
+            'email' => '',
+            'password' => '',
+            'role' => 'player',
+            'selectedMembers' => $this->members->mapWithKeys(fn (Member $member): array => [$member->id => ''])->all(),
+        ];
+        $this->creating = false;
+    }
+
+    public function createUser(): void
+    {
+        $this->validate([
+            'newUser.firstname' => ['required', 'string', 'min:2'],
+            'newUser.name' => ['required', 'string', 'min:2'],
+            'newUser.email' => ['required', 'email', 'unique:users,email'],
+            'newUser.password' => ['required', 'string', 'min:6'],
+            'newUser.role' => ['required', 'in:player,parent,coach'],
+            'newUser.selectedMembers' => ['array'],
+        ]);
+
+        $validRelations = [\App\Enums\MemberRelation::PARENT, \App\Enums\MemberRelation::SELF, \App\Enums\MemberRelation::COACH];
+        foreach ($this->newUser['selectedMembers'] as $relation) {
+            if ($relation && !in_array($relation, $validRelations, true)) {
+                abort(400);
+            }
+        }
+
+        $user = User::create([
+            'name' => $this->newUser['name'],
+            'firstname' => $this->newUser['firstname'],
+            'email' => $this->newUser['email'],
+            'password' => Hash::make($this->newUser['password']),
+            'role' => $this->newUser['role'],
+        ]);
+        $this->sync_members($user, $this->newUser['selectedMembers']);
+        $this->loadData();
+        $this->cancelCreate();
+        session()->flash('success', 'Utilisateur créé.');
     }
 
     public function saveUser(int $index): void
@@ -97,6 +161,7 @@ class Manage extends Component
 
     public function editUser(int $index): void
     {
+        $this->creating = false;
         $this->editingIndex = $index;
     }
 

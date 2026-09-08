@@ -18,7 +18,9 @@ return [
     "player" => "Joueur",
     "coach" => "Entraineur",
     "coaches" => "Entraineurs",
+    "staff" => "Staff",
     "staffs" => "Staffs",
+    "parent" => "Parent",
 
     "gymnase" => "Gérer les Gymnases",
 
@@ -28,9 +30,11 @@ return [
         "update" => "Modifier les membres de l'équipe",
         "manage_admin" => "Gérer les administrateurs",
         "manage_members" => "Gérer les membres",
+        "add" => "Ajouter un membre",
         "search" => "Rechercher un membre",
         "licence" => "Licence",
         "number" => "Numéro",
+        "birthdate" => "Date de naissance"
     ],
 
     "matches" => "Matchs",

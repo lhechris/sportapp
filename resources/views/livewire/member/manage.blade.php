@@ -1,7 +1,14 @@
 <div class="space-y-6 p-0 sm:p-6">
-    <h1 class="text-2xl font-bold text-gray-900">
-        {{ __('Manage members') }}
-    </h1>
+    <div class="flex items-center justify-between gap-4">
+        <h1 class="text-2xl font-bold text-gray-900">
+            {{ __('team.member.manage_members') }}
+        </h1>
+        @if(!$creating)
+            <button wire:click="startCreate" type="button" class="rounded-lg bg-yellow-400 px-3 py-2 font-semibold text-black hover:bg-yellow-300">
+                {{ __('team.member.add') }}
+            </button>
+        @endif
+    </div>
 
     @if (session('success'))
         <p class="rounded-lg bg-green-100 px-4 py-3 text-sm text-green-800" role="status">
@@ -9,12 +16,62 @@
         </p>
     @endif
 
+    @if($creating)
+        <div class="rounded-xl border border-gray-800 bg-gray-900 p-4 shadow">
+            <h2 class="text-lg font-semibold text-white">{{ __('team.member.add') }}</h2>
+            <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                    <x-input-label for="new-member-prenom" value="{{ __('First name') }}" class="text-white" />
+                    <x-text-input wire:model="newMember.prenom" id="new-member-prenom" type="text" class="mt-1 w-full bg-gray-900 text-white" />
+                    <x-input-error class="mt-1" :messages="$errors->get('newMember.prenom')" />
+                </div>
+                <div>
+                    <x-input-label for="new-member-name" value="{{ __('Name') }}" class="text-white" />
+                    <x-text-input wire:model="newMember.name" id="new-member-name" type="text" class="mt-1 w-full bg-gray-900 text-white" />
+                    <x-input-error class="mt-1" :messages="$errors->get('newMember.name')" />
+                </div>
+                <div>
+                    <x-input-label for="new-member-type" value="{{ __('Type') }}" class="text-white" />
+                    <select wire:model="newMember.type" id="new-member-type" class="mt-1 w-full rounded-md border-gray-700 bg-gray-900 text-white focus:border-yellow-500 focus:ring-yellow-500">
+                        <option value="player">{{ __('team.player') }}</option>
+                        <option value="coach">{{ __('team.coach') }}</option>
+                        <option value="staff">{{ __('team.staff') }}</option>
+                    </select>
+                    <x-input-error class="mt-1" :messages="$errors->get('newMember.type')" />
+                </div>
+                <div>
+                    <x-input-label for="new-member-number" value="{{ __('team.member.number') }}" class="text-white" />
+                    <x-text-input wire:model="newMember.numero" id="new-member-number" type="number" class="mt-1 w-full bg-gray-900 text-white" />
+                    <x-input-error class="mt-1" :messages="$errors->get('newMember.numero')" />
+                </div>
+                <div>
+                    <x-input-label for="new-member-birthdate" value="{{ __('team.member.birthdate') }}" class="text-white" />
+                    <x-text-input wire:model="newMember.birthdate" id="new-member-birthdate" type="date" class="mt-1 w-full bg-gray-900 text-white" />
+                    <x-input-error class="mt-1" :messages="$errors->get('newMember.birthdate')" />
+                </div>
+                <div>
+                    <x-input-label for="new-member-licence" value="{{ __('team.member.licence') }}" class="text-white" />
+                    <x-text-input wire:model="newMember.licence" id="new-member-licence" type="text" class="mt-1 w-full bg-gray-900 text-white" />
+                    <x-input-error class="mt-1" :messages="$errors->get('newMember.licence')" />
+                </div>
+            </div>
+            <div class="mt-4 flex justify-end gap-2">
+                <button wire:click="cancelCreate" type="button" class="rounded-lg border border-gray-500 px-3 py-2 font-semibold text-gray-200 hover:bg-gray-700">
+                    {{ __('global.cancel') }}
+                </button>
+                <button wire:click="createMember" type="button" class="rounded-lg bg-yellow-400 px-3 py-2 font-semibold text-black hover:bg-yellow-300">
+                    {{ __('global.save') }}
+                </button>
+            </div>
+        </div>
+    @endif
+
     <div class="overflow-hidden rounded-xl border border-gray-800 bg-gray-900 shadow">
         <table class="w-full text-left text-sm text-white">
             <thead class="bg-black text-xs uppercase tracking-wide text-yellow-400">
                 <tr>
-                    <th class="px-4 py-3">{{ __('Member') }}</th>
-                    <th class="px-4 py-3 text-right">{{ __('Actions') }}</th>
+                    <th class="px-4 py-3">{{ __('team.members') }}</th>
+                    <th class="px-4 py-3 text-right">{{ __('global.actions') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,10 +82,10 @@
                         </td>
                         <td class="px-4 py-4 text-right">
                             <button wire:click="editMember({{ $index }})" type="button" class="rounded-lg bg-yellow-400 px-3 py-2 font-semibold text-black hover:bg-yellow-300">
-                                Edit
+                                {{ __('global.edit') }}
                             </button>
                             <button wire:click="delete({{ $member['id'] }})" type="button" class="ml-2 rounded-lg border border-red-400 px-3 py-2 font-semibold text-red-400 hover:bg-red-950">
-                                Delete
+                                {{ __('global.delete') }}
                             </button>
                         </td>
                     </tr>
@@ -49,9 +106,9 @@
                                     <div>
                                         <x-input-label for="member-type-{{ $member['id'] }}" value="{{ __('Type') }}" class="text-gray-200" />
                                         <select wire:model="members.{{ $index }}.type" id="member-type-{{ $member['id'] }}" class="mt-1 w-full rounded-md border-gray-700 bg-gray-900 text-white focus:border-yellow-500 focus:ring-yellow-500">
-                                            <option value="player">{{ __('Player') }}</option>
-                                            <option value="coach">{{ __('Coach') }}</option>
-                                            <option value="staff">{{ __('Staff') }}</option>
+                                            <option value="player">{{ __('team.player') }}</option>
+                                            <option value="coach">{{ __('team.coach') }}</option>
+                                            <option value="staff">{{ __('team.staff') }}</option>
                                         </select>
                                     </div>
                                     <div>
@@ -69,10 +126,10 @@
                                 </div>
                                 <div class="mt-4 flex justify-end gap-2">
                                     <button wire:click="cancelEdit" type="button" class="rounded-lg border border-gray-500 px-3 py-2 font-semibold text-gray-200 hover:bg-gray-700">
-                                        Cancel
+                                        {{ __('global.cancel') }}
                                     </button>
                                     <button wire:click="saveMember({{ $index }})" type="button" class="rounded-lg bg-yellow-400 px-3 py-2 font-semibold text-black hover:bg-yellow-300">
-                                        Save
+                                        {{ __('global.save') }}
                                     </button>
                                 </div>
                             </td>

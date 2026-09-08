@@ -2,6 +2,7 @@
 return [
 
     "add" => "Ajouter",
+    "actions" => "Actions",
     "cancel" => "Cancel",
     "edit" => "Modifier",
     "remove" => "Enlever",

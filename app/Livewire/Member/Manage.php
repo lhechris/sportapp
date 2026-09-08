@@ -8,6 +8,15 @@ use App\Models\Member;
 class Manage extends Component
 {
     public array $members = [];
+    public array $newMember = [
+        'name' => '',
+        'prenom' => '',
+        'type' => 'player',
+        'birthdate' => '',
+        'licence' => '',
+        'numero' => '',
+    ];
+    public bool $creating = false;
     public ?int $editingIndex = null;
 
     public function mount()
@@ -31,6 +40,44 @@ class Manage extends Component
                 'numero' => $member->numero,
             ])
             ->all();
+    }
+
+    public function startCreate(): void
+    {
+        $this->resetValidation();
+        $this->editingIndex = null;
+        $this->creating = true;
+    }
+
+    public function cancelCreate(): void
+    {
+        $this->resetValidation();
+        $this->newMember = [
+            'name' => '',
+            'prenom' => '',
+            'type' => 'player',
+            'birthdate' => '',
+            'licence' => '',
+            'numero' => '',
+        ];
+        $this->creating = false;
+    }
+
+    public function createMember(): void
+    {
+        $this->validate([
+            'newMember.name' => ['required', 'string', 'min:2'],
+            'newMember.prenom' => ['nullable', 'string'],
+            'newMember.type' => ['required', 'in:player,coach,staff'],
+            'newMember.birthdate' => ['nullable', 'date'],
+            'newMember.licence' => ['nullable', 'string'],
+            'newMember.numero' => ['nullable', 'integer'],
+        ]);
+
+        Member::create($this->newMember);
+        $this->loadMembers();
+        $this->cancelCreate();
+        session()->flash('success', 'Membre créé.');
     }
 
     public function saveMember(int $index): void
@@ -60,6 +107,7 @@ class Manage extends Component
 
     public function editMember(int $index): void
     {
+        $this->creating = false;
         $this->editingIndex = $index;
     }
 
