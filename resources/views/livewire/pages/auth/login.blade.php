@@ -28,10 +28,16 @@ new #[Layout('layouts.guest')] class extends Component
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    @if (session('error'))
+        <p class="mb-4 rounded-lg bg-red-100 px-4 py-3 text-sm text-red-800" role="alert">
+            {{ session('error') }}
+        </p>
+    @endif
+
     <form wire:submit="login">
         <!-- Email Address -->
         <div>
-            <x-input-label for="email" :value="__('global.email')" />
+            <x-input-label for="email" :value="__('user.email')" />
             <x-text-input wire:model="form.email" id="email" class="block mt-1 w-full" type="email" name="email" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('form.email')" class="mt-2" />
         </div>

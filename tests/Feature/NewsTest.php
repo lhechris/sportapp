@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Livewire\News\Form;
+use App\Livewire\News\Manage;
 use App\Models\News;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -60,7 +61,7 @@ class NewsTest extends TestCase
 
         $this->actingAs($user)
             ->get('/news/create')
-            ->assertForbidden();
+            ->assertNotfound();
     }
 
     public function test_coach_can_edit_news(): void

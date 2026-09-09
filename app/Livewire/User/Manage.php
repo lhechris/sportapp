@@ -25,6 +25,7 @@ class Manage extends Component
     public bool $creating = false;
     public ?string $link = null;
     public ?int $editingIndex = null;
+    public string $memberSearch = '';
 
     public function mount()
     {
@@ -58,12 +59,14 @@ class Manage extends Component
     {
         $this->resetValidation();
         $this->editingIndex = null;
+        $this->memberSearch = '';
         $this->creating = true;
     }
 
     public function cancelCreate(): void
     {
         $this->resetValidation();
+        $this->memberSearch = '';
         $this->newUser = [
             'name' => '',
             'firstname' => '',
@@ -201,12 +204,34 @@ class Manage extends Component
     {
         $this->creating = false;
         $this->editingIndex = $index;
+        $this->memberSearch = '';
     }
 
     public function cancelEdit(): void
     {
         $this->loadData();
         $this->editingIndex = null;
+        $this->memberSearch = '';
+    }
+
+    public function filteredMembers()
+    {
+        $search = mb_strtolower(trim($this->memberSearch));
+
+        if ($search === '') {
+            return $this->members;
+        }
+
+        return $this->members->filter(function (Member $member) use ($search): bool {
+            $memberText = mb_strtolower($member->prenom.' '.$member->name.' '.$member->type);
+
+            return str_contains($memberText, $search);
+        });
+    }
+
+    public function associatedMembers(array $selectedMembers)
+    {
+        return $this->members->filter(fn (Member $member): bool => !empty($selectedMembers[$member->id] ?? null));
     }
 
     public function delete($id)

@@ -48,8 +48,8 @@
     <table class="w-full text-sm text-left rtl:text-right text-body text-yellow-400">
         <thead class="bg-black border-b border-default">
             <tr>
-                <th scope="col" class="px-6 py-3 font-bold">{{ __('global.firstname') }}</th>
-                <th scope="col" class="px-6 py-3 font-bold">{{ __('global.name') }}</th>
+                <th scope="col" class="px-6 py-3 font-bold">{{ __('user.firstname') }}</th>
+                <th scope="col" class="px-6 py-3 font-bold">{{ __('user.name') }}</th>
                 <th scope="col" class="px-6 py-3 font-bold"></th>
             </tr>
         </thead>

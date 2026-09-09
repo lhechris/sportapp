@@ -20,7 +20,7 @@
         <table class="w-full text-left border-collapse text-sm">
             <thead>
                 <tr class="bg-black text-yellow-400">
-                    <th class="p-2">{{ __('global.name') }}</th>
+                    <th class="p-2">{{ __('user.name') }}</th>
                     <th class="p-2">{{ __('team.param.type') }}</th>
                     <th class="p-2">{{ __('team.param.order') }}</th>
                     <th class="p-2">{{ __('team.param.display') }}</th>

@@ -46,8 +46,12 @@ Route::get('/auth/google/callback', function () {
 
 
     if (!$user) {
-        // L'utilisateur n'existe pas, on cherche s'il y a une invit en cours        
-        $invitation =  App\Models\Invitation::findOrFail(session('invitation_id'));
+        // L'utilisateur n'existe pas, on cherche s'il y a une invitation en cours.
+        $invitation = App\Models\Invitation::find(session('invitation_id'));
+
+        if (!$invitation) {
+            return redirect()->route('login')->with('error', 'Vous n’avez pas de compte sur cette application. Merci de demander une invitation.');
+        }
 
         session()->forget('invitation_id');
 

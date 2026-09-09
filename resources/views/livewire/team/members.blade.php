@@ -45,7 +45,7 @@
         <table class="w-full text-sm text-left rtl:text-right text-body text-yellow-400">
             <thead class="bg-black border-b border-default">
                 <tr>
-                    <th scope="col" class="px-2 py-3 font-medium">{{ __('global.firstname') }}</th>
+                    <th scope="col" class="px-2 py-3 font-medium">{{ __('user.firstname') }}</th>
                     <th scope="col" class="px-2 py-3 font-medium">{{ __('team.member.licence') }}</th>
                     <th scope="col" class="px-2 py-3 font-medium">{{ __('team.member.number') }}</th>
                     <th scope="col" class="px-2 py-3 font-medium">{{ __('team.matches') }}</th>

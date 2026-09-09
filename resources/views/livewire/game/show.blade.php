@@ -63,7 +63,7 @@
         <table class="text-sm text-left rtl:text-right text-body text-yellow-400 max-w-lg ">
             <thead class="bg-black border-b border-default">
                 <tr>
-                    <th scope="col" class="px-2 sm:px-6 py-3 font-bold">{{ __('global.firstname') }}</th>
+                    <th scope="col" class="px-2 sm:px-6 py-3 font-bold">{{ __('user.firstname') }}</th>
                     @foreach($options as $option)
                         @if( $option->isDisplayTable())
                         <th scope="col" class="px-2 sm:px-6 py-3 font-bold">{{ $option->name }}</th>

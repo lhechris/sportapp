@@ -9,7 +9,7 @@
 
     <table class="w-full text-left rtl:text-right text-body text-yellow-400 ">
         <thead  class="bg-black border-b border-default">
-            <th>{{ __("global.name") }}</th>
+            <th>{{ __("user.name") }}</th>
             <th>{{ __("geo.location") }}</th>
             <th>{{ __("geo.latlong") }}</th>
             <th></th>

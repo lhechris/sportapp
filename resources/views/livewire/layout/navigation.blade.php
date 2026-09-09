@@ -96,7 +96,7 @@ new class extends Component
                                     Actualités
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('users')" wire:navigate>
-                                    {{ __('global.users') }}
+                                    {{ __('user.users') }}
                                 </x-dropdown-link>
                                 <x-dropdown-link :href="route('members')" wire:navigate>
                                     {{ __('team.members') }}

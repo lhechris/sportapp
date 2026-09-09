@@ -54,6 +54,20 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
+    public function test_unknown_users_receive_an_invitation_message(): void
+    {
+        $component = Volt::test('pages.auth.login')
+            ->set('form.email', 'unknown@example.test')
+            ->set('form.password', 'password');
+
+        $component->call('login');
+
+        $component->assertHasErrors([
+            'form.email' => 'Vous n’avez pas de compte sur cette application. Merci de demander une invitation.',
+        ]);
+        $this->assertGuest();
+    }
+
     public function test_navigation_menu_can_be_rendered(): void
     {
         $user = User::factory()->create(['role'=> User::ROLE_COACH,]);

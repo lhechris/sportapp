@@ -14,12 +14,6 @@ return [
     "parameters_cut" => "Param...",
     "news" => "Actualités",
 
-    "email" => "Email",
-    "users" => "Utilisateurs",
-    "users_cut" => "Utilis...",
-    "firstname" => "Prénom",
-    "name" => "Nom",
-
     "home" => "Accueil",
 
     "manage" => "Gérer",
@@ -36,5 +30,5 @@ return [
     "no"  => "Non",
 
     "welcome" => "Bienvenue",
-    "area" => "Mon espace"
+    "area" => "Mon espace",
 ];
