@@ -11,8 +11,22 @@ class Members extends Component
     public $members;
     public $coaches;
     public $owners;
+    public ?int $editingMemberId = null;
+    public array $editingMember = [
+        'prenom' => '',
+        'licence' => '',
+        'numero' => '',
+    ];
 
     public function mount()
+    {
+        $this->loadMembers();
+
+        $this->coaches = $this->team->coaches()->get();
+        $this->owners = $this->team->owners()->get();
+    }
+
+    private function loadMembers(): void
     {
         $this->members = $this->team->members()
                     ->withCount(['games as games_count' => function ($query) {
@@ -23,14 +37,47 @@ class Members extends Component
                     }])
                     ->where('type',\App\Models\Member::TYPE_PLAYER)
                     ->get();
+    }
 
-        $this->coaches = $this->team->coaches()->get();
-        $this->owners = $this->team->owners()->get();
+    public function editMember(int $memberId): void
+    {
+        $member = $this->team->members()->whereKey($memberId)->firstOrFail();
+
+        $this->editingMemberId = $member->id;
+        $this->editingMember = [
+            'prenom' => $member->prenom ?? '',
+            'licence' => $member->licence ?? '',
+            'numero' => $member->numero ?? '',
+        ];
+        $this->resetValidation();
+    }
+
+    public function saveMember(): void
+    {
+        $this->validate([
+            'editingMember.prenom' => ['nullable', 'string'],
+            'editingMember.licence' => ['nullable', 'string'],
+            'editingMember.numero' => ['nullable', 'string'],
+        ]);
+
+        $member = $this->team->members()->whereKey($this->editingMemberId)->firstOrFail();
+        $member->update($this->editingMember);
+
+        $this->editingMemberId = null;
+        $this->loadMembers();
+    }
+
+    public function cancelEdit(): void
+    {
+        $this->editingMemberId = null;
+        $this->resetValidation();
 
     }
 
     public function render()
     {
+        $this->loadMembers();
+
         return view('livewire.team.members');
     }
 }

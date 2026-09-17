@@ -56,15 +56,33 @@
             <tbody>
                 @forelse($members as $player)
                 <tr class="odd:bg-gray-800 even:bg-gray-900 border-b border-default">
-                    <td class="px-2 py-4">{{ $player->prenom }}</td>
-                    <td class="px-2 py-4">{{ $player->licence ?? '.....' }}</td>
-                    <td class="px-2 py-4">{{ $player->numero }}</td>
+                    @if ($editingMemberId === $player->id)
+                        <td class="px-2 py-4">
+                            <input type="text" wire:model="editingMember.prenom" class="w-full rounded border-gray-700 bg-yellow-200 px-2 py-1 text-black">
+                            @error('editingMember.prenom') <span class="text-red-400">{{ $message }}</span> @enderror
+                        </td>
+                        <td class="px-2 py-4">
+                            <input type="text" wire:model="editingMember.licence" class="w-full rounded border-gray-700 bg-yellow-200 px-2 py-1 text-black">
+                            @error('editingMember.licence') <span class="text-red-400">{{ $message }}</span> @enderror
+                        </td>
+                        <td class="px-2 py-4">
+                            <input type="text" wire:model="editingMember.numero" class="w-full rounded border-gray-700 bg-yellow-200 px-2 py-1 text-black">
+                            @error('editingMember.numero') <span class="text-red-400">{{ $message }}</span> @enderror
+                        </td>
+                    @else
+                        <td class="px-2 py-4">{{ $player->prenom }}</td>
+                        <td class="px-2 py-4">{{ $player->licence ?? '.....' }}</td>
+                        <td class="px-2 py-4">{{ $player->numero }}</td>
+                    @endif
                     <td class="px-2 py-4">{{ $player->games_count }}</td>
                     <td class="px-2 py-4">{{ $player->trainings_count }}</td>
                     <td class="px-2 py-4">
-                    <button class="text-sm text-white hover:underline">
-                        <a href="{{ route('member',["member"=>$player->id]) }}" />{{ __('global.profile.see') }} →</a>
-                    </button>
+                        @if ($editingMemberId === $player->id)
+                            <button wire:click="saveMember" type="button" class="mr-2 text-sm text-green-400 hover:underline">Enregistrer</button>
+                            <button wire:click="cancelEdit" type="button" class="text-sm text-gray-300 hover:underline">Annuler</button>
+                        @else
+                            <button wire:click="editMember({{ $player->id }})" type="button" class="text-sm text-white hover:underline">Modifier</button>
+                        @endif
                     </td>
                 </tr>
                 @empty

@@ -143,7 +143,7 @@ class Edit extends Component
 
     public function generateFeuille() {
         $spreadsheet = new Spreadsheet();
-        $inputFileName = storage_path('app/' .  env("TEMPLATE_FILE"));
+        $inputFileName = storage_path('app/' .  config("app.template_file"));
         $spreadsheet = IOFactory::load($inputFileName);
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setCellValue('C3', $this->game->numero);

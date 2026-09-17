@@ -123,4 +123,6 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+
+    'template_file' => env("TEMPLATE_FILE",'template/template.xlsx'),
 ];

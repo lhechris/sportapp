@@ -169,22 +169,24 @@ class Manage extends Component
         $this->validate([
             'newUser.firstname' => ['required', 'string', 'min:2'],
             'newUser.name' => ['required', 'string', 'min:2'],
-            'newUser.email' => ['required', 'email'],
+            'newUser.email' => ['nullable', 'email'],
             'newUser.role' => ['required', 'in:player,parent,coach'],
             'newUser.selectedMembers' => ['array'],
         ]);
 
         $token = Str::uuid();
+        $email = $this->newUser['email']
+            ?: Str::slug($this->newUser['firstname'].'.'.$this->newUser['name']).'@example.com';
         $user = User::create([
             'name' => $this->newUser['name'],
             'firstname' => $this->newUser['firstname'],
-            'email' => Str::slug($this->newUser['firstname'].'.'.$this->newUser['name']).'+'.Str::lower(Str::random(8)).'@example.com',
+            'email' => $email,
             'password' => Hash::make(Str::random(40)),
             'role' => $this->newUser['role'],
         ]);
 
         Invitation::create([
-            'email' => $this->newUser['email'],
+            'email' => $email,
             'token' => $token,
             'created_by' => auth()->id(),
             'user_id' => $user->id,

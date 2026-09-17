@@ -56,7 +56,6 @@ Route::middleware(['auth', 'isCoach'])->group(function () {
     Route::get('/games/edit/{game}', Game\Edit::class)->name('game.edit');
     Route::get('/games/selection/{game}', Game\Selection::class)->name('game.selection');
     Route::get('/trainings/{training}', Training\Show::class)->name('training.show');
-    Route::get('/member/{member}', Member\Profile::class)->name('member');
 
     Route::get('/gymnase',Gymnase\Show::class)->name('gymnase.show');
     Route::get('/news', News\Manage::class)->name('news');
