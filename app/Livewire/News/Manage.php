@@ -36,6 +36,14 @@ class Manage extends Component
         $this->editingNews = null;
     }
 
+    public function delete(int $id): void
+    {
+        $news = News::findOrFail($id);
+        $news->delete();
+
+        $this->loadNews();
+    }
+
     protected $listeners = ['news-saved' => 'refreshNews'];
 
     public function render()

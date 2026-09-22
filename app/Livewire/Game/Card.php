@@ -6,17 +6,31 @@ use Livewire\Component;
 
 use App\Models\Game;
 use App\Models\Member;
+use Carbon\Carbon;
 
 class Card extends Component
 {
     public Game $game;
     public Member $member;
     public $availability;
+    public $isSelected = -1;
 
     public function mount()
     {
-        // Charge la valeur initiale du pivot
-        $this->availability = $this->game->members()->where('member_id', $this->member->id)->first()?->pivot?->availability;
+        $gameMember = $this->game->members()
+            ->where('member_id', $this->member->id)
+            ->first();
+
+        $this->availability = $gameMember?->pivot?->availability;
+        $mercredi = Carbon::parse($this->game->date)
+                        ->startOfWeek(Carbon::MONDAY)
+                        ->addDays(2)
+                        ->endOfDay();
+
+        if (Carbon::now()->isAfter($mercredi)) {
+            $isSel = (bool) ($gameMember?->pivot?->selected);
+            $this->isSelected = $isSel?1:0;
+        }
     }
 
     public function setAvailability($memberId, $gameId, $value)

@@ -24,7 +24,7 @@
 
         <label for="active" class="flex items-center gap-2 text-sm text-gray-700">
             <input wire:model="active" id="active" name="active" type="checkbox" class="rounded border-gray-300 text-yellow-500 focus:ring-yellow-500">
-            Publier immédiatement
+            Publier
         </label>
 
         <x-primary-button>{{ $news ? 'Enregistrer les modifications' : 'Créer l’actualité' }}</x-primary-button>

@@ -93,4 +93,25 @@ class NewsTest extends TestCase
             'active' => false,
         ]);
     }
+
+    public function test_coach_can_delete_news(): void
+    {
+        $user = User::factory()->create(['role' => User::ROLE_COACH]);
+        $news = News::create([
+            'title' => 'Annonce à supprimer',
+            'description' => 'Contenu',
+            'active' => true,
+        ]);
+
+        Livewire::actingAs($user)
+            ->test(Manage::class)
+            ->call('delete', $news->id)
+            ->assertSet('news', function ($newsItems) {
+                return $newsItems->doesntContain(fn ($item) => $item->id === $news->id);
+            });
+
+        $this->assertDatabaseMissing('news', [
+            'id' => $news->id,
+        ]);
+    }
 }

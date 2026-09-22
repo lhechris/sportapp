@@ -13,6 +13,14 @@
         </span>
     </div>
 
+    <div class="mt-2">
+        @if ($isSelected>=0)
+        <span class="inline-flex items-center rounded-full px-2 py-1 text-xs font-semibold {{ $isSelected ? 'bg-green-500 text-white' : 'bg-gray-700 text-gray-300' }}">
+            {{ $isSelected ? 'Sélectionné' : 'Non sélectionné' }}
+        </span>
+        @endif
+    </div>
+
     <div class="mt-3 flex justify-between items-center">
         <span class="text-gray-400">{{ __('team.game.rendezvous') }} : {{ $game->rendezvous }}</span>
     </div>

@@ -70,7 +70,9 @@
         <table class="w-full text-left text-sm text-white">
             <thead class="bg-black text-xs uppercase tracking-wide text-yellow-400">
                 <tr>
-                    <th class="px-4 py-3">{{ __('team.members') }}</th>
+                    <th class="px-4 py-3" >{{ __('team.members') }}</th>
+                    <th class="px-4 py-3" >{{ __('team.member.number') }}</th>
+                    <th class="px-4 py-3" >{{ __('team.member.licence') }}</th>
                     <th class="px-4 py-3 text-right">{{ __('global.actions') }}</th>
                 </tr>
             </thead>
@@ -79,6 +81,12 @@
                     <tr wire:key="member-{{ $member['id'] }}" class="border-b border-gray-800 last:border-0">
                         <td class="px-4 py-4 font-semibold">
                             {{ $member['prenom'] }} {{ $member['name'] }}
+                        </td>
+                        <td class="px-4 py-4 font-semibold">
+                            {{ $member['numero'] }} 
+                        </td>
+                        <td class="px-4 py-4 font-semibold">
+                            {{ $member['licence'] }} 
                         </td>
                         <td class="px-4 py-4 text-right">
                             <button wire:click="editMember({{ $index }})" type="button" class="ml-2 rounded-lg border border-yellow-400 bg-yellow-300 px-3 py-2 font-semibold text-black hover:bg-yellow-300">

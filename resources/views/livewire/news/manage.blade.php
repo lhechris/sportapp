@@ -23,9 +23,14 @@
                             {{ $item->active ? 'Publiée' : 'Désactivée' }}
                         </td>
                         <td class="px-3 py-3 text-right">
-                            <button wire:click="edit({{ $item->id }})" type="button" class="font-semibold text-yellow-400 hover:text-yellow-300">
-                                Modifier
-                            </button>
+                            <div class="flex justify-end gap-3">
+                                <button wire:click="edit({{ $item->id }})" type="button" class="font-semibold text-yellow-400 hover:text-yellow-300">
+                                    Modifier
+                                </button>
+                                <button wire:click="delete({{ $item->id }})" type="button" class="font-semibold text-red-400 hover:text-red-300" wire:confirm="Êtes-vous sûr de vouloir supprimer cette actualité ?">
+                                    Supprimer
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 @empty
