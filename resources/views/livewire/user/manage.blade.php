@@ -10,6 +10,11 @@
         @endif
     </div>
 
+    <div>
+        <label for="user-search" class="sr-only">{{ __('Search users') }}</label>
+        <input wire:model.live.debounce.300ms="userSearch" id="user-search" type="search" class="w-full rounded-lg border-gray-300 bg-white text-gray-900 shadow-sm focus:border-yellow-500 focus:ring-yellow-500" placeholder="Recherche" />
+    </div>
+
     @if (session('success'))
         <p class="rounded-lg bg-green-100 px-4 py-3 text-sm text-green-800" role="status">
             {{ session('success') }}
@@ -102,7 +107,17 @@
             </div>
         </div>
     @endif
-
+    @if($usersLastPage > 1)
+        <div class="flex items-center justify-between gap-4 text-sm text-gray-700">
+            <button wire:click="previousUsersPage" type="button" @disabled($usersPage === 1) class="rounded-lg border border-gray-700 px-3 py-2 font-semibold disabled:cursor-not-allowed disabled:opacity-40">
+                {{ __('Previous') }}
+            </button>
+            <span>{{ $usersPage }} / {{ $usersLastPage }}</span>
+            <button wire:click="nextUsersPage" type="button" @disabled($usersPage === $usersLastPage) class="rounded-lg border border-gray-700 px-3 py-2 font-semibold disabled:cursor-not-allowed disabled:opacity-40">
+                {{ __('Next') }}
+            </button>
+        </div>
+    @endif
     <div class="overflow-hidden rounded-xl border border-gray-800 bg-gray-900 shadow">
         <table class="w-full text-left text-sm text-white">
             <thead class="bg-black text-xs uppercase tracking-wide text-yellow-400">
@@ -122,15 +137,15 @@
                         <td>
                             <span class="mt-1 text-xs text-gray-300"> {{ $user['memberNames'] }} </span>
                         </td>
-                        <td class="px-4 py-4 text-right">
-                            <button wire:click="editUser({{ $index }})" type="button" class="ml-2 rounded-lg border border-yellow-400 bg-yellow-300 px-3 py-2 font-semibold text-black hover:bg-yellow-300">
-                                <img src="{{ asset('images/parametres.png') }}" class="max-w-4"/>
+                        <td class="whitespace-nowrap px-2 py-2 text-right">
+                            <button wire:click="editUser({{ $index }})" type="button" class="ml-1 inline-flex h-8 w-8 items-center justify-center rounded-lg border border-yellow-400 bg-yellow-300 p-1 font-semibold text-black hover:bg-yellow-300">
+                                <img src="{{ asset('images/parametres.png') }}" class="h-4 w-4 object-contain"/>
                             </button>
-                            <button wire:click="delete({{ $user['id'] }})" wire:confirm="{{ __('user.confirm_suppression') }}" type="button" class="ml-2 rounded-lg border border-red-400 px-3 py-2 font-semibold text-red-400 hover:bg-red-950">
-                                <img src="{{ asset('images/supprimer.png') }}" class="max-w-4" />
+                            <button wire:click="delete({{ $user['id'] }})" wire:confirm="{{ __('user.confirm_suppression') }}" type="button" class="ml-1 inline-flex h-8 w-8 items-center justify-center rounded-lg border border-red-400 p-1 font-semibold text-red-400 hover:bg-red-950">
+                                <img src="{{ asset('images/supprimer.png') }}" class="h-4 w-4 object-contain" />
                             </button>
-                            <button wire:click="sendNotification({{ $user['id'] }})" type="button" class="ml-2 rounded-lg border border-blue-400 px-3 py-2 font-semibold text-blue-300 hover:bg-blue-950" title="{{ __('Send notification') }}">
-                                <img src="{{ asset('images/notification.png') }}" class="max-w-4" />
+                            <button wire:click="sendNotification({{ $user['id'] }})" type="button" class="ml-1 inline-flex h-8 w-8 items-center justify-center rounded-lg border border-blue-400 p-1 font-semibold text-blue-300 hover:bg-blue-950" title="{{ __('Send notification') }}">
+                                <img src="{{ asset('images/notification.png') }}" class="h-4 w-4 object-contain" />
                             </button>
                         </td>
                     </tr>
@@ -216,4 +231,16 @@
             </tbody>
         </table>
     </div>
+
+    @if($usersLastPage > 1)
+        <div class="flex items-center justify-between gap-4 text-sm text-gray-700">
+            <button wire:click="previousUsersPage" type="button" @disabled($usersPage === 1) class="rounded-lg border border-gray-700 px-3 py-2 font-semibold disabled:cursor-not-allowed disabled:opacity-40">
+                {{ __('Previous') }}
+            </button>
+            <span>{{ $usersPage }} / {{ $usersLastPage }}</span>
+            <button wire:click="nextUsersPage" type="button" @disabled($usersPage === $usersLastPage) class="rounded-lg border border-gray-700 px-3 py-2 font-semibold disabled:cursor-not-allowed disabled:opacity-40">
+                {{ __('Next') }}
+            </button>
+        </div>
+    @endif
 </div>

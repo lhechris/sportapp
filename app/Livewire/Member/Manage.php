@@ -18,6 +18,9 @@ class Manage extends Component
     ];
     public bool $creating = false;
     public ?int $editingIndex = null;
+    public string $memberSearch = '';
+    public int $membersPage = 1;
+    public int $membersLastPage = 1;
 
     public function mount()
     {
@@ -26,9 +29,24 @@ class Manage extends Component
 
     public function loadMembers()
     {
-        $this->members = Member::query()
+        $memberQuery = Member::query()
             ->orderBy('prenom')
-            ->orderBy('name')
+            ->orderBy('name');
+
+
+        $search = trim($this->memberSearch);
+        if ($search !== '') {
+            $memberQuery->where(function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('prenom', 'like', "%{$search}%");
+            });
+        }
+
+        $this->membersLastPage = max(1, (int) ceil($memberQuery->count() / 10));
+        $this->membersPage = min($this->membersPage, $this->membersLastPage);
+
+        $this->members = $memberQuery
+            ->forPage($this->membersPage, 10)
             ->get()
             ->map(fn (Member $member): array => [
                 'id' => $member->id,
@@ -40,6 +58,31 @@ class Manage extends Component
                 'numero' => $member->numero,
             ])
             ->all();
+    }
+
+    public function updatedMemberSearch(): void
+    {
+       // $this->membersPage = 1;
+        $this->editingIndex = null;
+        $this->loadMembers();
+    }
+
+    public function previousMembersPage(): void
+    {
+        if ($this->membersPage > 1) {
+            $this->membersPage--;
+            $this->editingIndex = null;
+            $this->loadMembers();
+        }
+    }
+
+    public function nextMembersPage(): void
+    {
+        if ($this->membersPage < $this->membersLastPage) {
+            $this->membersPage++;
+            $this->editingIndex = null;
+            $this->loadMembers();
+        }
     }
 
     public function startCreate(): void

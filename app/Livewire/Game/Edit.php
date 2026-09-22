@@ -147,16 +147,22 @@ class Edit extends Component
         $spreadsheet = IOFactory::load($inputFileName);
         $activeWorksheet = $spreadsheet->getActiveSheet();
         $activeWorksheet->setCellValue('C3', $this->game->numero);
-        $date = \Carbon\Carbon::parse($this->game->date)->format("Y-m-d"); 
+        $date = \Carbon\Carbon::parse($this->game->date)->format("d/m/Y"); 
         $activeWorksheet->setCellValue('E3', $date);
 
         $oppositionA = $this->game->members()
+                                  ->with(['options' => function ($query) {
+                                      $query->where('type', GameOption::TYPE_NUM);
+                                  }])
                                   ->whereHas('oppositionOptions', function ($query) {
                     $query->where('game_id', $this->game->id)
                         ->where('value', 'A');
                 })->get();
 
         $oppositionB = $this->game->members()
+                                  ->with(['options' => function ($query) {
+                                      $query->where('type', GameOption::TYPE_NUM);
+                                  }])
                                   ->whereHas('oppositionOptions', function ($query) {
                     $query->where('game_id', $this->game->id)
                         ->where('value', 'B');
@@ -187,13 +193,21 @@ class Edit extends Component
 
     private function writeopposition($sheet,$opp,$start) 
     {
+        $joueurs = $opp->map(function ($joueur) {
+            $numero = $joueur->options->first()?->pivot->value;
+
+            return [
+                'joueur' => $joueur,
+                'numero' => $numero,
+            ];
+        })->sortBy(function ($joueur) {
+            return $joueur['numero'] === null ? PHP_INT_MAX : (int) $joueur['numero'];
+        });
+
         $numligne=$start;
-        foreach($opp as $joueur) {
-            foreach ($joueur->options as $option) {
-                if ($option->type === GameOption::TYPE_NUM) {
-                    $sheet->setCellValue("A$numligne", $option->pivot->value);                    
-                }
-            }
+        foreach($joueurs as $joueurData) {
+            $joueur = $joueurData['joueur'];
+            $sheet->setCellValue("A$numligne", $joueurData['numero']);
             
             $sheet->setCellValue("B$numligne", $joueur->licence);
             $sheet->setCellValue("C$numligne", $joueur->name);

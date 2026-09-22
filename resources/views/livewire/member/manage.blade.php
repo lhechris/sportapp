@@ -16,6 +16,11 @@
         </p>
     @endif
 
+    <div>
+        <label for="user-search" class="sr-only">{{ __('Search users') }}</label>
+        <input wire:model.live.debounce.300ms="memberSearch" id="user-search" type="search" class="w-full rounded-lg border-gray-300 bg-white text-gray-900 shadow-sm focus:border-yellow-500 focus:ring-yellow-500" placeholder="Recherche" />
+    </div>
+
     @if($creating)
         <div class="rounded-xl border border-gray-800 bg-yellow-100 p-4 shadow text-black">
             <h2 class="text-lg font-semibold ">{{ __('team.member.add') }}</h2>
@@ -66,6 +71,19 @@
         </div>
     @endif
 
+    @if($membersLastPage > 1)
+        <div class="flex items-center justify-between gap-4 text-sm text-gray-700">
+            <button wire:click="previousMembersPage" type="button" @disabled($membersPage === 1) class="rounded-lg border border-gray-700 px-3 py-2 font-semibold disabled:cursor-not-allowed disabled:opacity-40">
+                {{ __('Previous') }}
+            </button>
+            <span>{{ $membersPage }} / {{ $membersLastPage }}</span>
+            <button wire:click="nextMembersPage" type="button" @disabled($membersPage === $membersLastPage) class="rounded-lg border border-gray-700 px-3 py-2 font-semibold disabled:cursor-not-allowed disabled:opacity-40">
+                {{ __('Next') }}
+            </button>
+        </div>
+    @endif
+
+
     <div class="overflow-hidden rounded-xl border border-gray-800 bg-gray-900 shadow">
         <table class="w-full text-left text-sm text-white">
             <thead class="bg-black text-xs uppercase tracking-wide text-yellow-400">
@@ -88,7 +106,7 @@
                         <td class="px-4 py-4 font-semibold">
                             {{ $member['licence'] }} 
                         </td>
-                        <td class="px-4 py-4 text-right">
+                        <td class="whitespace-nowrap px-2 py-2 text-right">
                             <button wire:click="editMember({{ $index }})" type="button" class="ml-2 rounded-lg border border-yellow-400 bg-yellow-300 px-3 py-2 font-semibold text-black hover:bg-yellow-300">
                                 <img src="{{ asset('images/parametres.png') }}" class="max-w-4"/>
                             </button>
@@ -153,5 +171,16 @@
             </tbody>
         </table>
     </div>
+    @if($membersLastPage > 1)
+        <div class="flex items-center justify-between gap-4 text-sm text-gray-700">
+            <button wire:click="previousMembersPage" type="button" @disabled($membersPage === 1) class="rounded-lg border border-gray-700 px-3 py-2 font-semibold disabled:cursor-not-allowed disabled:opacity-40">
+                {{ __('Previous') }}
+            </button>
+            <span>{{ $membersPage }} / {{ $membersLastPage }}</span>
+            <button wire:click="nextMembersPage" type="button" @disabled($membersPage === $membersLastPage) class="rounded-lg border border-gray-700 px-3 py-2 font-semibold disabled:cursor-not-allowed disabled:opacity-40">
+                {{ __('Next') }}
+            </button>
+        </div>
+    @endif
 
 </div>

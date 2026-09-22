@@ -26,6 +26,9 @@ class Manage extends Component
     public ?string $link = null;
     public ?int $editingIndex = null;
     public string $memberSearch = '';
+    public string $userSearch = '';
+    public int $usersPage = 1;
+    public int $usersLastPage = 1;
 
     public function mount()
     {
@@ -34,7 +37,25 @@ class Manage extends Component
 
     public function loadData()
     {
-        $this->users = User::with('members')->with('invitations')->get()
+        $usersQuery = User::with('members')->with('invitations')
+            ->orderBy('firstname')
+            ->orderBy('id');
+
+        $search = trim($this->userSearch);
+        if ($search !== '') {
+            $usersQuery->where(function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('firstname', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        $this->usersLastPage = max(1, (int) ceil($usersQuery->count() / 10));
+        $this->usersPage = min($this->usersPage, $this->usersLastPage);
+
+        $this->users = $usersQuery
+            ->forPage($this->usersPage, 10)
+            ->get()
             ->map(fn (User $user): array => [
                 'id' => $user->id,
                 'name' => $user->name,
@@ -46,12 +67,37 @@ class Manage extends Component
                     ->mapWithKeys(fn (Member $member): array => [$member->id => $member->pivot->relation])
                     ->toArray(),
                 'memberNames' => $user->members->pluck('prenom')->join(', '),
-                'invitations' => $user->invitations->pluck('token')->join(', '),
-            ])
+                'invitations' => $user->invitations->pluck('token')->join(', '),                
+            ])            
             ->all();
         $this->members = Member::select()->orderBy('prenom')->orderby('name')->get();
         if (!$this->newUser['selectedMembers']) {
             $this->newUser['selectedMembers'] = $this->members->mapWithKeys(fn (Member $member): array => [$member->id => ''])->all();
+        }
+    }
+
+    public function updatedUserSearch(): void
+    {
+        $this->usersPage = 1;
+        $this->editingIndex = null;
+        $this->loadData();
+    }
+
+    public function previousUsersPage(): void
+    {
+        if ($this->usersPage > 1) {
+            $this->usersPage--;
+            $this->editingIndex = null;
+            $this->loadData();
+        }
+    }
+
+    public function nextUsersPage(): void
+    {
+        if ($this->usersPage < $this->usersLastPage) {
+            $this->usersPage++;
+            $this->editingIndex = null;
+            $this->loadData();
         }
     }
 
