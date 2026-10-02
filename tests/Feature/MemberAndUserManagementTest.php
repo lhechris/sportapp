@@ -105,4 +105,40 @@ class MemberAndUserManagementTest extends TestCase
             'role' => User::ROLE_PARENT,
         ]);
     }
+
+    public function test_member_selections_from_an_invitation_are_not_reused_for_the_next_invitation(): void
+    {
+        $coach = User::factory()->create(['role' => User::ROLE_COACH]);
+        $firstMember = Member::factory()->create();
+        $secondMember = Member::factory()->create();
+        $form = Livewire::actingAs($coach)->test(UserManage::class);
+
+        $form
+            ->set('newUser.firstname', 'Alice')
+            ->set('newUser.name', 'Dupont')
+            ->set('newUser.email', 'alice@example.test')
+            ->set('newUser.role', User::ROLE_PARENT)
+            ->set("newUser.selectedMembers.{$firstMember->id}", 'parent')
+            ->call('invit')
+            ->call('startCreate')
+            ->set('newUser.firstname', 'Bob')
+            ->set('newUser.name', 'Martin')
+            ->set('newUser.email', 'bob@example.test')
+            ->set('newUser.role', User::ROLE_PARENT)
+            ->set("newUser.selectedMembers.{$secondMember->id}", 'parent')
+            ->call('invit')
+            ->assertHasNoErrors();
+
+        $secondUser = User::where('email', 'bob@example.test')->firstOrFail();
+
+        $this->assertDatabaseHas('member_user', [
+            'user_id' => $secondUser->id,
+            'member_id' => $secondMember->id,
+            'relation' => 'parent',
+        ]);
+        $this->assertDatabaseMissing('member_user', [
+            'user_id' => $secondUser->id,
+            'member_id' => $firstMember->id,
+        ]);
+    }
 }

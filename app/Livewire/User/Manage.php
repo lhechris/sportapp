@@ -19,7 +19,7 @@ class Manage extends Component
         'firstname' => '',
         'email' => '',
         'password' => '',
-        'role' => 'player',
+        'role' => 'parent',
         'selectedMembers' => [],
     ];
     public bool $creating = false;
@@ -103,7 +103,7 @@ class Manage extends Component
 
     public function startCreate(): void
     {
-        $this->resetValidation();
+        $this->cancelCreate();
         $this->editingIndex = null;
         $this->memberSearch = '';
         $this->creating = true;
@@ -118,7 +118,7 @@ class Manage extends Component
             'firstname' => '',
             'email' => '',
             'password' => '',
-            'role' => 'player',
+            'role' => 'parent',
             'selectedMembers' => $this->members->mapWithKeys(fn (Member $member): array => [$member->id => ''])->all(),
         ];
         $this->creating = false;
@@ -242,8 +242,7 @@ class Manage extends Component
         $this->sync_members($user, $this->newUser['selectedMembers']);
 
         $this->loadData();
-        $this->newUser['password'] = '';
-        $this->creating = false;
+        $this->cancelCreate();
         $this->link = url('/invitation/'.$token);
 
     }

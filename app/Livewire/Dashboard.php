@@ -110,7 +110,7 @@ class Dashboard extends Component
             return view('livewire.dashboard')
                 ->layout('layouts.app');
         
-        } else if (auth()->user() && auth()->user()->isParent()){
+        } else if (auth()->user() && (auth()->user()->isParent()||auth()->user()->isPlayer())){
             return view('livewire.dashboard-parent')
                 ->layout('layouts.app');
         }

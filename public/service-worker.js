@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sport-app-v1';
+const CACHE_NAME = 'sport-app-v1.1';
 const URLS_TO_CACHE = [
   '/',
   '/offline.html',
@@ -53,7 +53,7 @@ self.addEventListener('fetch', (event) => {
 
         const url = new URL(event.request.url);
         if (url.origin !== self.location.origin) {
-            return; 
+            return response; 
         }
 
         // Cloner la réponse
