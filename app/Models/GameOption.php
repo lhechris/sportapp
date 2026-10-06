@@ -46,20 +46,20 @@ class GameOption extends Model
     public static function types(): array
     {
         return [
-            self::TYPE_TEXT     => __('team.game.option.text'),
-            self::TYPE_CHECKBOX => __('team.game.option.checkbox'),
-            self::TYPE_OPPOSITION => __('team.game.option.opposition'),
-            self::TYPE_NUM      => __('team.game.option.number'),
+            self::TYPE_TEXT     => __('sportapp.text'),
+            self::TYPE_CHECKBOX => __('sportapp.checkbox'),
+            self::TYPE_OPPOSITION => __('sportapp.opposition'),
+            self::TYPE_NUM      => __('sportapp.number'),
         ];
     }
 
     public static function displays(): array
     {
         return [
-            self::DISP_ALL   => __('team.game.option.all'),
-            self::DISP_ALL_EDITABLE   => __('team.game.option.editable'),
-            self::DISP_COACH => __('team.game.option.coach'),
-            self::DISP_STAT      => __('team.game.option.stat'),
+            self::DISP_ALL   => __('sportapp.all'),
+            self::DISP_ALL_EDITABLE   => __('sportapp.all_updatable'),
+            self::DISP_COACH => __('sportapp.coach'),
+            self::DISP_STAT      => __('sportapp.statistics'),
         ];
     }
 

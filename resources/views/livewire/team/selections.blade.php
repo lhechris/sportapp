@@ -52,7 +52,7 @@
                     @endforeach                    
                 </tr>
                 @empty
-                <tr class="text-gray-500">{{ __('team.noplayers') }}</tr>
+                <tr class="text-gray-500">{{ __('sportapp.no_player') }}</tr>
                 @endforelse
             </tbody>
         </table>

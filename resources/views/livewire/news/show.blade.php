@@ -2,7 +2,7 @@
     <div class="bg-gray-900 p-5 rounded-2xl border border-gray-800">
 
         <h2 class="text-white font-bold mb-4">
-            📰​ {{ __('global.news') }}
+            📰​ {{ __('sportapp.news') }}
         </h2>
 
         <div class="grid grids-row gap-3">
@@ -22,11 +22,11 @@
                         class="mt-3 text-sm font-semibold text-yellow-400 underline hover:text-yellow-300"
                         @click="expanded = !expanded"
                         x-text="expanded ? 'Voir moins' : 'Voir plus'"
-                    >Voir plus</button>
+                    >{{ __('actions.show_all') }}</button>
                 </article>
             @empty
                 <p class="rounded-xl border border-gray-300 bg-white p-4 text-sm text-gray-600">
-                    Aucune actualité pour le moment.
+                    {{ __('sportapp.no_news') }}
                 </p>
             @endforelse
 

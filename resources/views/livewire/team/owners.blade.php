@@ -4,13 +4,13 @@
 
         <div>
             <h1 class="text-2xl font-bold text-gray-900">
-                {{ __('team.owner.manage') }} {{ $team->name }}
+                {{ __('sportapp.update_admin', ["team" => $team->name]) }}
             </h1>
         </div>
 
         <a href="{{ route('team.show', ['team' => $team->id ]) }}" 
            class="bg-black text-white px-4 py-2 rounded-xl font-semibold hover:bg-gray-800">
-            {{ __('team.back') }}
+            {{ __('sportapp.back_to_team') }}
         </a>
 
     </div>
@@ -19,7 +19,7 @@
     <input 
         type="text"
         wire:model.live="search"
-        placeholder="{{ __('team.owner.search') }}"
+        placeholder="{{ __('sportapp.search_user') }}"
         class="border p-2 w-full mb-4"
     >
 
@@ -34,7 +34,7 @@
             <div class="space-x-2">
                 <button wire:click="addMember({{ $member->id }})"
                     class="bg-green-500 text-white px-2 py-1">
-                    {{ __('global.add') }}
+                    {{ __('actions.add') }}
                 </button>
             </div>
 
@@ -42,14 +42,14 @@
     @endforeach
 
     <!-- LISTE ACTUELLE -->
-    <h2 class="mt-6 font-bold">{{ __('team.number') }}</h2>
+    <h2 class="mt-6 font-bold">{{ __('sportapp.headcount') }}</h2>
 
 
     <table class="w-full text-sm text-left rtl:text-right text-body text-yellow-400">
         <thead class="bg-black border-b border-default">
             <tr>
-                <th scope="col" class="px-6 py-3 font-bold">{{ __('user.firstname') }}</th>
-                <th scope="col" class="px-6 py-3 font-bold">{{ __('user.name') }}</th>
+                <th scope="col" class="px-6 py-3 font-bold">{{ __('sportapp.first_name') }}</th>
+                <th scope="col" class="px-6 py-3 font-bold">{{ __('Name') }}</th>
                 <th scope="col" class="px-6 py-3 font-bold"></th>
             </tr>
         </thead>
@@ -60,7 +60,7 @@
                 <td class="px-6 py-4">{{ $member->name }}</td>
                 <td class="px-6 py-4">
                     <button wire:click="removeMember({{ $member->id }})" class="text-red-600">
-                    {{ __('global.remove') }}
+                    {{ __('sportapp.remove') }}
                     </button>
                 </td>
             </tr>

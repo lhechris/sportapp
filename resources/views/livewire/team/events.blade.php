@@ -1,8 +1,8 @@
 <div>
     <div class="flex gap-4 mb-2">
-        <h2 class="text-lg font-semibold mb-4">{{ __('team.events') }}</h2>
+        <h2 class="text-lg font-semibold mb-4">{{ __('sportapp.events') }}</h2>
         <a href="{{ route('team.events.create', ['team' => $team->id ]) }}" wire:navigate>
-            <x-button>➕️{{ __('global.add') }}</x-button>
+            <x-button>➕️{{ __('actions.add') }}</x-button>
         </a>
     </div>
 
@@ -12,10 +12,10 @@
                     id="event-{{ $event->id }}" 
                     href="{{ route('event.edit', [ 'event' => $event->id]) }}"
                     description="{{ $event->formatdate() }}" >               
-                <p>{{ $event->members_count }} {{ __('team.players')}}</p>
+                <p>{{ $event->members_count }} {{ __('sportapp.players')}}</p>
             </x-card>
         @empty
-            <p class="text-gray-500">{{ __('team.event.no') }}</p>
+            <p class="text-gray-500">{{ __('sportapp.no_event') }}</p>
         @endforelse
     </x-cards-scroll>
 </div>

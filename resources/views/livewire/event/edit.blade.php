@@ -7,27 +7,27 @@
             @if($editingEvent)
                 <div class="space-y-3 bg-white p-4 rounded-xl shadow mb-4">
                     <div>
-                        <label class="block text-sm font-bold text-gray-700">{{ __('global.title') }}</label>
+                        <label class="block text-sm font-bold text-gray-700">{{ __('sportapp.title') }}</label>
                         <input type="text" wire:model="eventTitle" class="w-full rounded border border-gray-300 px-3 py-2 text-black">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-gray-700">{{ __('team.event.date') }}</label>
+                        <label class="block text-sm font-bold text-gray-700">{{ __('sportapp.date') }}</label>
                         <input type="datetime-local" wire:model="eventDate" class="w-full rounded border border-gray-300 px-3 py-2 text-black">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-gray-700">{{ __('team.event.location') }}</label>
+                        <label class="block text-sm font-bold text-gray-700">{{ __('sportapp.location') }}</label>
                         <input type="text" wire:model="eventLocation" class="w-full rounded border border-gray-300 px-3 py-2 text-black">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-gray-700">{{ __('team.event.description') }}</label>
+                        <label class="block text-sm font-bold text-gray-700">{{ __('sportapp.description') }}</label>
                         <input type="text" wire:model="eventDescription" class="w-full rounded border border-gray-300 px-3 py-2 text-black">
                     </div>
                     <div class="flex gap-2">
                         <button wire:click="updateEvent()" class="bg-green-600 text-white px-3 py-2 rounded font-semibold hover:bg-green-700">
-                            {{ __('global.save') }}
+                            {{ __('actions.save') }}
                         </button>
                         <button wire:click="toggleEditingEvent()" class="bg-gray-600 text-white px-3 py-2 rounded font-semibold hover:bg-gray-700">
-                            {{ __('global.cancel') }}
+                            {{ __('actions.cancel') }}
                         </button>
                     </div>
                 </div>
@@ -38,19 +38,19 @@
 
                 <p class="text-gray-600"> {{ $event->formatdate() }} </p>
                 <p class="text-gray-900">
-                    {{ __("team.event.location") }} : {{ $event->location }}
+                    {{ __("sportapp.location") }} : {{ $event->location }}
                 </p>
                 <p>
                 {{ $event->description }}
                 </p>
 
                 <button wire:click="toggleEditingEvent()" class="mt-2 text-blue-600 hover:text-blue-800 font-semibold text-sm">
-                    ✏️ {{ __('global.edit') }}
+                    ✏️ {{ __('actions.edit') }}
                 </button>
                 <button wire:click="deleteEvent()" 
-                    wire:confirm="{{ __('team.event.confirmdelete') }}"
+                    wire:confirm="{{ __('sportapp.confirm_delete') }}"
                     class="mt-2 text-blue-600 hover:text-blue-800 font-semibold text-sm">
-                    🗑️​ {{ __('global.delete') }}
+                    🗑️​ {{ __('actions.delete') }}
                 </button>
                 
             @endif
@@ -60,12 +60,12 @@
     <!-- LISTE -->
     <div class="flex flex-col lg:flex-row gap-4">
         <div>
-            <h2>{{ __("team.event.players") }}</h2>
+            <h2>{{ __("sportapp.list_players") }}</h2>
             <table class="w-full text-sm text-left rtl:text-right text-body text-yellow-400 max-w-lg">
                 <thead class="bg-black border-b border-default">
                     <tr>
-                        <th scope="col" class="px-2 sm:px-6 py-3 font-bold">{{ __('user.firstname') }}</th>
-                        <th scope="col" class="px-2 sm:px-6 py-3 font-bold">{{ __('team.event.availability') }}</th>
+                        <th scope="col" class="px-2 sm:px-6 py-3 font-bold">{{ __('sportapp.first_name') }}</th>
+                        <th scope="col" class="px-2 sm:px-6 py-3 font-bold">{{ __('sportapp.availability') }}</th>
                     </tr>
                 </thead>
                 <tbody>

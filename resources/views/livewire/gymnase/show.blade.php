@@ -1,7 +1,7 @@
 <div class="flex flex-col gap-4">
     <div class="flex justify-end">
         <button wire:click="create" class="bg-black text-yellow-400 px-4 py-2 rounded-lg font-semibold">
-            Nouveau
+            {{ __('actions.new')}}
         </button>
     </div>
 
@@ -9,9 +9,9 @@
 
     <table class="w-full text-left rtl:text-right text-body text-yellow-400 ">
         <thead  class="bg-black border-b border-default">
-            <th>{{ __("user.name") }}</th>
-            <th>{{ __("geo.location") }}</th>
-            <th>{{ __("geo.latlong") }}</th>
+            <th>{{ __("Name") }}</th>
+            <th>{{ __("sportapp.address") }}</th>
+            <th>{{ __("sportapp.latlong") }}</th>
             <th></th>
             
         </thead>
