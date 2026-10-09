@@ -72,25 +72,22 @@ class Edit extends Component
         });
         if ($opts->count() > 0) {
             foreach ($this->members as $member) {
-                $tocreate=true;
-                foreach ($member->options as $option) {
-                    if (in_array(strtolower($option->name), ['numero', 'numéro']) &&
-                        !empty($member->gameOptions->firstWhere('game_option_id', $option->id)?->value)) {
-                        
-                        $tocreate=false;
-                    }
-                }
-                if ($tocreate) {
-                        $member->gameOptions->push(GameMemberOption::updateOrCreate(
-                            [
-                                'game_id' => $this->game->id,
-                                'member_id' => $member->id,
-                                'game_option_id' => $opts->first()->id,
-                            ],
-                            [
-                                'value' => $member->numero,
-                            ]
-                        ));
+                $hasGeneratedNumber = $member->gameOptions->contains(function ($gameOption) use ($opts) {
+                    return $opts->contains('id', $gameOption->game_option_id)
+                        && !empty($gameOption->value);
+                });
+
+                if (! $hasGeneratedNumber) {
+                    $member->gameOptions->push(GameMemberOption::updateOrCreate(
+                        [
+                            'game_id' => $this->game->id,
+                            'member_id' => $member->id,
+                            'game_option_id' => $opts->first()->id,
+                        ],
+                        [
+                            'value' => $member->numero,
+                        ]
+                    ));
                 }
             }
         }
@@ -128,10 +125,12 @@ class Edit extends Component
             $this->message = str_replace('%SELECTION%',$sels,$this->message);
             $this->message = str_replace('%NONSELECTION%',$notsels,$this->message);
 
-            $jourmatch = \Carbon\Carbon::parse($this->game->date)->translatedFormat('l d F');
-            $this->message = str_replace('%JOURMATCH%',$jourmatch,$this->message);
+            $jourmatch = $this->game->date
+                ? \Carbon\Carbon::parse($this->game->date)->translatedFormat('l d F')
+                : '';
+            $this->message = str_replace('%JOURMATCH%', $jourmatch, $this->message);
 
-            $this->message = str_replace('%RENDEZVOUS%',$this->game->rendezvous,$this->message);
+            $this->message = str_replace('%RENDEZVOUS%', (string) ($this->game->rendezvous ?? ''), $this->message);
 
 
         } else {
@@ -151,18 +150,28 @@ class Edit extends Component
         $activeWorksheet->setCellValue('E3', $date);
 
         $oppositionA = $this->game->members()
-                                  ->with(['options' => function ($query) {
-                                      $query->where('type', GameOption::TYPE_NUM);
-                                  }])
+                                  ->with([
+                                      'gameOptions' => function ($query) {
+                                          $query->where('game_id', $this->game->id);
+                                      },
+                                      'options' => function ($query) {
+                                          $query->where('type', GameOption::TYPE_NUM);
+                                      },
+                                  ])
                                   ->whereHas('oppositionOptions', function ($query) {
                     $query->where('game_id', $this->game->id)
                         ->where('value', 'A');
                 })->get();
 
         $oppositionB = $this->game->members()
-                                  ->with(['options' => function ($query) {
-                                      $query->where('type', GameOption::TYPE_NUM);
-                                  }])
+                                  ->with([
+                                      'gameOptions' => function ($query) {
+                                          $query->where('game_id', $this->game->id);
+                                      },
+                                      'options' => function ($query) {
+                                          $query->where('type', GameOption::TYPE_NUM);
+                                      },
+                                  ])
                                   ->whereHas('oppositionOptions', function ($query) {
                     $query->where('game_id', $this->game->id)
                         ->where('value', 'B');
@@ -191,14 +200,34 @@ class Edit extends Component
         
     }
 
+    private function getMemberGameNumber($member): ?string
+    {
+        $numberOption = $member->gameOptions
+            ->first(function ($gameOption) {
+                $option = $this->options?->firstWhere('id', $gameOption->game_option_id);
+
+                return $gameOption->game_id === $this->game->id
+                    && $option !== null
+                    && in_array(mb_strtolower($option->name), ['numero', 'numéro']);
+            });
+
+        if ($numberOption !== null && $numberOption->value !== null && $numberOption->value !== '') {
+            return (string) $numberOption->value;
+        }
+
+        if ($member->numero !== null && $member->numero !== '') {
+            return (string) $member->numero;
+        }
+
+        return null;
+    }
+
     private function writeopposition($sheet,$opp,$start) 
     {
         $joueurs = $opp->map(function ($joueur) {
-            $numero = $joueur->options->first()?->pivot->value;
-
             return [
                 'joueur' => $joueur,
-                'numero' => $numero,
+                'numero' => $this->getMemberGameNumber($joueur),
             ];
         })->sortBy(function ($joueur) {
             return $joueur['numero'] === null ? PHP_INT_MAX : (int) $joueur['numero'];

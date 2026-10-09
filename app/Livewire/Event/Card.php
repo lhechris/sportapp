@@ -21,6 +21,19 @@ class Card extends Component
     public function setAvailability($value)
     {
 
+        $user = auth()->user();
+        abort_unless($user, 403);
+        abort_unless($this->event->members()->whereKey($this->member->id)->exists(), 403);
+        abort_unless(
+            $user->isCoach()
+                || ($user->isParent() && $user->members()->whereKey($this->member->id)->exists()),
+            403
+        );
+
+        validator(['value' => $value], [
+            'value' => ['required', 'in:yes,no,maybe'],
+        ])->validate();
+
         $this->event->members()->updateExistingPivot($this->member->id, [
             'availability' => $value,
         ]);

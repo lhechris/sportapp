@@ -211,7 +211,7 @@
 
                 window.open(event.link, '_blank');
             } catch (e) {
-                alert({{ __("sportapp.unable_copy") }});
+                alert(@js(__('sportapp.unable_copy')));
             }
         });
     </script>

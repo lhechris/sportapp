@@ -50,6 +50,8 @@ class Edit extends Component
 
     public function updateEvent()
     {
+        abort_unless(auth()->user()?->isCoach(), 403);
+
         $this->event->update([
             'titre' => $this->eventTitle,
             'date' => $this->eventDate,

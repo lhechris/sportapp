@@ -18,6 +18,12 @@ class Show extends Component
 
     public function setAvailability($memberId,$value)
     {
+        abort_unless(auth()->user()?->members()->whereKey($memberId)->exists(), 403);
+        abort_unless($this->event->members()->whereKey($memberId)->exists(), 403);
+
+        validator(['value' => $value], [
+            'value' => ['required', 'in:yes,no,maybe'],
+        ])->validate();
 
         $this->event->members()->updateExistingPivot($memberId, [
             'availability' => $value,

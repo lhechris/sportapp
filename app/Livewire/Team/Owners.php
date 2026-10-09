@@ -33,7 +33,7 @@ class Owners extends Component
 
     public function removeMember($memberId)
     {
-        $this->team->owner()->detach($memberId);
+        $this->team->owners()->detach($memberId);
     }
 
     public function render()

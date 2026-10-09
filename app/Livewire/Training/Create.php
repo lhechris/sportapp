@@ -21,6 +21,8 @@ class Create extends Component
 
     public function save()
     {
+        abort_unless(auth()->user()?->isCoach(), 403);
+
         $this->validate([
             'date' => 'required',
             'titre' => 'required'
